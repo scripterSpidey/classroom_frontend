@@ -1,6 +1,7 @@
 
 import axiosreq from "../axios.config";
 import { studentEndpoints } from "../endpoints";
+import { TokenResponse } from "@react-oauth/google";
 
 export interface VerificationInput{
     otp: string | number;
@@ -38,6 +39,15 @@ export const registerStudent = async (user:RegisterUserInput)=>{
         throw error
     }
 }
+
+export const loginStudentWithGoogle = async(data:TokenResponse) =>{
+    try {
+        const response = await axiosreq.post(studentEndpoints.googleLogin,data);
+        return response.data;
+    } catch (error) {
+        
+    }
+} 
 
 export const verifyStudent = async(data:VerificationInput)=>{
     try {

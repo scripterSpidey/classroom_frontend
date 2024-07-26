@@ -3,7 +3,8 @@ export const studentEndpoints = {
     verify: "student/verify",
     login:"student/login",
     logout:"student/logout",
-    resendOTP:"student/resend_otp"
+    resendOTP:"student/resend_otp",
+    googleLogin:"student/google_login"
 }
 
 export const teacherEndpoints={
@@ -11,5 +12,6 @@ export const teacherEndpoints={
     verify: "teacher/verify",
     login:"teacher/login",
     logout:"teacher/logout",
-    resendOTP:"teacher/resend_otp"
+    resendOTP:"teacher/resend_otp",
+    googleLogin:"teacher/google_login"
 }

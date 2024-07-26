@@ -1,25 +1,35 @@
 import React from 'react';
+import { useRef, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+
 import { Container, Paper, Typography, Box, TextField, Button, Stack } from '@mui/material';
 import { FaGoogle } from 'react-icons/fa';
 import Divider from '@mui/material/Divider';
 import Footer from '../components/Footer';
-import { useRef, useState } from 'react';
-import { validEmail, validName, validPassword, passwordMatch } from '../utils/form.validations';
+import { CircularProgress } from '@mui/material';
+
 import toast, { Toaster } from 'react-hot-toast';
+
+import { useGoogleLogin } from '@react-oauth/google';
+import { TokenResponse } from '@react-oauth/google';
+
+import { validEmail, validName, validPassword, passwordMatch } from '../utils/form.validations';
 import { registerStudent } from '../api/services/student.service';
-import {  NavLink, useNavigate } from 'react-router-dom';
+import { registerTeacher } from '../api/services/teacher.services';
+import handleError from '../utils/error.handler';
+import { loginStudentWithGoogle } from '../api/services/student.service';
+import { loginTeacherWithGoogle } from '../api/services/teacher.services';
 import { useAppDispatch } from '../store/store';
 import { registerUser } from '../store/slices/register.slice';
+import { addStudent } from '../store/slices/student.auth.slice';
+import { addTeacher } from '../store/slices/teacher.auth.slice';
 
-import {CircularProgress} from '@mui/material';
 
-import { registerTeacher } from '../api/services/teacher.services';
-
-interface SignUpProps{
-  role:'student' | 'teacher'
+interface SignUpProps {
+  role: 'student' | 'teacher'
 }
 
-const StudentAuth:React.FC<SignUpProps> = ({role}) => {
+const Signup: React.FC<SignUpProps> = ({ role }) => {
 
   const emailRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -33,9 +43,36 @@ const StudentAuth:React.FC<SignUpProps> = ({role}) => {
   const [nameError, setNameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState<boolean>(false);
-  const [loading,setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
+  const googleLogin = useGoogleLogin({
 
+    onSuccess: async (response: TokenResponse) => {
+
+      const loginUser = role == 'student' ?
+        await loginStudentWithGoogle(response) :
+        await loginTeacherWithGoogle(response);
+
+      role == 'student' ?
+        dispatch(addStudent({
+          email: loginUser.email,
+          id: loginUser.id,
+          name: loginUser.name,
+          profile_image: loginUser.profile_image
+        })) :
+        dispatch(addTeacher({
+          email: loginUser.email,
+          id: loginUser.id,
+          name: loginUser.name,
+          profile_image: loginUser.profile_image
+        }));
+
+      navigate(`/${role}/dashboard`);
+    },
+    onError: (error) => {
+      handleError(error)
+    }
+  })
 
   const validateEmail = () => {
     setEmailError(validEmail(emailRef.current?.value));
@@ -73,28 +110,22 @@ const StudentAuth:React.FC<SignUpProps> = ({role}) => {
 
     try {
       setLoading(true);
-      const response = (role == 'student') 
-      ? await registerStudent(user) 
-      : await registerTeacher(user);
-      
-      console.log('signup resp',response)
-      
+      const response = (role == 'student')
+        ? await registerStudent(user)
+        : await registerTeacher(user);
+
       dispatch(registerUser({
-        email:response.email,
-        id:response.id
+        email: response.email,
+        id: response.id,
+        role:role
       }));
 
-      
       navigate(`/${role}/verify`);
-      
+
     } catch (error: any) {
       console.log(error)
-      if(error.response && error.response.status==409){
-        toast.error("This mail is already registered buddy.. Try another one.")
-      }else{
-        toast.error("Sorry dude.. some unexpected error occured. Try again!")
-      }
-    }finally{
+      handleError(error)
+    } finally {
       setLoading(false)
     }
   }
@@ -104,11 +135,11 @@ const StudentAuth:React.FC<SignUpProps> = ({role}) => {
       <Container maxWidth="sm" className="flex items-center justify-center min-h-screen p-4 ">
         <Paper elevation={3} className="p-6 rounded-lg shadow-lg w-full max-w-md">
           <Typography variant="h4" component="h1" className="mb-4 text-center text-costume-primary-color font-semibold">
-            {role=="student"?"Student":"Teacher"} Signup
+            {role == "student" ? "Student" : "Teacher"} Signup
           </Typography>
           <Divider></Divider>
-          {loading && 
-          <CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />}
+          {loading &&
+            <CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />}
           <Box component="form" noValidate autoComplete="off" className="mt-4 space-y-4">
 
             <TextField
@@ -201,18 +232,18 @@ const StudentAuth:React.FC<SignUpProps> = ({role}) => {
           <Stack spacing={1} className="mt-4">
             <Typography variant="body2" align="center">
               Already have an account?
-               <NavLink to={`/${role}/login`} className="text-costume-primary-color hover:underline">
-                Login</NavLink> 
+              <NavLink to={`/${role}/login`} className="text-costume-primary-color hover:underline">
+                Login</NavLink>
             </Typography>
             <Divider>or</Divider>
             <Button
               variant="outlined"
               fullWidth
-
               startIcon={<FaGoogle className='text-green-700' />}
               className="mt-2 text-green-700"
+              onClick={() => googleLogin()}
             >
-              Continue with Google
+              Continue wiht google
             </Button>
           </Stack>
         </Paper>
@@ -223,5 +254,5 @@ const StudentAuth:React.FC<SignUpProps> = ({role}) => {
   );
 };
 
-export default StudentAuth;
+export default Signup;
 

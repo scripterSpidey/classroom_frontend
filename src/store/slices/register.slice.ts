@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface RegisterUser{
     email:string | null | undefined,
-    id:string | null | undefined
+    id:string | null | undefined,
+    role: string | null | undefined
 }
 
 export type RegisterUserType = RegisterUser | null;
@@ -10,7 +11,8 @@ export type RegisterUserType = RegisterUser | null;
 
 const initialState : RegisterUserType = {
     email: null,
-    id: null
+    id: null,
+    role:null
 }
 
 export const RegisterSlice = createSlice({

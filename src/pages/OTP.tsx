@@ -9,6 +9,7 @@ import { addStudent, } from '../store/slices/student.auth.slice';
 import { verifyStudent,resendOTP } from '../api/services/student.service';
 import toast,{ Toaster }  from 'react-hot-toast';
 import { verifyTeacher } from '../api/services/teacher.services';
+import handleError from '../utils/error.handler';
 
 export interface OTPProps{
   role: 'student' | 'teacher'
@@ -22,6 +23,7 @@ const OTP:React.FC<OTPProps> = ({role}) => {
 
   const [otp,setOtp] = useState('');
   const [time,setTime] = useState(60);
+
   useEffect(()=>{
     const updateTime = ()=>{
       setTime(prevTime=>prevTime-1);
@@ -36,7 +38,6 @@ const OTP:React.FC<OTPProps> = ({role}) => {
     return ()=>clearInterval(timerId)
   },[time])
   
-
   const userEmail = useAppSelector(state=>state.userRegistry.email);
   const userId = useAppSelector(state=>state.userRegistry.id);
 
@@ -54,13 +55,13 @@ const OTP:React.FC<OTPProps> = ({role}) => {
         setTime(60)
 
       }else{
-        toast.error("Oops! It looks like you have not registered yet.",{
+        toast.error("Are you even registered? Go back and give us your details first!.",{
           duration: 5000 
         })
       }
       
     } catch (error) {
-      
+      handleError(error)
     }
   }
   

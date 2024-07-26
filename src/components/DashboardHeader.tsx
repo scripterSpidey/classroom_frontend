@@ -9,12 +9,15 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Logo from './Logo'
-import {  useAppSelector,useAppDispatch } from '../store/store';
+import { useAppSelector, useAppDispatch } from '../store/store';
 import { logoutStudent } from '../api/services/student.service';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { removeStudent } from '../store/slices/student.auth.slice';
+import { googleLogout } from '@react-oauth/google';
+import { removeTeacher } from '../store/slices/teacher.auth.slice';
+import { logoutTeacher } from '../api/services/teacher.services';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -31,24 +34,35 @@ const style = {
 
 };
 
-const DashboardHeader = () => {
+interface DashboardHeaderProps {
+  role: 'student' | 'teacher'
+}
+
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ role }) => {
   const [open, setOpen] = useState(false);
   const [logout, setLogout] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector(state => state.studentAuth.user);
-  console.log(user)
-  if (!user)  navigate('/')
+  const user = role == 'student' ?
+    useAppSelector(state => state.studentAuth.user) :
+    useAppSelector(state => state.teacherAuth.user) ;
+
+  if (!user) navigate('/');
+
   const handleLogout = async () => {
     try {
-      console.log('click')
-      const response = await logoutStudent({ userId: user?.id as string });
+      role == 'student' ?
+        await logoutStudent({ userId: user?.id as string }) :
+        await logoutTeacher({ userId: user?.id as string });
 
-      console.log(response)
+      role == 'student' ?
+        dispatch(removeStudent()) :
+        dispatch(removeTeacher());
 
-      dispatch(removeStudent())
+      googleLogout();
+
       navigate('/')
     } catch (error) {
       toast.error('Something went wrong')
@@ -63,11 +77,11 @@ const DashboardHeader = () => {
           <Logo />
         </div>
         <div>
-          <h1 className="text-xl hidden sm:flex sm:text-2xl  font-extrabold text-costume-primary-color ">STUDENT DASHBOARD</h1>
+          <h1 className="text-xl hidden sm:flex sm:text-2xl  font-extrabold text-costume-primary-color ">{`${role == 'student' ? "STUDENT" : "TEACHER"} DASHBOARD`}</h1>
         </div>
         <div className="relative" >
           <div className="flex items-center space-x-2 bg-costume-primary-color p-2 rounded-lg hover:bg-gray-600 focus:outline-none">
-            <img src="/path/to/profile-icon.png" alt="Profile Icon" className="h-8 w-8 rounded-full" />
+            <img src={user?.profile_image} alt="Profile Icon" className="h-8 w-8 rounded-full" />
             <div className="hidden lg:flex flex-col text-sm">
               <Link to={"profile"} className="font-semibold">{user?.name}</Link>
               <span>{user?.email}</span>
@@ -100,7 +114,7 @@ const DashboardHeader = () => {
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                width: '100%',  
+                width: '100%',
                 paddingX: "20px"
               }}
               direction="row">

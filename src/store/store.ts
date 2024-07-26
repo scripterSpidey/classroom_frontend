@@ -4,11 +4,14 @@ import storage from 'redux-persist/lib/storage';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import  studentAuthSlice  from "./slices/student.auth.slice";
+import teacherAuthSlice from "./slices/teacher.auth.slice";
 import registerSlice from "./slices/register.slice";
+
 
 const rootReducer =combineReducers({
     studentAuth: studentAuthSlice,
-    userRegistry: registerSlice
+    userRegistry: registerSlice,
+    teacherAuth: teacherAuthSlice
 })
 
 

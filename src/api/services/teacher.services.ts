@@ -1,5 +1,6 @@
 import axiosreq from "../axios.config";
 import { teacherEndpoints } from "../endpoints";
+import { TokenResponse } from "@react-oauth/google";
 
 import { 
     RegisterUserInput,
@@ -40,6 +41,15 @@ export const loginTeacher = async(data:LoginInput)=>{
         throw error
     }
 }
+
+export const loginTeacherWithGoogle = async(data:TokenResponse) =>{
+    try {
+        const response = await axiosreq.post(teacherEndpoints.googleLogin,data);
+        return response.data;
+    } catch (error) {
+        
+    }
+} 
 
 export const logoutTeacher = async(data:LogoutInput)=>{
     try {
