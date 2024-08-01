@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "../../models/user";
+
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { ClassroomSchema } from "../../schema/classroom.schema";
+import { StudentSchema } from "../../schema/student.schema";
 
 export interface AuthState{
-    user: User | null;
+    user: StudentSchema | null
 }
 
 const initialState: AuthState = {
@@ -14,15 +16,18 @@ export const studentAuthSlice = createSlice({
     name:"studentAuth",
     initialState,
     reducers:{
-        addStudent:(state,action: PayloadAction<User|null>)=>{
+        addStudent:(state,action: PayloadAction<StudentSchema | null>)=>{
             state.user = action.payload
         },
         removeStudent:(state)=>{
             state.user = null;
+        },
+        addStudentClassroom:(state,action:PayloadAction<ClassroomSchema[]>)=>{
+            if(state.user) state.user.classrooms = action.payload;
         }
     }
 });
 
-export const {addStudent,removeStudent} = studentAuthSlice.actions;
+export const {addStudent,removeStudent,addStudentClassroom} = studentAuthSlice.actions;
 
 export default studentAuthSlice.reducer

@@ -19,7 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
     return (
         <>
-            <aside className={`h-screen  left-0 inline-block overflow-hidden transition-all   ${expanded ? "p-2" : "w-16"}`}>
+            <aside className={`h-auto  left-0 inline-block overflow-hidden transition-all   ${expanded ? "p-2" : "w-16"}`}>
                 <nav className="h-full flex flex-col  rounded-md  border-2 border-gray-200 shadow-lg ">
                     <div className="p-4 pb-2 flex justify-between items-center">    
                         <h1 className={`overflow-hidden transition-all text-costume-primary-color text-xl font-extrabold 
@@ -69,7 +69,7 @@ interface SidebarItemProps {
 export const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, active, alert }) => {
 
     const { expanded } = useContext(SidebarContext)
-    console.log(expanded)
+    
     return (
         <>
         <li className={`relative flex items-center py-2 px-2 my-1 font-md rounded-md cursor-pointer transition-colors group

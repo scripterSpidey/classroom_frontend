@@ -18,6 +18,8 @@ import { removeStudent } from '../store/slices/student.auth.slice';
 import { googleLogout } from '@react-oauth/google';
 import { removeTeacher } from '../store/slices/teacher.auth.slice';
 import { logoutTeacher } from '../api/services/teacher.services';
+import useRole from '../hooks/use.role.hook';
+import { removeClassroom } from '../store/slices/teacher.classroom.slice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -35,16 +37,16 @@ const style = {
 };
 
 interface DashboardHeaderProps {
-  role: 'student' | 'teacher'
+
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ role }) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
+  const role = useRole();
   const [open, setOpen] = useState(false);
   const [logout, setLogout] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
   const user = role == 'student' ?
     useAppSelector(state => state.studentAuth.user) :
     useAppSelector(state => state.teacherAuth.user) ;
@@ -54,12 +56,14 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ role }) => {
   const handleLogout = async () => {
     try {
       role == 'student' ?
-        await logoutStudent({ userId: user?.id as string }) :
-        await logoutTeacher({ userId: user?.id as string });
+        await logoutStudent({ userId: user?._id as string }) :
+        await logoutTeacher({ userId: user?._id as string });
 
       role == 'student' ?
         dispatch(removeStudent()) :
         dispatch(removeTeacher());
+      
+      dispatch(removeClassroom())
 
       googleLogout();
 
@@ -94,7 +98,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ role }) => {
           </div>
           {open &&
             <div
-              className={`absolute transition-all right-0 mt-2 w-48 bg-white z-10 text-gray-800 border border-gray-200 rounded-md shadow-lg hidden lg:block `}>
+              className={`absolute transition-all right-0 mt-2 w-48 bg-white z-20 text-gray-800 border border-gray-200 rounded-md shadow-lg hidden lg:block `}>
               <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
               <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-100">Settings</a>
               <a onClick={() => setLogout(true)} className="block px-4 py-2 cursor-pointer text-sm hover:bg-gray-100">Logout</a>

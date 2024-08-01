@@ -1,6 +1,7 @@
 import { toast } from 'react-hot-toast';
 
 const handleError = (error: any) => {
+  console.log(error.response.status)
   if (error.response) {
     switch (error.response.status) {
       case 400:

@@ -21,15 +21,16 @@ import { useGoogleLogin, TokenResponse } from '@react-oauth/google';
 
 
 import { loginStudentWithGoogle } from '../api/services/student.service';
+import useRole from '../hooks/use.role.hook';
 
 interface LoginProps {
-  role: 'student' | 'teacher'
+ 
 }
 
-const Login: React.FC<LoginProps> = ({ role }) => {
+const Login: React.FC<LoginProps> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
-  console.log('role: ', role)
+  const role = useRole()
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [emailError, setEmailError] = useState(false);
@@ -42,19 +43,11 @@ const Login: React.FC<LoginProps> = ({ role }) => {
         await loginStudentWithGoogle(response) :
         await loginTeacherWithGoogle(response);
 
+      console.log('login: ',loginUser);
+      
       role == 'student' ?
-        dispatch(addStudent({
-          email: loginUser.email,
-          id: loginUser.id,
-          name: loginUser.name,
-          profile_image: loginUser.profile_image
-        })) :
-        dispatch(addTeacher({
-          email: loginUser.email,
-          id: loginUser.id,
-          name: loginUser.name,
-          profile_image: loginUser.profile_image
-        }));
+        dispatch(addStudent(loginUser)) :
+        dispatch(addTeacher(loginUser));
 
       navigate(`/${role}/dashboard`);
     },
@@ -98,18 +91,8 @@ const Login: React.FC<LoginProps> = ({ role }) => {
         })
 
       role == 'student' ?
-        dispatch(addStudent({
-          email: data.email,
-          id: data.id,
-          name: data.name,
-          profile_image: data.profile_image
-        })) :
-        dispatch(addTeacher({
-          email: data.email,
-          id: data.id,
-          name: data.name,
-          profile_image: data.profile_image
-        }));
+        dispatch(addStudent(data)) :
+        dispatch(addTeacher(data));
 
       navigate(`/${role}/dashboard`);
     } catch (error: any) {

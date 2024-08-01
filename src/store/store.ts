@@ -6,21 +6,34 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import  studentAuthSlice  from "./slices/student.auth.slice";
 import teacherAuthSlice from "./slices/teacher.auth.slice";
 import registerSlice from "./slices/register.slice";
+import teacherClassroomSlice  from "./slices/teacher.classroom.slice";
+import studentClassroomSlice from "./slices/student.classroom.slice";
+import { AuthState } from "./slices/teacher.auth.slice";
+import { RegisterUserType } from "./slices/register.slice";
+import { TeacherClassroomStateInterface } from "./slices/teacher.classroom.slice";
+import { StudentClassroomStateInterface } from "./slices/student.classroom.slice";
 
+export interface RootStateInterface{
+  studentAuth: AuthState;
+  userRegistry: RegisterUserType;
+  teacherAuth: AuthState;
+  teacherClassroom: TeacherClassroomStateInterface;
+  studentClassroom: StudentClassroomStateInterface;
+}
 
 const rootReducer =combineReducers({
     studentAuth: studentAuthSlice,
     userRegistry: registerSlice,
-    teacherAuth: teacherAuthSlice
+    teacherAuth: teacherAuthSlice,
+    teacherClassroom:teacherClassroomSlice,
+    studentClassroom:studentClassroomSlice
 })
 
 
 const persistConfig = {
     key: 'root',
     storage,
-    // Optionally, you can blacklist or whitelist specific reducers
-    // whitelist: ['studentAuth'] // only studentAuth will be persisted
-    // blacklist: ['someReducer'] // someReducer will not be persisted
+    blacklist:['teacherClassroom','studentClassroom']
   };
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);

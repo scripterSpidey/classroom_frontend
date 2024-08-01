@@ -23,14 +23,17 @@ import { useAppDispatch } from '../store/store';
 import { registerUser } from '../store/slices/register.slice';
 import { addStudent } from '../store/slices/student.auth.slice';
 import { addTeacher } from '../store/slices/teacher.auth.slice';
+import useRole from '../hooks/use.role.hook';
+import { User } from '../schema/user';
 
 
 interface SignUpProps {
-  role: 'student' | 'teacher'
+  
 }
 
-const Signup: React.FC<SignUpProps> = ({ role }) => {
+const Signup: React.FC<SignUpProps> = () => {
 
+  const role = useRole()
   const emailRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -49,7 +52,7 @@ const Signup: React.FC<SignUpProps> = ({ role }) => {
 
     onSuccess: async (response: TokenResponse) => {
 
-      const loginUser = role == 'student' ?
+      const loginUser:User = role == 'student' ?
         await loginStudentWithGoogle(response) :
         await loginTeacherWithGoogle(response);
 
@@ -58,13 +61,15 @@ const Signup: React.FC<SignUpProps> = ({ role }) => {
           email: loginUser.email,
           id: loginUser.id,
           name: loginUser.name,
-          profile_image: loginUser.profile_image
+          profile_image: loginUser.profile_image,
+          classrooms:[]
         })) :
         dispatch(addTeacher({
           email: loginUser.email,
           id: loginUser.id,
           name: loginUser.name,
-          profile_image: loginUser.profile_image
+          profile_image: loginUser.profile_image,
+          classrooms:[]
         }));
 
       navigate(`/${role}/dashboard`);

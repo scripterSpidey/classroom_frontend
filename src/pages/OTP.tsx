@@ -10,17 +10,18 @@ import { verifyStudent,resendOTP } from '../api/services/student.service';
 import toast,{ Toaster }  from 'react-hot-toast';
 import { verifyTeacher } from '../api/services/teacher.services';
 import handleError from '../utils/error.handler';
+import useRole from '../hooks/use.role.hook';
 
 export interface OTPProps{
-  role: 'student' | 'teacher'
+  
 }
 
 
-const OTP:React.FC<OTPProps> = ({role}) => {
+const OTP:React.FC<OTPProps> = () => {
 
   const navigate =useNavigate();
   const dispatch = useAppDispatch();
-
+  const role = useRole()
   const [otp,setOtp] = useState('');
   const [time,setTime] = useState(60);
 
@@ -80,7 +81,7 @@ const OTP:React.FC<OTPProps> = ({role}) => {
       dispatch(addStudent({
         email:response.email,
         name:response.name,
-        id:userId
+        id:userId,
       }))
 
       navigate(`/${role}/dashboard`)

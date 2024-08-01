@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 
-import Sidebar from '../components/Sidebar'
+import Sidebar from './Sidebar'
 import SchoolIcon from '@mui/icons-material/School';
 import ChatIcon from '@mui/icons-material/Chat';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
@@ -10,7 +10,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import CampaignIcon from '@mui/icons-material/Campaign';
 
-import { SidebarItem } from '../components/Sidebar'
+import { SidebarItem } from './Sidebar'
 
 const ClassroomNavBar = () => {
   
@@ -19,8 +19,8 @@ const ClassroomNavBar = () => {
   return (
     <>
     <Sidebar >
-      <NavLink to="overview" onClick={()=>setActiveLink('overview')}>
-        <SidebarItem icon={<SchoolIcon/>} text={"Summary"} active={activeLink==='overview'} alert={true}/>
+      <NavLink to="summary" onClick={()=>setActiveLink('summary')}>
+        <SidebarItem icon={<SchoolIcon/>} text={"Summary"} active={activeLink==='summary'} alert={true}/>
       </NavLink>
       <NavLink to="chat" onClick={()=>setActiveLink('chat')}>
         <SidebarItem icon={<ChatIcon/>} text={"Chat Space"} active={activeLink==='chat'} alert={false}/>
