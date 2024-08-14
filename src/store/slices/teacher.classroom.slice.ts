@@ -1,27 +1,47 @@
-import { createSlice,createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
-import { ClassroomSchema } from "../../schema/classroom.schema";
-import { StudentSchema } from "../../schema/student.schema";
+import { ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
+import { PrivateChatSchema } from "../../schema/private.chats.schema";
 
 
-export interface TeacherClassroomStateInterface{
-    classroom: null | ClassroomSchema
+export interface TeacherClassroomStateInterface {
+    classroom: null | ClassroomSchema,
+    privateChats:PrivateChatSchema[]
 }
-
-
 
 const initialState: TeacherClassroomStateInterface = {
-    classroom: null
+    classroom: {
+        _id: '',
+        name: '',
+        subject: '',
+        class_teacher_name: '',
+        class_teacher_id: '',
+        students: [],
+        classroom_messages: [],
+        strength: 0,
+        joining_requests: [],
+        banned: false,
+        classroom_id: '',
+        createdAt: ''
+    },
+    privateChats:[]
 }
-export interface ManageRequestPayload{
-    index:number
+
+export interface ManageRequestPayload {
+    index: number,
+    data:Array< {
+        student_id: string,
+        email: string,
+        name: string,
+        blocked: boolean,
+    }>
 }
 
 export const fetchClassroomDetailsForTeacherThunk = createAsyncThunk<ClassroomSchema, () => Promise<ClassroomSchema>, { rejectValue: string }>(
-    'teacher/fetchClasssroom',async (getClassroom,thunkAPI)=>{
+    'teacher/fetchClasssroom', async (getClassroom, thunkAPI) => {
         try {
             const response = await getClassroom();
-
+            console.log(response)
             return response;
         } catch (error) {
             return thunkAPI.rejectWithValue('failed to fetch classroom details for teacher')
@@ -39,16 +59,50 @@ export const teacherClassroomSlice = createSlice({
         removeClassroom: (state) => {
             state.classroom = null;
         },
-        acceptRequests: (state, action:PayloadAction<ManageRequestPayload>) => {
-            
-            const request:StudentSchema|undefined  = state.classroom?.joining_requests.splice(action.payload.index, 1)[0];
-            
-            if(request){
-                state.classroom?.students.push(request);
+        acceptRequests: (state, action: PayloadAction<ManageRequestPayload>) => {
+
+            state.classroom?.joining_requests.splice(action.payload.index, 1)[0];
+            if(state.classroom){
+                state.classroom.students = action.payload.data
             }
         },
-        rejectRequests: (state, action:PayloadAction<ManageRequestPayload>) => {
-            state.classroom?.joining_requests.splice(action.payload.index,1)
+        removeStudent: (state, action: PayloadAction<{ student_id: string }>) => {
+            const index = state.classroom?.students.findIndex(student => student.student_id == action.payload.student_id);
+            if (index !== -1) {
+                state.classroom?.students.splice(index!, 1)
+            }
+        },
+        rejectRequests: (state, action: PayloadAction<ManageRequestPayload>) => {
+            state.classroom?.joining_requests.splice(action.payload.index, 1)
+        },
+        blockOrUnblockStudentRedux: (state, action: PayloadAction<{ student_id: string }>) => {
+            const student_id = action.payload.student_id
+            state.classroom?.students.forEach(student => {
+                if (student.student_id == student_id) {
+                    student.blocked = !(student.blocked)
+                }
+            })
+        },
+        saveMessagesInTeacherClassroom: (state, action: PayloadAction<{ messages: ClassroomMessage[] }>) => {
+            if (state.classroom?.classroom_messages) {
+                state.classroom.classroom_messages = action.payload.messages
+            }
+        },
+        sendMessageFromTeacher: (state, action: PayloadAction<{ message: ClassroomMessage }>) => {
+            if (state.classroom) {
+                state.classroom.classroom_messages.push(action.payload.message)
+            }
+        },
+        receiveMessageToTeacher: (state, action: PayloadAction<{ message: ClassroomMessage }>) => {
+            if (state.classroom) {
+                state.classroom.classroom_messages.push(action.payload.message)
+            }
+        },
+        saveAllPrivateChatsForTeacher:(state,action:PayloadAction<{messages:PrivateChatSchema[]}>)=>{
+            state.privateChats = action.payload.messages;
+        },
+        receivePrivateChatForTeacher:(state,action:PayloadAction<{message:PrivateChatSchema}>)=>{
+            state.privateChats.push(action.payload.message)
         }
     },
     extraReducers: (builder) => {
@@ -71,7 +125,15 @@ export const {
     saveClassroom,
     removeClassroom,
     acceptRequests,
-    rejectRequests } = teacherClassroomSlice.actions;
- 
+    rejectRequests,
+    removeStudent,
+    blockOrUnblockStudentRedux,
+    saveMessagesInTeacherClassroom,
+    sendMessageFromTeacher,
+    receiveMessageToTeacher,
+    saveAllPrivateChatsForTeacher,
+    receivePrivateChatForTeacher
+} = teacherClassroomSlice.actions;
+
 export default teacherClassroomSlice.reducer;
 

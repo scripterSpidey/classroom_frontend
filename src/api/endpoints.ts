@@ -5,7 +5,8 @@ export const studentEndpoints = {
     login:"student/login",
     logout:"student/logout",
     resendOTP:"student/resend_otp",
-    googleLogin:"student/google_login"
+    googleLogin:"student/google_login",
+    updateProfileImage:'student/profile/image'
 }
 
 export const teacherEndpoints={
@@ -15,22 +16,34 @@ export const teacherEndpoints={
     login:"teacher/login",
     logout:"teacher/logout",
     resendOTP:"teacher/resend_otp",
-    googleLogin:"teacher/google_login"
+    googleLogin:"teacher/google_login",
+    updateProfileImage:'teacher/profile/image',
+    
 }
 
 export const teacherClassroomEndpoints={
     create:`teacher/classroom`,
-    allClassrooms:(class_teacher_id:string):string=>`teacher/classrooms/${class_teacher_id}`,
-    classroom:(classroom_id:string):string =>`teacher/classroom/${classroom_id}`,
-    acceptRequest:(classroom_id:string):string=>`teacher/classroom/${classroom_id}/requests/accept`,
-    rejectRequest:(classroom_id:string):string=>`teacher/classroom/${classroom_id}/requests/reject`,
+    allClassrooms:`teacher/classroom/all`,
+    classroom:(classroom_id:string):string =>`teacher/classroom/summary/${classroom_id}`,
+    acceptRequest:`teacher/classroom/requests/accept`,
+    rejectRequest:`teacher/classroom/requests/reject`,
+    studentProfile:(student_id:string)=>`teacher/classroom/student/profile/${student_id}`,
+    removeStudent:(student_id:string)=>`teacher/classroom/student/remove/${student_id}`,
+    blockOrUnblockStudent:(student_id:string)=>`teacher/classroom/student/manage_access/${student_id}`,
+    chatEndpoint:'teacher/classroom/chat',
+    privateChat:(receiverId:string)=>`teacher/classroom/chat/${receiverId}`
+    
 }
 
 export const studentClassroonEndpoints = {
-    allClassrooms:`student/classrooms`,
+    allClassrooms:`student/classroom/all`,
     searchClassroom:(classroom_id:string):any=>`student/classroom/search/${classroom_id}`,
     requestToJoinClassroom:(classroom_id:string):any=>`student/classroom/search/${classroom_id}`,
-    classroomDetails:(classroom_id:string)=>`student/classroom/${classroom_id}`,
-   
+    classroomDetails:(classroom_id:string)=>`student/classroom/summary/${classroom_id}`,
+    chatEndpoint:'student/classroom/chat',
+    privateChat:(receiverId:string)=>`student/classroom/chat/${receiverId}`
 }
+
+
+
  

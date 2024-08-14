@@ -1,51 +1,34 @@
 
-import { Button, Hidden } from '@mui/material'
+import { Button } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useAppSelector, useAppDispatch } from '../store/store';
-import { registerUser } from '../store/slices/register.slice';
-import NewClassroomForm from '../components/teacher/NewClassroomForm';
-import { useEffect, useState } from 'react';
-import { Toaster } from 'react-hot-toast';
-import { searchClassroomForStudent, getStudentClassrooms, getTeacherClassrooms, fetchClassroomDetailsForTeacher } from '../api/services/classroom.services';
-import ClassroomCard from '../components/ClassroomCard';
+import { useAppSelector } from '../store/store';
 
-import useRole from '../hooks/use.role.hook';
+import NewClassroomForm from '../components/teacher/NewClassroomForm';
+import { useState } from 'react';
+import { Toaster } from 'react-hot-toast';
+
+import ClassroomCard from '../components/ClassroomCard';
+import useRole from '../hooks/useRole';
 import JoinClassroomForm from '../components/students/JoinClassroomForm';
 
-import handleError from '../utils/error.handler';
-
-import { ClassroomSchema } from '../schema/classroom.schema';
 import { motion } from 'framer-motion';
-import { Opacity } from '@mui/icons-material';
+
+
 
 
 const Dashboard: React.FC = () => {
 
     const role = useRole()
-    const dispatch = useAppDispatch();
-
-    const user = role == 'teacher' ?
-        useAppSelector(state => state.teacherAuth.user) :
-        useAppSelector(state => state.studentAuth.user)
-
 
 
     const classrooms = role == 'teacher' ?
         (useAppSelector(state => state.teacherAuth.user?.classrooms) || []) :
         (useAppSelector(state => state.studentAuth.user?.classrooms) || []);
 
-    console.log('classrooms: ', classrooms)
-
 
     const [showForm, setShowForm] = useState(false);
-
-    const newUser = useAppSelector(state => state.userRegistry);
-
-    if (newUser) dispatch(registerUser(null));
-
+ 
     const handleClose = () => setShowForm(false);
-
-
 
     return (
         <>
@@ -57,10 +40,7 @@ const Dashboard: React.FC = () => {
                         {role == "student" ? "JOIN" : "CREATE"} A NEW CLASSROOM
                     </Button>
                 </div>
-
                 <hr className='m-4' />
-                {/* flex flex-wrap justify-centre gap-4 p-4 */}
-                {/* <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'> */}
                 <div className='flex flex-col gap-10 overflow-x-hidden'>
                     <motion.div
                         variants={{
@@ -74,20 +54,19 @@ const Dashboard: React.FC = () => {
                         }}
                         initial="hidden"
                         animate="show"
-                        className='grid grid-cols-4 gap-10 p-10'>
-                        {classrooms.length != 0 && classrooms.map((classroom: ClassroomSchema) => <ClassroomCard
-                            key={classroom._id}
-                            name={classroom.name}
+                        className='grid md:grid-cols-1  lg:grid-cols-4 gap-10 p-10'>
+                        {classrooms.length != 0 && classrooms.map((classroom: any) => <ClassroomCard
+                            key={classroom._id ?? ''}
+                            name={classroom.classroom_name}
                             class_teacher_name={classroom.class_teacher_name}
                             subject={classroom.subject}
-                            _id={classroom._id}
+                            _id={classroom.classroom_id}
+                            blocked={classroom.blocked}
                             role={role}
                         />)}
 
                     </motion.div>
                 </div>
-
-                {/* </div> */}
                 {role == 'teacher' ?
                     <NewClassroomForm onClose={handleClose} visible={showForm} /> :
                     <JoinClassroomForm visible={showForm} onClose={handleClose} />}

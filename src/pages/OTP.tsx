@@ -10,7 +10,7 @@ import { verifyStudent,resendOTP } from '../api/services/student.service';
 import toast,{ Toaster }  from 'react-hot-toast';
 import { verifyTeacher } from '../api/services/teacher.services';
 import handleError from '../utils/error.handler';
-import useRole from '../hooks/use.role.hook';
+import useRole from '../hooks/useRole';
 
 export interface OTPProps{
   

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet, Navigate, useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../store/store';
-import useRole from '../hooks/use.role.hook';
-import { useAuth } from '../hooks/use.auth';
+
+import useRole from '../hooks/useRole';
+import { useAuth } from '../hooks/useAuth';
 
 interface DashboardProps {
 
@@ -10,16 +10,13 @@ interface DashboardProps {
 const ProtectedRoutes: React.FC<DashboardProps> = () => {
     const role = useRole();
     const navigate = useNavigate()
-    const { loading, user, error } = useAuth(role);
-    console.log('API user from protected: ', user)
-    //    const user = role == 'student' ?
-    //    useAppSelector(state => state.studentAuth.user) :
-    //    useAppSelector(state => state.teacherAuth.user)
+    const { loading, activeUser, error } = useAuth(role);
 
-    if (loading) return null
+
+    if (loading) return ;
     if (error) navigate('/');
 
-    return user ? <Outlet /> : <Navigate to='/' />
+    return activeUser ? <Outlet /> : <Navigate to='/' />
 }
 
 export default ProtectedRoutes

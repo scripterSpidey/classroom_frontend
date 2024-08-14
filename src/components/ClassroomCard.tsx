@@ -1,33 +1,42 @@
 import React from 'react'
 import { cardColors } from '../utils/card.colors'
 import { useNavigate } from 'react-router-dom'
-import { useAppSelector } from '../store/store'
+
 import { motion } from 'framer-motion'
+import toast from 'react-hot-toast'
+import { useAppDispatch } from '../store/store'
+import { saveStudentEquipedClassroom, saveTeacherEquipedClassroom } from '../store/slices/persist.slice'
+
 type ClassroomCardPropsType = {
     name: string,
     class_teacher_name: string,
     subject: string,
-    _id: string,
+    blocked:boolean,
+    _id?: string | undefined,
     role: string
 }
 
-const ClassroomCard: React.FC<ClassroomCardPropsType> = ({ name, subject, class_teacher_name, _id, role }) => {
+const ClassroomCard: React.FC<ClassroomCardPropsType> = ({ name, subject, class_teacher_name, _id,blocked, role }) => {
 
-    const user = role == 'teacher' ?
-        useAppSelector(state => state.teacherAuth.user?._id) :
-        useAppSelector(state => state.studentAuth.user?._id) as string;
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const index = Math.floor(Math.random() * cardColors.length)
     const bgColor = cardColors[index].bg;
     const svgColor = cardColors[index].svg
 
     const capitalizeFirstLetter = (string: string) => {
-        let newString = string.charAt(0).toUpperCase() + string.slice(1)
+        let newString = string?.charAt(0).toUpperCase() + string?.slice(1)
         return newString
     }
 
     const enterClassroom = () => {
+        if(blocked){
+            return toast.error("You have been banned from this classroom")
+        }
+        role == 'student'?
+            dispatch(saveStudentEquipedClassroom({classroom_id:_id!})):
+            dispatch(saveTeacherEquipedClassroom({classroom_id:_id!}));
+        
         navigate(`/${role}/classroom/${_id}/summary`)
     }
     return (

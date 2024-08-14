@@ -1,4 +1,4 @@
-import { ClassroomSchema } from "./classroom.schema";
+
 
 export interface TeacherSchema{
     _id:string,
@@ -6,6 +6,16 @@ export interface TeacherSchema{
     name:string,
     blocked:boolean,
     verified:boolean,
-    classrooms:ClassroomSchema[],
+    classrooms:Array<{
+        _id?:string,
+        classroom_id:string,
+        class_teacher_name: string,
+        subject: string,
+        classroom_name: string,
+        joined_at: Date,
+        blocked: boolean
+    }>,
     profile_image:string | null
 }
+
+export type TeacherClassroomDocType = TeacherSchema["classrooms"][number];

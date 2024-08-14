@@ -2,7 +2,7 @@ import React from 'react'
 import { StudentSchema } from '../../schema/student.schema'
 import CloseIcon from '@mui/icons-material/Close';
 import { motion } from 'framer-motion';
-import { acceptJoiningRequest, rejectJoiningRequest } from '../../api/services/classroom.services';
+import { acceptJoiningRequest, rejectJoiningRequest } from '../../api/services/teacher.classroom.services';
 import handleError from '../../utils/error.handler';
 // import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useAppDispatch } from '../../store/store';
@@ -25,10 +25,12 @@ const JoiningRequestTable: React.FC<JoiningRequestTableProps> = ({ closeRequests
     const acceptRequestHandler = async (student_id:string,index:number)=>{
         try {
             const body = {student_id}
-            const accepted = await acceptJoiningRequest(classroom_id,body);
-            
-            dispatch(acceptRequests({index}))
-            console.log('response: ',accepted)
+            const accepted = await acceptJoiningRequest(body);
+
+            const data = accepted.students;
+
+            dispatch(acceptRequests({index,data}))
+
 
         } catch (error) {
             console.log(error)
@@ -40,8 +42,8 @@ const JoiningRequestTable: React.FC<JoiningRequestTableProps> = ({ closeRequests
     const rejectRequestHandler = async (student_id:string,index:number)=>{
         try {
             const body = {student_id}
-            await rejectJoiningRequest(classroom_id,body);
-            dispatch(rejectRequests({index}))
+            await rejectJoiningRequest(body);
+            dispatch(rejectRequests({index,data:[]}))
         } catch (error) {
             handleError(error)
         }
@@ -72,10 +74,10 @@ const JoiningRequestTable: React.FC<JoiningRequestTableProps> = ({ closeRequests
                                 <p className='text-gray-400'>{student.email}</p>
                             </div>
                             <div className="font-semibold space-x-3">
-                               <button onClick={()=>acceptRequestHandler(student._id,index)}
+                               <button onClick={()=>acceptRequestHandler(student._id!,index)}
                                 
                                className='success-btn w-20'>{'Accept'}</button>
-                               <button onClick={()=>rejectRequestHandler(student._id,index)}
+                               <button onClick={()=>rejectRequestHandler(student._id!,index)}
                                 
                                 className='danger-btn w-20'>{'Reject'}</button>
                             </div>

@@ -45,7 +45,7 @@ export const loginStudentWithGoogle = async(data:TokenResponse) =>{
         const response = await axiosreq.post(studentEndpoints.googleLogin,data);
         return response.data;
     } catch (error) {
-        
+        throw error;
     }
 } 
 
@@ -87,4 +87,13 @@ export const resendOTP = async (data:ResendOTPType)=>{
         throw error
     }
    
+}
+
+export const updateProfileImageOfStudent = async(data:FormData)=>{
+    try {
+        const response = await axiosreq.post(studentEndpoints.updateProfileImage,data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 }

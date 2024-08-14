@@ -11,19 +11,20 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { StyledEngineProvider } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/themes.ts'
+import { SocketContextProvider } from './context/SocketContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <GoogleOAuthProvider clientId={GOOGLE_AUTH_CLIENT_ID}>
-    <React.StrictMode>
+    {/* <React.StrictMode> */}
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <App />
+                <App />
             </PersistGate>
           </Provider>
         </ThemeProvider>
       </StyledEngineProvider>
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </GoogleOAuthProvider>
 )

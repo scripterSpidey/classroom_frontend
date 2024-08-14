@@ -21,7 +21,10 @@ import ClassroomSummary from "../pages/ClassroomSummary";
 import Error from "../pages/Error";
 import ClassroomLayout from "../pages/ClassroomLayout";
 import RoleProvider from "../context/RoleProvider";
-
+import Profile from "../pages/Profile";
+import ClassroomProfile from "../components/ClassroomProfile";
+import ChatSpace from "../pages/ChatSpace";
+import { SocketContextProvider } from "../context/SocketContext";
 
 const RouteTree = createBrowserRouter(
     createRoutesFromElements(
@@ -30,7 +33,9 @@ const RouteTree = createBrowserRouter(
                 <Route index element={<Home />}></Route>
             </Route>
 
-            <Route path="student" element={<RoleProvider role='student'></RoleProvider>} >
+
+
+            <Route path="student" element={<RoleProvider role='student' />} >
                 <Route element={<HomeRoutes />}>
                     <Route element={<Header />}>
                         <Route path="signup" element={<Signup />}></Route>
@@ -38,22 +43,23 @@ const RouteTree = createBrowserRouter(
                         <Route path="verify" element={<OTP />}></Route>
                     </Route>
                 </Route>
-
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<DashboardHeader />}>
                         <Route path="dashboard" element={<Dashboard />}></Route>
-                        <Route path="classroom/:classroom_id" element={<ClassroomLayout />}>
-                            <Route
-                                path="summary"
-                                element={<ClassroomSummary />}
-                                errorElement={<Error />} />
+                        <Route element={<SocketContextProvider />}>
+                            <Route path="classroom" element={<ClassroomLayout />}>
+                                <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
+                                <Route path="chat" element={<ChatSpace />}></Route>
+                            </Route>
+                            <Route path="profile" element={<Profile />}></Route>
                         </Route>
                     </Route>
                 </Route>
             </Route>
 
 
-            <Route path="teacher" element={<RoleProvider role='teacher'></RoleProvider>}>
+            <Route path="teacher" element={<RoleProvider role='teacher' />}>
+
                 <Route element={<HomeRoutes />}>
                     <Route element={<Header />}>
                         <Route path="signup" element={<Signup />}></Route>
@@ -61,22 +67,24 @@ const RouteTree = createBrowserRouter(
                         <Route path="verify" element={<OTP />}></Route>
                     </Route>
                 </Route>
-
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<DashboardHeader />}>
                         <Route path="dashboard" element={<Dashboard />}></Route>
-                        <Route
-                            path="classroom/:classroom_id"
-                            element={<ClassroomLayout />}>
-                            <Route
-                                path="summary"
-                                // loader={({ params }) => fetchClassroomDetailsForTeacher(params.class_teacher_id!, params.classroom_id!)}
-                                element={<ClassroomSummary />}
-                                errorElement={<Error />}
-                            />
+                        <Route element={<SocketContextProvider />}>
+
+                            <Route path="classroom" element={<ClassroomLayout />}>
+                                <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
+                                <Route path="chat" element={<ChatSpace />}></Route>
+                            </Route>
+                            <Route path="profile" element={<Profile />}></Route>
+
+                            <Route path="student" >
+                                <Route path="profile/:student_id" element={<ClassroomProfile />}></Route>
+                            </Route>
                         </Route>
                     </Route>
                 </Route>
+
             </Route>
 
             <Route path="*" element={<NotFound />}></Route>

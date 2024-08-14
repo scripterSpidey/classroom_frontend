@@ -3,15 +3,15 @@ import { FormControl, Button, InputLabel, MenuItem, Select, SelectChangeEvent, T
 import React, { useRef, useState } from 'react'
 
 import CloseIcon from '@mui/icons-material/Close';
-import { createClassroom } from '../../api/services/classroom.services';
+import { createClassroom } from '../../api/services/teacher.classroom.services';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import handleError from '../../utils/error.handler';
 import toast from 'react-hot-toast';
 import { motion} from 'framer-motion'
-import { User } from '../../schema/user';
+
 import { useNavigate } from 'react-router-dom';
 import { newClassroom } from '../../store/slices/teacher.auth.slice';
-import useRole from '../../hooks/use.role.hook';
+import useRole from '../../hooks/useRole';
 
 
 type NewClassroomFormProps = {
@@ -69,8 +69,16 @@ const NewClassroomForm: React.FC<NewClassroomFormProps> = ({ visible, onClose })
         }
         try {
             const response = await createClassroom(classroomData);
-            console.log(response);
-            dispatch(newClassroom(response))
+  
+            const teacherClassroom = {
+                classroom_id:response._id,
+                class_teacher_name:response.class_teacher_name,
+                subject:response.subject,
+                classroom_name:response.name,
+                joined_at:response.createdAt,
+                blocked:response.banned
+            }
+            dispatch(newClassroom(teacherClassroom))
             onClose();
             toast.success("Your Classroom's up!. Lets go and teach some manners")
             navigate(`/${role}/dashboard`)

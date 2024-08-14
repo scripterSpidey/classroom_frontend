@@ -47,7 +47,7 @@ export const loginTeacherWithGoogle = async(data:TokenResponse) =>{
         const response = await axiosreq.post(teacherEndpoints.googleLogin,data);
         return response.data;
     } catch (error) {
-        
+        throw error
     }
 } 
 
@@ -68,4 +68,13 @@ export const teacherResendOTP = async (data:ResendOTPType)=>{
         throw error
     }
    
+}
+
+export const updateProfileImageOfTeacher = async(data:FormData)=>{
+    try {
+        const response = await axiosreq.post(teacherEndpoints.updateProfileImage,data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 }

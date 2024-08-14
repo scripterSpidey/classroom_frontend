@@ -5,8 +5,9 @@ import { Outlet } from 'react-router-dom'
 
 const Header = () => {
   return <>
-    <header className='bg-costume-secondary-color  top-0 right-0 z-50 left-0 p-7 shadow-md w-full flex justify-between sm:px-4 md:px-6 lg:px-20 px-4'>
-        <Logo/>
+    <div >
+      <header className='bg-costume-secondary-color  top-0 right-0 z-50 left-0 p-7 shadow-md w-full flex justify-between sm:px-4 md:px-6 lg:px-20 px-4'>
+        <Logo />
         <div className='hidden sm:flex items-center justify-center text-lg'>
           <a href="#" className='mx-6'>Home</a>
           <a href="#" className='mx-6'>About</a>
@@ -18,9 +19,12 @@ const Header = () => {
           <Button buttonClass="primary-button" >Sign Up</Button>
           <Button buttonClass="secondary-button border" >Sign In</Button>
         </div>
-    </header> 
+      </header>
+    
+        <Outlet></Outlet>
+     
 
-    <Outlet></Outlet>
+    </div>
   </>
 }
 

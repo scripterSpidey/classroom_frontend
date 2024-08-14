@@ -21,10 +21,10 @@ import { useGoogleLogin, TokenResponse } from '@react-oauth/google';
 
 
 import { loginStudentWithGoogle } from '../api/services/student.service';
-import useRole from '../hooks/use.role.hook';
+import useRole from '../hooks/useRole';
 
 interface LoginProps {
- 
+
 }
 
 const Login: React.FC<LoginProps> = () => {
@@ -39,20 +39,27 @@ const Login: React.FC<LoginProps> = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (response: TokenResponse) => {
 
-      const loginUser = role == 'student' ?
-        await loginStudentWithGoogle(response) :
-        await loginTeacherWithGoogle(response);
+      try {
+        const loginUser = role == 'student' ?
+          await loginStudentWithGoogle(response) :
+          await loginTeacherWithGoogle(response);
 
-      console.log('login: ',loginUser);
-      
-      role == 'student' ?
-        dispatch(addStudent(loginUser)) :
-        dispatch(addTeacher(loginUser));
+        role == 'student' ?
+          dispatch(addStudent(loginUser)) :
+          dispatch(addTeacher(loginUser));
 
-      navigate(`/${role}/dashboard`);
+        console.log('response from  login: ',loginUser)
+        navigate(`/${role}/dashboard`);
+      } catch (error) {
+
+        handleError(error);
+        navigate(`/${role}/login`)
+      }
     },
     onError: (error) => {
-      handleError(error)
+
+      handleError(error);
+      navigate(`/${role}/login`)
     }
   })
 
@@ -80,24 +87,26 @@ const Login: React.FC<LoginProps> = () => {
       return toast.error('Please enter valid datas')
     }
     try {
-      const data = role == "student" ?
-        await loginStudent({
-          email: emailRef.current?.value as string,
-          password: passwordRef.current?.value as string
-        })
-        : await loginTeacher({
-          email: emailRef.current?.value as string,
-          password: passwordRef.current?.value as string
-        })
 
-      role == 'student' ?
-        dispatch(addStudent(data)) :
+      if (role == 'student') {
+        const data = await loginStudent({
+          email: emailRef.current?.value as string,
+          password: passwordRef.current?.value as string
+        });
+        console.log('response from student login: ',data)
+        dispatch(addStudent(data))
+      } else if (role == 'teacher') {
+        const data = await loginTeacher({
+          email: emailRef.current?.value as string,
+          password: passwordRef.current?.value as string
+        });
+        console.log('response from teacher login: ',data)
         dispatch(addTeacher(data));
+      }
 
       navigate(`/${role}/dashboard`);
     } catch (error: any) {
-      console.log(error)
-      handleError(error)
+      handleError(error);
     }
 
   }

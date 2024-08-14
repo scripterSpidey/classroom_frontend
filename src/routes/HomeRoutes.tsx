@@ -1,7 +1,8 @@
-import { Outlet, Navigate } from 'react-router-dom'
+import { Outlet, Navigate, useNavigate } from 'react-router-dom'
 
-import useRole from '../hooks/use.role.hook';
-import { useAuth } from '../hooks/use.auth';
+import useRole from '../hooks/useRole';
+import { useAuth } from '../hooks/useAuth';
+import { useAppSelector } from '../store/store';
 
 interface HomeRoutesProps {
 
@@ -9,20 +10,14 @@ interface HomeRoutesProps {
 
 
 const HomeRoutes: React.FC<HomeRoutesProps> = () => {
-    console.log('Rendered home route checker...')
+    
     const role = useRole();
+    const { loading, activeUser, error } = useAuth(role);
 
-    const { loading, user } = useAuth(role);
-
-    if (loading) return null;
-
-    // const user = false;
-    // const user = role == 'student' ?
-    // useAppSelector(state => state.studentAuth.user) :
-    // useAppSelector(state => state.teacherAuth.user) ;
-
-
-    return user ? <Navigate to={`/${role}/dashboard`} /> : <Outlet />
+    if (loading) return ;
+    if (error) return <Outlet />;
+   
+    return activeUser ? <Navigate to={`/${role}/dashboard`} /> : <Outlet />
 }
 
-export default HomeRoutes
+export default HomeRoutes   

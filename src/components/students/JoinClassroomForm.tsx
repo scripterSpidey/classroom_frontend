@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import CloseIcon from '@mui/icons-material/Close';
 import {  TextField } from '@mui/material';
 import { useRef, useState } from 'react';
-import { findClassroomForStudent, studentRequestToJoinClassroom } from '../../api/services/classroom.services';
+import { findClassroomForStudent,studentRequestToJoinClassroom } from '../../api/services/student.classroom.services';
 import handleError from '../../utils/error.handler';
 import React from 'react';
 import toast from 'react-hot-toast';

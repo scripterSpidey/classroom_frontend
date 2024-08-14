@@ -23,8 +23,8 @@ import { useAppDispatch } from '../store/store';
 import { registerUser } from '../store/slices/register.slice';
 import { addStudent } from '../store/slices/student.auth.slice';
 import { addTeacher } from '../store/slices/teacher.auth.slice';
-import useRole from '../hooks/use.role.hook';
-import { User } from '../schema/user';
+import useRole from '../hooks/useRole';
+
 
 
 interface SignUpProps {
@@ -52,7 +52,7 @@ const Signup: React.FC<SignUpProps> = () => {
 
     onSuccess: async (response: TokenResponse) => {
 
-      const loginUser:User = role == 'student' ?
+      const loginUser = role == 'student' ?
         await loginStudentWithGoogle(response) :
         await loginTeacherWithGoogle(response);
 

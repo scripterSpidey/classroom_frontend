@@ -1,5 +1,5 @@
 
-import {  RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import RouteTree from "./routes/MainRoutes";
 
 
@@ -7,7 +7,10 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={RouteTree}></RouterProvider>
+      <div className="flex flex-col  max-h-screen ">
+        <RouterProvider router={RouteTree}></RouterProvider>
+      </div>
+
     </>
   )
 }

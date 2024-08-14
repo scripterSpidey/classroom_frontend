@@ -5,21 +5,38 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    @apply font-kumbhsans;
+@layer utilities {
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
-.primary-btn{
-  @apply text-white bg-costume-primary-color hover:bg-blue-700 focus:ring-2 focus:ring-gray-400 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2
-   
-}
-.success-btn{
-  @apply bg-green-700 text-white px-2 py-1 rounded-md hover:bg-green-600  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
 }
 
-.danger-btn{
+body {
+  @apply font-kumbhsans;
+}
+
+.primary-btn {
+  @apply text-white cursor-pointer bg-costume-primary-color hover:bg-blue-700 focus:ring-2 focus:ring-gray-400 rounded-md px-2 py-1
+}
+
+.success-btn {
+  @apply bg-green-700 text-white px-2 py-1 rounded-md hover:bg-green-600
+}
+
+.warning-btn {
+  @apply bg-orange-600 text-white px-2 py-1 rounded-md hover:bg-orange-400
+}
+
+.danger-btn {
   @apply bg-red-700 text-white px-2 py-1 rounded-md hover:bg-red-600
 }
-
-  
-  
