@@ -19,6 +19,14 @@ export interface ClassroomSchema{
         message:string,
         send_at:string
     }>,
+    materials:Array<{
+        _id:string,
+        title:string,
+        description:string,
+        type:string,
+        url:string,
+        created_at:string,
+    }>,
     strength:number,
     joining_requests:StudentSchema[],
     banned:boolean,
@@ -28,3 +36,4 @@ export interface ClassroomSchema{
 
 
 export type ClassroomMessage = ClassroomSchema["classroom_messages"][number];
+export type ClassroomMaterialType = ClassroomSchema['materials'][number]

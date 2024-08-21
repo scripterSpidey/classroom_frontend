@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import { ClassroomSchema } from '../schema/classroom.schema';
 import { StudentSchema } from '../schema/student.schema';
 import { TeacherSchema } from '../schema/teacher.schema';
+import { Toaster } from 'react-hot-toast';
 
 const ClassroomLayout = () => {
 
@@ -52,6 +53,7 @@ const ClassroomLayout = () => {
       <div className='w-full m-4 flex-1 '>
         <Outlet />
       </div>
+      <Toaster></Toaster>
     </div>
   )
 }

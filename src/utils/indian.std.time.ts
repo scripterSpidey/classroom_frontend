@@ -11,3 +11,15 @@ export const convertToIST= (date:string):string=>{
 
     return stdTime
 }
+
+export const ReadableDate = (date:string):string=>{
+   
+    const formattedDate = new Date(date).toLocaleDateString('en-IN',{
+        timeZone:'Asia/kolkata',
+        month:'short',
+        day:'numeric',
+        year:'numeric'
+    })
+    const [day,month,year] = formattedDate.split(' ');
+    return `${month}-${day}, ${year}`
+}

@@ -1,5 +1,5 @@
 
-import { ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
+import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { StudentSchema } from "../../schema/student.schema";
 import { TeacherClassroomDocType } from "../../schema/teacher.schema";
@@ -125,5 +125,33 @@ export const getPrivateMessagesForTeacher = async(receiverId:string):Promise<Pri
         return response.data;
     } catch (error) {
         throw error
+    }
+}
+
+export const uploadMaterial = async (data:FormData):Promise<ClassroomMaterialType>=>{
+    try {
+        const response = await axiosreq.post(teacherClassroomEndpoints.materials,data);
+        return response.data;
+    } catch (error) {
+        throw error
+    }
+}
+
+export const getMaterialsForTeacher = async ():Promise<ClassroomMaterialType[]>=>{
+    try {
+        const response = await axiosreq.get(teacherClassroomEndpoints.materials);
+        return response.data;
+    } catch (error) {
+        throw error
+    }
+}
+
+export const deleteMaterial = async (materialId:string):Promise<void>=>{
+    try {
+        const response = await axiosreq.delete(teacherClassroomEndpoints.materials,{
+            params:{materialId}
+        })
+    } catch (error) {
+        throw error;
     }
 }

@@ -28,7 +28,6 @@ const VisuallyHiddenInput = styled('input')({
 
 interface UploadImageProps {
     closeForm: any,
-   
 }
 
 const UploadImage: React.FC<UploadImageProps> = ({ closeForm }) => {
@@ -49,7 +48,7 @@ const UploadImage: React.FC<UploadImageProps> = ({ closeForm }) => {
         if(!file) return toast.error('Select an image to update the profile image.');
         const formData = new FormData();
         formData.append('profile_image',file)
-        console.log(formData)
+       
         try {
 
             if(role == 'student'){

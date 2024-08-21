@@ -5,12 +5,13 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import UploadImage from '../components/UploadImage';
 import { Toaster } from 'react-hot-toast';
 import EditCareers from '../components/EditCareers';
+import defaultProfile from '../assets/images/defaultProfile.jpg'
 
 const Profile: React.FC = () => {
 
     const role = useRole();
     const [openUploadImage, setOpenUploadImage] = useState<boolean>(false);
-    const [openCareers, setOpenCareers] = useState<boolean>(true)
+    const [openCareers, setOpenCareers] = useState<boolean>(false)
 
     useEffect(() => {
         console.log('profile image updated...')
@@ -20,14 +21,14 @@ const Profile: React.FC = () => {
 
     const user = role == 'teacher' ?
         useAppSelector(state => state.teacherAuth.user) :
-        useAppSelector(state => state.studentAuth.user);
+        useAppSelector(state => state.studentAuth.user); 
 
     return (
         <div className=' md:flex flex-row  justify-center  my-16 m-0 rounded-2xl sm:mx-5 md:mx-16 border-solid border-2   '>
             <div className=' flex md:w-1/3 p-10    justify-center image items-start'>
                 <div className='relative'>
                     <img
-                        src={`${user?.profile_image}?${new Date().getTime()}` as string}
+                        src={`${user?.profile_image}?${new Date().getTime()}` as string || defaultProfile}
                         alt=""
                         className=" rounded-3xl w-60 h-60   object-cover "
                     />
@@ -53,21 +54,21 @@ const Profile: React.FC = () => {
                             <dd className="text-gray-700 sm:col-span-2">{user?.email}</dd>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-1  py-3 sm:grid-cols-3 ">
+                        {/* <div className="grid grid-cols-1 gap-1  py-3 sm:grid-cols-3 ">
                             <dt className="font-medium text-gray-900 ">Address</dt>
                             <div className='flex justify-between sm:col-span-2'>
                                 <dd className="text-red-400 ">Not set</dd>
                                 <p className='underline text-costume-primary-color cursor-pointer'>edit</p>
                             </div>
-                        </div>
+                        </div> */}
                     </dl>
                 </div>
-                <div className="flow-root px-5 mt-3">
+                {/* <div className="flow-root px-5 mt-3">
                     <div className=' flex justify-between mb-3 text-costume-primary-color items-center'>
                         <p className='text-lg font-semibold'>Career Details</p>
                         <p className='font-normal text-sm cursor-pointer mr-3'>Add+</p>
-                    </div>
-                    <hr className='border-2'/>
+                    </div> */}
+                    {/* <hr className='border-2'/> */}
                     {/* <dl className=" divide-y divide-gray-200 text-sm">
                         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 ">
                             <dt className="font-medium text-gray-900">Name</dt>
@@ -87,7 +88,7 @@ const Profile: React.FC = () => {
                             </div>
                         </div>
                     </dl> */}
-                </div>
+                {/* </div> */}
             </div>
             {openUploadImage && <UploadImage closeForm={() => setOpenUploadImage(false)} />}
             {openCareers && <EditCareers/>}

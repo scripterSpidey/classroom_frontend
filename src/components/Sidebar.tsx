@@ -35,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                         <ul className="flex flex-col  flex-1 px-3">{children}</ul>
                     </SidebarContext.Provider>
 
-                    <div className="border-t flex p-3">
+                    {/* <div className="border-t flex p-3">
                         <img
                             src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
                             alt=""
@@ -48,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                             </div>
                             <p>L</p>
                         </div>
-                    </div>
+                    </div> */}
                 </nav>
             </aside>
         </>

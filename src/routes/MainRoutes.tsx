@@ -25,6 +25,16 @@ import Profile from "../pages/Profile";
 import ClassroomProfile from "../components/ClassroomProfile";
 import ChatSpace from "../pages/ChatSpace";
 import { SocketContextProvider } from "../context/SocketContext";
+import Materials from "../pages/Materials";
+import AdminLogin from "../components/admin/AdminLogin";
+
+import AdminLayout from "../components/admin/AdminLayout";
+import AdminDashboard from "../components/admin/AdminDashboard";
+import TeachersPage from "../components/admin/TeachersPage";
+import StudentsPage from "../components/admin/StudentsPage";
+import ClassroomsPage from "../components/admin/ClassroomsPage";
+import TeacherProfile from "../components/admin/TeacherProfile";
+import ClassroomInfo from "../components/admin/ClassroomInfo";
 
 const RouteTree = createBrowserRouter(
     createRoutesFromElements(
@@ -50,6 +60,7 @@ const RouteTree = createBrowserRouter(
                             <Route path="classroom" element={<ClassroomLayout />}>
                                 <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
                                 <Route path="chat" element={<ChatSpace />}></Route>
+                                <Route path="materials" element={<Materials />}></Route>
                             </Route>
                             <Route path="profile" element={<Profile />}></Route>
                         </Route>
@@ -75,16 +86,30 @@ const RouteTree = createBrowserRouter(
                             <Route path="classroom" element={<ClassroomLayout />}>
                                 <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
                                 <Route path="chat" element={<ChatSpace />}></Route>
+                                <Route path="materials" element={<Materials />}></Route>
                             </Route>
                             <Route path="profile" element={<Profile />}></Route>
-
                             <Route path="student" >
                                 <Route path="profile/:student_id" element={<ClassroomProfile />}></Route>
                             </Route>
+
                         </Route>
                     </Route>
                 </Route>
 
+            </Route>
+
+            <Route path="admin">
+                <Route path="login" element={<AdminLogin/>}/>
+                <Route  element={<AdminLayout />}>
+                   <Route path="dashboard" element={<AdminDashboard/>}></Route>
+                   <Route path="teachers" element={<TeachersPage/>}/>
+                   <Route path="students" element={<StudentsPage/>}></Route>
+                   <Route path="classrooms" element={<ClassroomsPage/>}/>
+                   <Route path="classroom/:classroomId" element={<ClassroomInfo/>}></Route>
+                   <Route path="teacher/:teacherId" element={<TeacherProfile/>}></Route>
+                   <Route path="student/:studentId"></Route>
+                </Route>
             </Route>
 
             <Route path="*" element={<NotFound />}></Route>

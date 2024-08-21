@@ -20,6 +20,7 @@ import { removeTeacher } from '../store/slices/teacher.auth.slice';
 import { logoutTeacher } from '../api/services/teacher.services';
 import useRole from '../hooks/useRole';
 import { removeClassroom } from '../store/slices/teacher.classroom.slice';
+import defaultProfile from '../assets/images/defaultProfile.jpg'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -88,7 +89,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
         </div>
         <div className="relative cursor-pointer" >
           <div className="flex items-center space-x-2 bg-costume-primary-color p-2 rounded-lg hover:bg-gray-600 focus:outline-none">
-            <img src={`${user?.profile_image}?${Date.now()}` as string} alt="Profile Icon" className="h-8 w-8 rounded-full" />
+            <img src={`${user?.profile_image}?${Date.now()}` as string || defaultProfile} alt="Profile Icon" className="h-8 w-8 rounded-full" />
             <div className=" flex  flex-col text-sm">
               <span onClick={()=>navigate(`/${role}/profile`)} className="font-semibold">{user?.name}</span>
               <span>{user?.email}</span>

@@ -1,3 +1,14 @@
+export const adminEndpoints = {
+    login:'admin/login',
+    logout:'admin/logout',
+    teachers:'admin/teachers',
+    students:'admin/students',
+    classrooms:'admin/classrooms',
+    teacher:(teacherId:string)=>`admin/teacher/${teacherId}`,
+    student:(studentId:string)=>`admin/student/${studentId}`,
+    classroom:(classroomId:string)=>`admin/classroom/${classroomId}`
+}
+
 export const studentEndpoints = {
     authenticate:'student/auth',
     register: "student/register",
@@ -31,7 +42,9 @@ export const teacherClassroomEndpoints={
     removeStudent:(student_id:string)=>`teacher/classroom/student/remove/${student_id}`,
     blockOrUnblockStudent:(student_id:string)=>`teacher/classroom/student/manage_access/${student_id}`,
     chatEndpoint:'teacher/classroom/chat',
-    privateChat:(receiverId:string)=>`teacher/classroom/chat/${receiverId}`
+    privateChat:(receiverId:string)=>`teacher/classroom/chat/${receiverId}`,
+    materials:'teacher/classroom/materials',
+    deleteMaterial:(materialId:string)=>`teacher/classroom/materials?materialId=${materialId}`
     
 }
 
@@ -41,7 +54,8 @@ export const studentClassroonEndpoints = {
     requestToJoinClassroom:(classroom_id:string):any=>`student/classroom/search/${classroom_id}`,
     classroomDetails:(classroom_id:string)=>`student/classroom/summary/${classroom_id}`,
     chatEndpoint:'student/classroom/chat',
-    privateChat:(receiverId:string)=>`student/classroom/chat/${receiverId}`
+    privateChat:(receiverId:string)=>`student/classroom/chat/${receiverId}`,
+    materials:'student/classroom/materials'
 }
 
 

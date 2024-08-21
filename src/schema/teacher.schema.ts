@@ -15,7 +15,8 @@ export interface TeacherSchema{
         joined_at: Date,
         blocked: boolean
     }>,
-    profile_image:string | null
+    profile_image:string | null,
+    createdAt:string
 }
 
 export type TeacherClassroomDocType = TeacherSchema["classrooms"][number];

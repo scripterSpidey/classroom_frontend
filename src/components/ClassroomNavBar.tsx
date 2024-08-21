@@ -35,16 +35,16 @@ const ClassroomNavBar = () => {
           <SidebarItem icon={<VideoCameraFrontIcon />} text={"Live Class"} active={activeLink === 'liveclass'} alert={false} />
         </NavLink>
         <NavLink to="exams" onClick={() => setActiveLink('exams')}>
-          <SidebarItem icon={<NoteAltIcon />} text={"Exams"} active={false} alert={activeLink === 'exams'} />
+          <SidebarItem icon={<NoteAltIcon />} text={"Exams"} alert={false} active={activeLink === 'exams'} />
         </NavLink>
         <NavLink to="materials" onClick={() => setActiveLink('materials')}>
-          <SidebarItem icon={<AutoStoriesIcon />} text={"Materials"} active={false} alert={activeLink === 'materials'} />
+          <SidebarItem icon={<AutoStoriesIcon />} text={"Materials"} alert={false} active={activeLink === 'materials'} />
         </NavLink>
         <NavLink to="works" onClick={() => setActiveLink('works')}>
-          <SidebarItem icon={<AssignmentIcon />} text={"Works"} active={false} alert={activeLink === 'works'} />
+          <SidebarItem icon={<AssignmentIcon />} text={"Works"} alert={false} active={activeLink === 'works'} />
         </NavLink>
         <NavLink to="announcements" onClick={() => setActiveLink('announcements')}>
-          <SidebarItem icon={<CampaignIcon />} text={"Announcements"} active={false} alert={activeLink === 'announcements'} />
+          <SidebarItem icon={<CampaignIcon />} text={"Announcements"} alert={false} active={activeLink === 'announcements'} />
         </NavLink>
       </Sidebar>
     </>

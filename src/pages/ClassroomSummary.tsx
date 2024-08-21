@@ -60,7 +60,7 @@ const ClassroomSummary = () => {
       <div className='flex justify-between py-3 px-8'>
         <div className='flex flex-col '>
           <span className='text-2xl font-semibold '>{classroomInfo?.class_teacher_name}</span>
-          <span className='text-lg ' >{classroomInfo?._id}</span>
+          <span className='text-lg ' >{classroomInfo?.classroom_id}</span>
           <span className='text-lg'>Strength: {classroomInfo?.students.length}</span>
         </div>
         {role == 'teacher' && <button

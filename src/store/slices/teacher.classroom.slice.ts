@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
-import { ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
+import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 
 
 export interface TeacherClassroomStateInterface {
     classroom: null | ClassroomSchema,
-    privateChats:PrivateChatSchema[]
+    privateChats: PrivateChatSchema[]
 }
 
 const initialState: TeacherClassroomStateInterface = {
@@ -22,14 +22,15 @@ const initialState: TeacherClassroomStateInterface = {
         joining_requests: [],
         banned: false,
         classroom_id: '',
-        createdAt: ''
+        createdAt: '',
+        materials: [],
     },
-    privateChats:[]
+    privateChats: []
 }
 
 export interface ManageRequestPayload {
     index: number,
-    data:Array< {
+    data: Array<{
         student_id: string,
         email: string,
         name: string,
@@ -62,7 +63,7 @@ export const teacherClassroomSlice = createSlice({
         acceptRequests: (state, action: PayloadAction<ManageRequestPayload>) => {
 
             state.classroom?.joining_requests.splice(action.payload.index, 1)[0];
-            if(state.classroom){
+            if (state.classroom) {
                 state.classroom.students = action.payload.data
             }
         },
@@ -98,11 +99,24 @@ export const teacherClassroomSlice = createSlice({
                 state.classroom.classroom_messages.push(action.payload.message)
             }
         },
-        saveAllPrivateChatsForTeacher:(state,action:PayloadAction<{messages:PrivateChatSchema[]}>)=>{
+        saveAllPrivateChatsForTeacher: (state, action: PayloadAction<{ messages: PrivateChatSchema[] }>) => {
             state.privateChats = action.payload.messages;
         },
-        receivePrivateChatForTeacher:(state,action:PayloadAction<{message:PrivateChatSchema}>)=>{
+        receivePrivateChatForTeacher: (state, action: PayloadAction<{ message: PrivateChatSchema }>) => {
             state.privateChats.push(action.payload.message)
+        },
+        addNewMaterial: (state, action: PayloadAction<ClassroomMaterialType>) => {
+            if (state.classroom) {
+                if(!state.classroom.materials){
+                    state.classroom.materials = [];
+                }
+                state.classroom.materials.push(action.payload);
+            }
+        },
+        saveAllMaterialsForTeacher:(state,action:PayloadAction<ClassroomMaterialType[]>)=>{
+            if(state.classroom){
+                state.classroom.materials = action.payload
+            }
         }
     },
     extraReducers: (builder) => {
@@ -132,7 +146,9 @@ export const {
     sendMessageFromTeacher,
     receiveMessageToTeacher,
     saveAllPrivateChatsForTeacher,
-    receivePrivateChatForTeacher
+    receivePrivateChatForTeacher,
+    addNewMaterial,
+    saveAllMaterialsForTeacher
 } = teacherClassroomSlice.actions;
 
 export default teacherClassroomSlice.reducer;
