@@ -61,8 +61,8 @@ const NewMaterial: React.FC<NewMaterialPropsType> = ({ closeModal }) => {
 
         const formData = new FormData();
         formData.append('material', file);
-        formData.append('title', title),
-            formData.append('description', description);
+        formData.append('title', title);
+        formData.append('description', description);
 
         try {
             const data = await uploadMaterial(formData);
@@ -70,7 +70,7 @@ const NewMaterial: React.FC<NewMaterialPropsType> = ({ closeModal }) => {
             dispatch(addNewMaterial(data))
             toast.success('File uploaded successfully!')
         } catch (error) {
-            console.log('error',error)
+            console.log('error', error)
             handleError(error)
         }
     }

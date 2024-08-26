@@ -44,8 +44,9 @@ export const teacherClassroomEndpoints={
     chatEndpoint:'teacher/classroom/chat',
     privateChat:(receiverId:string)=>`teacher/classroom/chat/${receiverId}`,
     materials:'teacher/classroom/materials',
-    deleteMaterial:(materialId:string)=>`teacher/classroom/materials?materialId=${materialId}`
-    
+    deleteMaterial:(materialId:string)=>`teacher/classroom/materials?materialId=${materialId}`,
+    works:'teacher/classroom/works',
+    work:(workId:string)=>`teacher/classroom/work/${workId}`
 }
 
 export const studentClassroonEndpoints = {
@@ -55,7 +56,9 @@ export const studentClassroonEndpoints = {
     classroomDetails:(classroom_id:string)=>`student/classroom/summary/${classroom_id}`,
     chatEndpoint:'student/classroom/chat',
     privateChat:(receiverId:string)=>`student/classroom/chat/${receiverId}`,
-    materials:'student/classroom/materials'
+    materials:'student/classroom/materials',
+    works:'student/classroom/works',
+    work:(workId:string)=>`student/classroom/work?workId=${workId}`,
 }
 
 

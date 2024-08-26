@@ -2,11 +2,13 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
 import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
+import { WorksSchema } from "../../schema/works.schema";
 
 
 export interface TeacherClassroomStateInterface {
     classroom: null | ClassroomSchema,
-    privateChats: PrivateChatSchema[]
+    privateChats: PrivateChatSchema[],
+    works:WorksSchema[]
 }
 
 const initialState: TeacherClassroomStateInterface = {
@@ -25,7 +27,8 @@ const initialState: TeacherClassroomStateInterface = {
         createdAt: '',
         materials: [],
     },
-    privateChats: []
+    privateChats: [],
+    works: []
 }
 
 export interface ManageRequestPayload {
@@ -96,6 +99,9 @@ export const teacherClassroomSlice = createSlice({
         },
         receiveMessageToTeacher: (state, action: PayloadAction<{ message: ClassroomMessage }>) => {
             if (state.classroom) {
+                if(!state.classroom.classroom_messages){
+                    state.classroom.classroom_messages = [];
+                }
                 state.classroom.classroom_messages.push(action.payload.message)
             }
         },
@@ -116,6 +122,19 @@ export const teacherClassroomSlice = createSlice({
         saveAllMaterialsForTeacher:(state,action:PayloadAction<ClassroomMaterialType[]>)=>{
             if(state.classroom){
                 state.classroom.materials = action.payload
+            }
+        },
+        createWork:(state,action:PayloadAction<WorksSchema>)=>{
+            if(!state.works)  state.works = [];
+            state.works.unshift(action.payload)
+        },
+        saveAllWorksForTeacher:(state,action:PayloadAction<WorksSchema[]>)=>{
+            state.works = action.payload;
+        },
+        updateWorkMarkRedux:(state,action:PayloadAction<WorksSchema>)=>{
+            const index = state.works.findIndex(work=>work._id == action.payload._id);
+            if(index!=-1){
+                state.works[index] = action.payload
             }
         }
     },
@@ -148,7 +167,10 @@ export const {
     saveAllPrivateChatsForTeacher,
     receivePrivateChatForTeacher,
     addNewMaterial,
-    saveAllMaterialsForTeacher
+    saveAllMaterialsForTeacher,
+    createWork,
+    saveAllWorksForTeacher,
+    updateWorkMarkRedux
 } = teacherClassroomSlice.actions;
 
 export default teacherClassroomSlice.reducer;

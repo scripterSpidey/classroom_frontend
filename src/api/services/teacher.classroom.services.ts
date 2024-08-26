@@ -1,10 +1,12 @@
 
+import { asyncThunkCreator } from "@reduxjs/toolkit";
 import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { StudentSchema } from "../../schema/student.schema";
 import { TeacherClassroomDocType } from "../../schema/teacher.schema";
 import axiosreq from "../axios.config";
 import { teacherClassroomEndpoints } from "../endpoints";
+import { WorksSchema } from "../../schema/works.schema";
 
 
 type CreateClassroomInput ={
@@ -150,8 +152,39 @@ export const deleteMaterial = async (materialId:string):Promise<void>=>{
     try {
         const response = await axiosreq.delete(teacherClassroomEndpoints.materials,{
             params:{materialId}
-        })
+        });
+        return response.data
     } catch (error) {
         throw error;
+    }
+}
+
+
+
+export const publishNewWork = async (body:FormData):Promise<WorksSchema>=>{
+    try {
+        const response = await axiosreq.post(teacherClassroomEndpoints.works,body);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getAllWorksForTeacher = async ():Promise<WorksSchema[]>=>{
+    try {
+        const response = await axiosreq.get(teacherClassroomEndpoints.works);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export const updateWorkMark = async (workId:string,body:{mark:number,studentId:string}):Promise<any>=>{
+    try {
+        const response = await axiosreq.patch(teacherClassroomEndpoints.work(workId),body);
+        return response.data;
+    } catch (error) {
+        throw error
     }
 }

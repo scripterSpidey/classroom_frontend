@@ -3,11 +3,13 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
 import handleError from "../../utils/error.handler";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
+import { WorksSchema, WorkSubmissionType } from "../../schema/works.schema";
 
 
 export interface StudentClassroomStateInterface {
     classroom: ClassroomSchema | null;
-    privateChats:PrivateChatSchema[]
+    privateChats:PrivateChatSchema[],
+    works:WorksSchema[];
 }
 
 export const initialState: StudentClassroomStateInterface = {
@@ -26,7 +28,8 @@ export const initialState: StudentClassroomStateInterface = {
         createdAt: '',
         materials: [],
     },
-    privateChats: []
+    privateChats: [],
+    works:[]
 }
 
 export const fetchClassroomDetailsForStudentThunk = createAsyncThunk<ClassroomSchema, () => Promise<ClassroomSchema>, { rejectValue: string }>(
@@ -81,6 +84,16 @@ export const studentClassroomSlice = createSlice({
             if(state.classroom){
                 state.classroom.materials= action.payload;
             }
+        },
+        saveAllWorksForStudent:(state,action:PayloadAction<WorksSchema[]>)=>{
+            state.works = action.payload;
+        },
+        saveSubmittedWork:(state,actions:PayloadAction<{workId:string,submissions:WorkSubmissionType[]}>)=>{
+            if(state.works){
+                const submittedWork = state.works.find(work=>work._id == actions.payload.workId);
+                if(!submittedWork) return
+                submittedWork.submissions = actions.payload.submissions
+            }
         }
     },
     extraReducers: (builder) => {
@@ -107,7 +120,9 @@ export const {
     receiveMessageTostudent,
     saveAllPrivateChatsForStudent,
     receivePrivateChatForStudent,
-    saveAllMaterialsForStudent
+    saveAllMaterialsForStudent,
+    saveAllWorksForStudent,
+    saveSubmittedWork
 } = studentClassroomSlice.actions;
 
 export default studentClassroomSlice.reducer;

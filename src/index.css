@@ -26,7 +26,7 @@ body {
 }
 
 .primary-btn {
-  @apply text-white cursor-pointer bg-costume-primary-color hover:bg-opacity-70 focus:ring-2 focus:ring-gray-400 rounded-md px-2 py-1
+  @apply text-white cursor-pointer bg-costume-primary-color hover:bg-opacity-70   rounded-md px-2 py-1
 }
 
 .success-btn {

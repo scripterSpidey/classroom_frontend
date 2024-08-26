@@ -6,6 +6,7 @@ export const convertToIST= (date:string):string=>{
         day:'2-digit',
         month:'2-digit',
         year:'numeric',
+        weekday:'long',
         hour12:true
     })
 
@@ -22,4 +23,9 @@ export const ReadableDate = (date:string):string=>{
     })
     const [day,month,year] = formattedDate.split(' ');
     return `${month}-${day}, ${year}`
+}
+
+export const convertToMilliseconds = (fullDate:string)=>{
+    const [day,date,time] = fullDate.split(', ')
+    console.log(day,date,time)
 }

@@ -35,6 +35,7 @@ import StudentsPage from "../components/admin/StudentsPage";
 import ClassroomsPage from "../components/admin/ClassroomsPage";
 import TeacherProfile from "../components/admin/TeacherProfile";
 import ClassroomInfo from "../components/admin/ClassroomInfo";
+import Works from "../pages/Works";
 
 const RouteTree = createBrowserRouter(
     createRoutesFromElements(
@@ -61,6 +62,7 @@ const RouteTree = createBrowserRouter(
                                 <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
                                 <Route path="chat" element={<ChatSpace />}></Route>
                                 <Route path="materials" element={<Materials />}></Route>
+                                <Route path="works" element={<Works/>}></Route>
                             </Route>
                             <Route path="profile" element={<Profile />}></Route>
                         </Route>
@@ -87,6 +89,7 @@ const RouteTree = createBrowserRouter(
                                 <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
                                 <Route path="chat" element={<ChatSpace />}></Route>
                                 <Route path="materials" element={<Materials />}></Route>
+                                <Route path="works" element={<Works/>}></Route>
                             </Route>
                             <Route path="profile" element={<Profile />}></Route>
                             <Route path="student" >

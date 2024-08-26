@@ -48,7 +48,6 @@ const Login: React.FC<LoginProps> = () => {
           dispatch(addStudent(loginUser)) :
           dispatch(addTeacher(loginUser));
 
-        console.log('response from  login: ',loginUser)
         navigate(`/${role}/dashboard`);
       } catch (error) {
 
