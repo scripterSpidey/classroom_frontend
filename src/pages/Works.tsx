@@ -31,7 +31,7 @@ const Works = () => {
                     <div className='w-full  flex py-5 justify-center'>
                         <button
                             onClick={() => setOpenNewWork(true)}
-                            className='primary-btn py-2 font-semibold'> PUBLISH NEW WORK</button>
+                            className='primary-btn py-2 font-semibold'> NEW WORK</button>
                     </div>
                     <hr className='border mx-2' />
                 </div>}
@@ -46,11 +46,12 @@ const Works = () => {
                             <h4 className='text-lg text-red-600'>Deadline: {convertToIST(work.deadline)}</h4>
                             <h5 className='text-gray-400 text-sm'>{convertToIST(work.createdAt)}</h5>
                         </div>
-                        {work.submissions.some(submission => (submission.student_id == studentId && submission.valuated == true)) ?
-                            <div className='text-costume-primary-color font-semibold'>
-                                {`SCORE: ${work.submissions.find(submission => submission.student_id == studentId && submission.valuated == true)?.marks}`}
-                            </div> :
-                            <p className='text-md text-orange-700 font-semibold'>VALUATION PENDING</p>}
+                        {role == 'student' && work.submissions.some(submission => submission.student_id == studentId) &&
+                            (work.submissions.some(submission => (submission.student_id == studentId && submission.valuated == true)) ?
+                                <div className='text-costume-primary-color font-semibold'>
+                                    {`SCORE: ${work.submissions.find(submission => submission.student_id == studentId && submission.valuated == true)?.marks}`}
+                                </div> :
+                                <p className='text-md text-orange-700 font-semibold'>VALUATION PENDING</p>)}
                         <div className='flex flex-col gap-3 lg:flex-row'>
                             <button
                                 onClick={() => window.open(work.work_file_url, '_blank')}
