@@ -39,6 +39,7 @@ const Login: React.FC<LoginProps> = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (response: TokenResponse) => {
 
+      console.log(response)
       try {
         const loginUser = role == 'student' ?
           await loginStudentWithGoogle(response) :

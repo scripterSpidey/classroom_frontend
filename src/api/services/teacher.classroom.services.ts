@@ -7,6 +7,7 @@ import { TeacherClassroomDocType } from "../../schema/teacher.schema";
 import axiosreq from "../axios.config";
 import { teacherClassroomEndpoints } from "../endpoints";
 import { WorksSchema } from "../../schema/works.schema";
+import { ExamsSchema } from "../../schema/exams.schema";
 
 
 type CreateClassroomInput ={
@@ -183,6 +184,24 @@ export const getAllWorksForTeacher = async ():Promise<WorksSchema[]>=>{
 export const updateWorkMark = async (workId:string,body:{mark:number,studentId:string}):Promise<any>=>{
     try {
         const response = await axiosreq.patch(teacherClassroomEndpoints.work(workId),body);
+        return response.data;
+    } catch (error) {
+        throw error
+    }
+}
+
+export const createExam = async (body:any):Promise<any>=>{
+    try {
+        const response = await axiosreq.post(teacherClassroomEndpoints.exams,body);
+        return response.data;
+    } catch (error) {
+        throw error
+    }
+}
+
+export const getAllExamsForTeacher = async ():Promise<ExamsSchema[]>=>{
+    try {
+        const response = await axiosreq.get(teacherClassroomEndpoints.exams);
         return response.data;
     } catch (error) {
         throw error

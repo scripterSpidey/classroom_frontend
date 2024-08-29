@@ -4,12 +4,14 @@ import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../
 import handleError from "../../utils/error.handler";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { WorksSchema, WorkSubmissionType } from "../../schema/works.schema";
+import { ExamsSchema } from "../../schema/exams.schema";
 
 
 export interface StudentClassroomStateInterface {
     classroom: ClassroomSchema | null;
     privateChats:PrivateChatSchema[],
-    works:WorksSchema[];
+    works:WorksSchema[],
+    exams:ExamsSchema[]
 }
 
 export const initialState: StudentClassroomStateInterface = {
@@ -29,7 +31,8 @@ export const initialState: StudentClassroomStateInterface = {
         materials: [],
     },
     privateChats: [],
-    works:[]
+    works: [],
+    exams: []
 }
 
 export const fetchClassroomDetailsForStudentThunk = createAsyncThunk<ClassroomSchema, () => Promise<ClassroomSchema>, { rejectValue: string }>(

@@ -36,6 +36,12 @@ import ClassroomsPage from "../components/admin/ClassroomsPage";
 import TeacherProfile from "../components/admin/TeacherProfile";
 import ClassroomInfo from "../components/admin/ClassroomInfo";
 import Works from "../pages/Works";
+import Exams from "../pages/Exams";
+import AllExams from "../components/AllExams";
+import ExamType from "../components/teacher/exam/ExamType";
+import AddQuestions from "../components/teacher/exam/AddQuestions";
+import NewExam from "../components/teacher/exam/NewExam";
+import PreviewExam from "../components/teacher/exam/PreviewExam";
 
 const RouteTree = createBrowserRouter(
     createRoutesFromElements(
@@ -43,8 +49,6 @@ const RouteTree = createBrowserRouter(
             <Route path="/" element={<Header />}>
                 <Route index element={<Home />}></Route>
             </Route>
-
-
 
             <Route path="student" element={<RoleProvider role='student' />} >
                 <Route element={<HomeRoutes />}>
@@ -62,7 +66,10 @@ const RouteTree = createBrowserRouter(
                                 <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
                                 <Route path="chat" element={<ChatSpace />}></Route>
                                 <Route path="materials" element={<Materials />}></Route>
-                                <Route path="works" element={<Works/>}></Route>
+                                <Route path="works" element={<Works />}></Route>
+                                <Route path="exams" element={<Exams />}>
+                                    <Route path="all" element={<AllExams />}></Route>
+                                </Route>
                             </Route>
                             <Route path="profile" element={<Profile />}></Route>
                         </Route>
@@ -70,9 +77,7 @@ const RouteTree = createBrowserRouter(
                 </Route>
             </Route>
 
-
             <Route path="teacher" element={<RoleProvider role='teacher' />}>
-
                 <Route element={<HomeRoutes />}>
                     <Route element={<Header />}>
                         <Route path="signup" element={<Signup />}></Route>
@@ -84,34 +89,39 @@ const RouteTree = createBrowserRouter(
                     <Route element={<DashboardHeader />}>
                         <Route path="dashboard" element={<Dashboard />}></Route>
                         <Route element={<SocketContextProvider />}>
-
                             <Route path="classroom" element={<ClassroomLayout />}>
                                 <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
                                 <Route path="chat" element={<ChatSpace />}></Route>
                                 <Route path="materials" element={<Materials />}></Route>
-                                <Route path="works" element={<Works/>}></Route>
+                                <Route path="works" element={<Works />}></Route>
+                                <Route path="exams" element={<Exams />}>
+                                    <Route index element={<AllExams />}></Route>
+                                    <Route path="new" element={<NewExam/>}></Route>
+                                    <Route path="method" element={<ExamType />} />
+                                    <Route path="add_questions" element={<AddQuestions/>} ></Route>
+                                    <Route path="preview" element={<PreviewExam/>}/>
+                                    <Route path="upload_questions"></Route>
+                                </Route>
                             </Route>
                             <Route path="profile" element={<Profile />}></Route>
                             <Route path="student" >
                                 <Route path="profile/:student_id" element={<ClassroomProfile />}></Route>
                             </Route>
-
                         </Route>
                     </Route>
                 </Route>
-
             </Route>
 
             <Route path="admin">
-                <Route path="login" element={<AdminLogin/>}/>
-                <Route  element={<AdminLayout />}>
-                   <Route path="dashboard" element={<AdminDashboard/>}></Route>
-                   <Route path="teachers" element={<TeachersPage/>}/>
-                   <Route path="students" element={<StudentsPage/>}></Route>
-                   <Route path="classrooms" element={<ClassroomsPage/>}/>
-                   <Route path="classroom/:classroomId" element={<ClassroomInfo/>}></Route>
-                   <Route path="teacher/:teacherId" element={<TeacherProfile/>}></Route>
-                   <Route path="student/:studentId"></Route>
+                <Route path="login" element={<AdminLogin />} />
+                <Route element={<AdminLayout />}>
+                    <Route path="dashboard" element={<AdminDashboard />}></Route>
+                    <Route path="teachers" element={<TeachersPage />} />
+                    <Route path="students" element={<StudentsPage />}></Route>
+                    <Route path="classrooms" element={<ClassroomsPage />} />
+                    <Route path="classroom/:classroomId" element={<ClassroomInfo />}></Route>
+                    <Route path="teacher/:teacherId" element={<TeacherProfile />}></Route>
+                    <Route path="student/:studentId"></Route>
                 </Route>
             </Route>
 

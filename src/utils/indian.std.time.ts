@@ -1,4 +1,11 @@
-export const convertToIST= (date:string):string=>{
+import dayjs from "dayjs"
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
+export const convertToIST= ( date: string):string=>{
     const stdTime =  new Date(date).toLocaleString('en-IN',{
         timeZone:'Asia/kolkata',
         hour:'2-digit',
@@ -6,7 +13,7 @@ export const convertToIST= (date:string):string=>{
         day:'2-digit',
         month:'2-digit',
         year:'numeric',
-        weekday:'long',
+        weekday:'short',
         hour12:true
     })
 
@@ -28,4 +35,8 @@ export const ReadableDate = (date:string):string=>{
 export const convertToMilliseconds = (fullDate:string)=>{
     const [day,date,time] = fullDate.split(', ')
     console.log(day,date,time)
+}
+
+export const millisecondsInIST =()=>{
+    return dayjs().tz('Asia/Kolkata').startOf('minute').valueOf();
 }

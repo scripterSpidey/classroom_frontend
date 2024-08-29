@@ -3,12 +3,14 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { WorksSchema } from "../../schema/works.schema";
+import { ExamsSchema } from "../../schema/exams.schema";
 
 
 export interface TeacherClassroomStateInterface {
     classroom: null | ClassroomSchema,
     privateChats: PrivateChatSchema[],
-    works:WorksSchema[]
+    works:WorksSchema[],
+    exams:ExamsSchema[]
 }
 
 const initialState: TeacherClassroomStateInterface = {
@@ -28,7 +30,8 @@ const initialState: TeacherClassroomStateInterface = {
         materials: [],
     },
     privateChats: [],
-    works: []
+    works: [],
+    exams: []
 }
 
 export interface ManageRequestPayload {
@@ -136,6 +139,9 @@ export const teacherClassroomSlice = createSlice({
             if(index!=-1){
                 state.works[index] = action.payload
             }
+        },
+        saveAllExamsInStoreForTeacher:(state,action:PayloadAction<ExamsSchema[]>)=>{
+            state.exams = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -170,7 +176,8 @@ export const {
     saveAllMaterialsForTeacher,
     createWork,
     saveAllWorksForTeacher,
-    updateWorkMarkRedux
+    updateWorkMarkRedux,
+    saveAllExamsInStoreForTeacher
 } = teacherClassroomSlice.actions;
 
 export default teacherClassroomSlice.reducer;

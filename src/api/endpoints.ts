@@ -46,7 +46,8 @@ export const teacherClassroomEndpoints={
     materials:'teacher/classroom/materials',
     deleteMaterial:(materialId:string)=>`teacher/classroom/materials?materialId=${materialId}`,
     works:'teacher/classroom/works',
-    work:(workId:string)=>`teacher/classroom/work/${workId}`
+    work:(workId:string)=>`teacher/classroom/work/${workId}`,
+    exams:`teacher/classroom/exams`
 }
 
 export const studentClassroonEndpoints = {
