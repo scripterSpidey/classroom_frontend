@@ -1,6 +1,6 @@
 
 import axiosreq from "../axios.config";
-import { studentEndpoints } from "../endpoints";
+import { studentClassroonEndpoints, studentEndpoints } from "../endpoints";
 import { TokenResponse } from "@react-oauth/google";
 
 export interface VerificationInput{
@@ -92,6 +92,34 @@ export const resendOTP = async (data:ResendOTPType)=>{
 export const updateProfileImageOfStudent = async(data:FormData)=>{
     try {
         const response = await axiosreq.post(studentEndpoints.updateProfileImage,data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const forgotPasswordStudent = async(data:{email:string})=>{
+    try {
+        const response = await axiosreq.post(studentEndpoints.forgotPassword,data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const forgotPasswordResetStudent = async(token:string,body:{newPassword:string})=>{
+    try {
+        const response = await axiosreq.post(studentEndpoints.resetPassword(token),body);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export const fetchAnnouncementsForStudent = async()=>{
+    try {
+        const response = await axiosreq.get(studentClassroonEndpoints.announcements);
         return response.data;
     } catch (error) {
         throw error;

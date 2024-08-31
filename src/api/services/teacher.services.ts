@@ -1,5 +1,5 @@
 import axiosreq from "../axios.config";
-import { teacherEndpoints } from "../endpoints";
+import { teacherClassroomEndpoints, teacherEndpoints } from "../endpoints";
 import { TokenResponse } from "@react-oauth/google";
 
 import { 
@@ -73,6 +73,34 @@ export const teacherResendOTP = async (data:ResendOTPType)=>{
 export const updateProfileImageOfTeacher = async(data:FormData)=>{
     try {
         const response = await axiosreq.post(teacherEndpoints.updateProfileImage,data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export const forgotPasswordTeacher = async(data:{email:string})=>{
+    try {
+        const response = await axiosreq.post(teacherEndpoints.forgotPassword,data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const forgotPasswordResetTeacher = async(token:string,body:{newPassword:string})=>{
+    try {
+        const response = await axiosreq.post(teacherEndpoints.resetPassword(token),body);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const fetchAnnouncementsForTeacher = async()=>{
+    try {
+        const response = await axiosreq.get(teacherClassroomEndpoints.announcements);
         return response.data;
     } catch (error) {
         throw error;

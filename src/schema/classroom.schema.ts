@@ -31,7 +31,7 @@ export interface ClassroomSchema{
     joining_requests:StudentSchema[],
     banned:boolean,
     classroom_id:string,
-    createdAt:string
+    createdAt:string,
 }
 
 

@@ -207,3 +207,4 @@ export const getAllExamsForTeacher = async ():Promise<ExamsSchema[]>=>{
         throw error
     }
 }
+

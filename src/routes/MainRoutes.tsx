@@ -42,6 +42,9 @@ import ExamType from "../components/teacher/exam/ExamType";
 import AddQuestions from "../components/teacher/exam/AddQuestions";
 import NewExam from "../components/teacher/exam/NewExam";
 import PreviewExam from "../components/teacher/exam/PreviewExam";
+import ResetPassword from "../pages/ResetPassword";
+import Announcements from "../pages/Announcements";
+import StudentProfile from "../components/admin/StudentProfile";
 
 const RouteTree = createBrowserRouter(
     createRoutesFromElements(
@@ -56,33 +59,7 @@ const RouteTree = createBrowserRouter(
                         <Route path="signup" element={<Signup />}></Route>
                         <Route path="login" element={<Login />}></Route>
                         <Route path="verify" element={<OTP />}></Route>
-                    </Route>
-                </Route>
-                <Route element={<ProtectedRoutes />}>
-                    <Route element={<DashboardHeader />}>
-                        <Route path="dashboard" element={<Dashboard />}></Route>
-                        <Route element={<SocketContextProvider />}>
-                            <Route path="classroom" element={<ClassroomLayout />}>
-                                <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
-                                <Route path="chat" element={<ChatSpace />}></Route>
-                                <Route path="materials" element={<Materials />}></Route>
-                                <Route path="works" element={<Works />}></Route>
-                                <Route path="exams" element={<Exams />}>
-                                    <Route path="all" element={<AllExams />}></Route>
-                                </Route>
-                            </Route>
-                            <Route path="profile" element={<Profile />}></Route>
-                        </Route>
-                    </Route>
-                </Route>
-            </Route>
-
-            <Route path="teacher" element={<RoleProvider role='teacher' />}>
-                <Route element={<HomeRoutes />}>
-                    <Route element={<Header />}>
-                        <Route path="signup" element={<Signup />}></Route>
-                        <Route path="login" element={<Login />}></Route>
-                        <Route path="verify" element={<OTP />}></Route>
+                        <Route path="resetPassword/:resetPasswordToken" element={<ResetPassword />}></Route>
                     </Route>
                 </Route>
                 <Route element={<ProtectedRoutes />}>
@@ -96,12 +73,42 @@ const RouteTree = createBrowserRouter(
                                 <Route path="works" element={<Works />}></Route>
                                 <Route path="exams" element={<Exams />}>
                                     <Route index element={<AllExams />}></Route>
-                                    <Route path="new" element={<NewExam/>}></Route>
+                                </Route>
+                                <Route path="announcements" element={<Announcements />}></Route>
+                            </Route>
+                            <Route path="profile" element={<Profile />}></Route>
+                        </Route>
+                    </Route>
+                </Route>
+            </Route>
+
+            <Route path="teacher" element={<RoleProvider role='teacher' />}>
+                <Route element={<HomeRoutes />}>
+                    <Route element={<Header />}>
+                        <Route path="signup" element={<Signup />}></Route>
+                        <Route path="login" element={<Login />}></Route>
+                        <Route path="verify" element={<OTP />}></Route>
+                        <Route path="resetPassword/:resetPasswordToken" element={<ResetPassword />}></Route>
+                    </Route>
+                </Route>
+                <Route element={<ProtectedRoutes />}>
+                    <Route element={<DashboardHeader />}>
+                        <Route path="dashboard" element={<Dashboard />}></Route>
+                        <Route element={<SocketContextProvider />}>
+                            <Route path="classroom" element={<ClassroomLayout />}>
+                                <Route path=":classroom_id/summary" element={<ClassroomSummary />} errorElement={<Error />} />
+                                <Route path="chat" element={<ChatSpace />}></Route>
+                                <Route path="materials" element={<Materials />}></Route>
+                                <Route path="works" element={<Works />}></Route>
+                                <Route path="exams" element={<Exams />}>
+                                    <Route index element={<AllExams />}></Route>
+                                    <Route path="new" element={<NewExam />}></Route>
                                     <Route path="method" element={<ExamType />} />
-                                    <Route path="add_questions" element={<AddQuestions/>} ></Route>
-                                    <Route path="preview" element={<PreviewExam/>}/>
+                                    <Route path="add_questions" element={<AddQuestions />} ></Route>
+                                    <Route path="preview" element={<PreviewExam />} />
                                     <Route path="upload_questions"></Route>
                                 </Route>
+                                <Route path="announcements" element={<Announcements />}></Route>
                             </Route>
                             <Route path="profile" element={<Profile />}></Route>
                             <Route path="student" >
@@ -121,7 +128,7 @@ const RouteTree = createBrowserRouter(
                     <Route path="classrooms" element={<ClassroomsPage />} />
                     <Route path="classroom/:classroomId" element={<ClassroomInfo />}></Route>
                     <Route path="teacher/:teacherId" element={<TeacherProfile />}></Route>
-                    <Route path="student/:studentId"></Route>
+                    <Route path="student/:studentId" element={<StudentProfile />}></Route>
                 </Route>
             </Route>
 

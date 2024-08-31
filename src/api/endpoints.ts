@@ -1,9 +1,10 @@
+
 export const adminEndpoints = {
     login:'admin/login',
     logout:'admin/logout',
-    teachers:'admin/teachers',
-    students:'admin/students',
-    classrooms:'admin/classrooms',
+    teachers:(rows:number,page:number)=>`admin/teachers?page=${page}&rows=${rows}`,
+    students:(rows:number,page:number)=>`admin/students?page=${page}&rows=${rows}`,
+    classrooms:(rows:number,page:number)=>`admin/classrooms?page=${page}&rows=${rows}`,
     teacher:(teacherId:string)=>`admin/teacher/${teacherId}`,
     student:(studentId:string)=>`admin/student/${studentId}`,
     classroom:(classroomId:string)=>`admin/classroom/${classroomId}`
@@ -17,7 +18,9 @@ export const studentEndpoints = {
     logout:"student/logout",
     resendOTP:"student/resend_otp",
     googleLogin:"student/google_login",
-    updateProfileImage:'student/profile/image'
+    updateProfileImage:'student/profile/image',
+    forgotPassword:'student/forgotPassword',
+    resetPassword:(token:string)=>`student/resetPassword/${token}`
 }
 
 export const teacherEndpoints={
@@ -29,6 +32,8 @@ export const teacherEndpoints={
     resendOTP:"teacher/resend_otp",
     googleLogin:"teacher/google_login",
     updateProfileImage:'teacher/profile/image',
+    forgotPassword:'teacher/forgotPassword',
+    resetPassword:(token:string)=>`teacher/resetPassword/${token}`,
     
 }
 
@@ -47,19 +52,22 @@ export const teacherClassroomEndpoints={
     deleteMaterial:(materialId:string)=>`teacher/classroom/materials?materialId=${materialId}`,
     works:'teacher/classroom/works',
     work:(workId:string)=>`teacher/classroom/work/${workId}`,
-    exams:`teacher/classroom/exams`
+    exams:`teacher/classroom/exams`,
+    announcements:'teacher/classroom/announcements'
 }
 
 export const studentClassroonEndpoints = {
     allClassrooms:`student/classroom/all`,
-    searchClassroom:(classroom_id:string):any=>`student/classroom/search/${classroom_id}`,
-    requestToJoinClassroom:(classroom_id:string):any=>`student/classroom/search/${classroom_id}`,
+    searchClassroom:(classroom_id:string):string=>`student/classroom/search/${classroom_id}`,
+    requestToJoinClassroom:(classroom_id:string):string=>`student/classroom/search/${classroom_id}`,
     classroomDetails:(classroom_id:string)=>`student/classroom/summary/${classroom_id}`,
     chatEndpoint:'student/classroom/chat',
     privateChat:(receiverId:string)=>`student/classroom/chat/${receiverId}`,
     materials:'student/classroom/materials',
     works:'student/classroom/works',
     work:(workId:string)=>`student/classroom/work?workId=${workId}`,
+    announcements:'student/classroom/announcements',
+    exams:`student/classroom/exams`,
 }
 
 

@@ -107,7 +107,6 @@ const ClassroomSummary = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-500">online</td>:
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-500">offline</td>
                         }
-
                       </tr>)}
                   </tbody>
                 </table>
@@ -120,7 +119,6 @@ const ClassroomSummary = () => {
         requests={classroomInfo.joining_requests}
         classroom_id={classroomInfo._id}
         closeRequests={setOpenRequests} />)}
-      <Toaster position='top-right'></Toaster>
     </div>
   )
 }

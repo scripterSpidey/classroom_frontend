@@ -202,9 +202,7 @@ const Signup: React.FC<SignUpProps> = () => {
                 '& .MuiInputLabel-root': {
                   fontSize: '0.8rem',
                 },
-              }}
-            />
-            {/* <p className="text-sm text-gray-600">Confirm your password</p> */}
+              }}/>
             <TextField
               label={confirmPasswordError ? "You mispelled your password! Check it again" : "Retype password"}
               type="password"
@@ -221,8 +219,7 @@ const Signup: React.FC<SignUpProps> = () => {
                 '& .MuiInputLabel-root': {
                   fontSize: '0.8rem',
                 },
-              }}
-            />
+              }}/>
             <Button
               variant="contained"
               color="primary"

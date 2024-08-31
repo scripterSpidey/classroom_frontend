@@ -4,8 +4,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useAppSelector } from '../store/store';
 
 import NewClassroomForm from '../components/teacher/NewClassroomForm';
-import { useState } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useState } from 'react'; 
 
 import ClassroomCard from '../components/ClassroomCard';
 import useRole from '../hooks/useRole';
@@ -19,7 +18,6 @@ import { motion } from 'framer-motion';
 const Dashboard: React.FC = () => {
 
     const role = useRole()
-
 
     const classrooms = role == 'teacher' ?
         (useAppSelector(state => state.teacherAuth.user?.classrooms) || []) :
@@ -72,7 +70,7 @@ const Dashboard: React.FC = () => {
                     <JoinClassroomForm visible={showForm} onClose={handleClose} />}
 
             </div>
-            <Toaster position='top-right' />
+           
         </>
     )
 }

@@ -1,3 +1,4 @@
+import { ClassroomSchema } from "./classroom.schema";
 
 
 export interface TeacherSchema{
@@ -8,7 +9,7 @@ export interface TeacherSchema{
     verified:boolean,
     classrooms:Array<{
         _id?:string,
-        classroom_id:string,
+        classroom_id:string ,
         class_teacher_name: string,
         subject: string,
         classroom_name: string,

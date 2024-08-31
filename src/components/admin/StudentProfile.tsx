@@ -1,50 +1,48 @@
+import { Tooltip, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { TeacherSchema } from '../../schema/teacher.schema';
-import handleError from '../../utils/error.handler';
-import admin from '../../api/services/admin.services';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ReadableDate } from '../../utils/indian.std.time';
 import { ClassroomSchema } from '../../schema/classroom.schema';
+import { ReadableDate } from '../../utils/indian.std.time';
+import { StudentSchema } from '../../schema/student.schema';
+import toast from 'react-hot-toast';
+import admin from '../../api/services/admin.services';
+import handleError from '../../utils/error.handler';
+import { useParams } from 'react-router-dom';
 
-
-import { IconButton, Tooltip } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import toast from 'react-hot-toast';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import PersonIcon from '@mui/icons-material/Person';
 
-
-const TeacherProfile = () => {
-    const { teacherId } = useParams();
-    const navigate = useNavigate();
-    const [teacher, setTeacher] = useState<TeacherSchema | null>(null);
-    const [openBlockTeacher, setOpenBlockTeacher] = useState(false)
+const StudentProfile = () => {
+    const { studentId } = useParams();
+    const [student, setStudent] = useState<StudentSchema | null>()
+    const [openBlockStudent, setOpenBlockStudent] = useState(false);
 
     useEffect(() => {
-        if (!teacherId) return
-        const fetchTeacher = async () => {
+        if (!studentId) return
+        const fetchStudent = async () => {
             try {
-                const data = await admin.fetchTeacherInfo(teacherId);
-                setTeacher(data);
+                const data = await admin.fetchStudentInfo(studentId);
+                console.log(data)
+                setStudent(data);
             } catch (error) {
                 handleError(error)
             }
         }
 
-        fetchTeacher();
+        fetchStudent();
     }, []);
 
-    const handleBlockTeacher = async () => {
+    const handleBlockStudent = async () => {
         try {
-            await admin.blockTeacher(teacherId!);
-            setOpenBlockTeacher(false)
-            toast.success(`User has been ${teacher?.blocked ? 'Unblocked' : 'Blocked'} successfully`);
-            setTeacher(prevTeacher => {
-                if (prevTeacher) {
+            await admin.blockStudent(studentId!);
+            setOpenBlockStudent(false)
+            toast.success(`User has been ${student?.blocked ? 'Unblocked' : 'Blocked'} successfully`);
+            setStudent(prevStudent => {
+                if (prevStudent) {
                     return {
-                        ...prevTeacher,
-                        blocked: !prevTeacher.blocked
+                        ...prevStudent,
+                        blocked: !prevStudent.blocked
                     }
                 }
                 return null
@@ -54,30 +52,29 @@ const TeacherProfile = () => {
         }
     }
 
-
     return (
-        <div className='bg-gradient-to-b overflow-hidden from-green-400 to-neutral-900 flex flex-col h-full rounded-lg '>
-            {teacher &&
+        <div className='bg-gradient-to-b overflow-hidden from-red-500 to-neutral-900 flex flex-col h-full rounded-lg '>
+            {student &&
                 <div className='relative  p-5 overflow-hidden rounded-lg'>
                     <div className='text-2xl p-2    flex z-10 relative mb-5'>
-                        <p className='text-white text-opacity-30 hover:underline cursor-pointer'>Teachers</p>
+                        <p className='text-white text-opacity-30 hover:underline cursor-pointer'>students</p>
                         <p className=''>/ Profile</p>
                     </div>
                     <div className='w-full flex justify-between '>
-                        <div className=' md:flex'>
-                            <div className='w-1/3  mr-3 '>
-                                <img src={`${teacher.profile_image}`}
-                                    className='rounded-lg aspect-square w-96'
+                        <div className=' flex'>
+                            <div className='w-1/3 aspect-square mr-3 '>
+                                <img src={`${student.profile_image}`}
+                                    className='rounded-lg w-96'
                                     alt="" />
                             </div>
                             <div className='p-1 self-end '>
-                                <p className='text-3xl font-extrabold '>{teacher.name}</p>
-                                <p className=''>{teacher.email}</p>
+                                <p className='text-3xl font-extrabold '>{student.name}</p>
+                                <p className=''>{student.email}</p>
                             </div>
                         </div>
                         <div className='self-end'>
-                            {teacher.blocked ?
-                                <button onClick={() => setOpenBlockTeacher(true)}
+                            {student.blocked ?
+                                <button onClick={() => setOpenBlockStudent(true)}
                                     className='bg-green-400 p-1 flex items-center rounded-full'>
                                     <Tooltip title="Unblock">
                                         <IconButton className='text-white '>
@@ -85,7 +82,7 @@ const TeacherProfile = () => {
                                         </IconButton>
                                     </Tooltip>
                                 </button> :
-                                <button onClick={() => setOpenBlockTeacher(true)}
+                                <button onClick={() => setOpenBlockStudent(true)}
                                     className='bg-red-500 p-1 flex items-center rounded-full'>
                                     <Tooltip title="Block">
                                         <IconButton className='text-white '>
@@ -96,22 +93,22 @@ const TeacherProfile = () => {
                         </div>
                     </div>
                 </div>}
-            {openBlockTeacher &&
+            {openBlockStudent &&
                 <div className='fixed inset-0 flex z-20 items-center justify-center bg-black bg-opacity-30'>
                     <div className=' flex flex-col gap-10 items-center p-10 rounded-md bg-neutral-800 '>
-                        <h3 className='text-white text-xl text-opacity-70'>{`Are you sure to ${teacher?.blocked ? 'unblock' : 'block'} this user?`}</h3>
+                        <h3 className='text-white text-xl text-opacity-70'>{`Are you sure to ${student?.blocked ? 'unblock' : 'block'} this user?`}</h3>
                         <div className='flex w-full justify-center gap-8'>
                             <Tooltip title="Yes">
                                 <IconButton className='text-white'>
                                     <CheckCircleIcon
-                                        onClick={handleBlockTeacher}
+                                        onClick={handleBlockStudent}
                                         className='text-red-500 cursor-pointer hover:text-6xl text-5xl' fontSize='large' />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="No">
                                 <IconButton className='text-white'>
                                     <CancelIcon
-                                        onClick={() => setOpenBlockTeacher(false)}
+                                        onClick={() => setOpenBlockStudent(false)}
                                         className='text-green-500 cursor-pointer hover:text-6xl text-5xl' fontSize='large' />
                                 </IconButton>
                             </Tooltip>
@@ -121,7 +118,7 @@ const TeacherProfile = () => {
 
             <div className=' p-3 bg-black bg-gradient-to-t from-neutral-900 to-transparent bg-opacity-15 flex-1'>
                 <div className='p-3 mb-2'>
-                    <h1 className='text-4xl font-extrabold text-white text-opacity-80 '>Owned classrooms</h1>
+                    <h1 className='text-4xl font-extrabold text-white text-opacity-80 '>Enrolled classrooms</h1>
                 </div>
                 <table className='w-full'>
                     <thead >
@@ -130,7 +127,7 @@ const TeacherProfile = () => {
                             <th className='text-start font-semibold'>Name</th>
                             <th className='text-start font-semibold'>Subject</th>
                             <th className='text-start font-semibold'>Created at</th>
-                            <th className='text-start font-semibold'>Strength</th>
+                            {/* <th className='text-start font-semibold'>Strength</th> */}
                             {/* <th className='text-start'>Action</th> */}
                         </tr>
                     </thead>
@@ -140,7 +137,7 @@ const TeacherProfile = () => {
                                 <hr className='my-3 border-white border-opacity-10 ' />
                             </td>
                         </tr>
-                        {teacher?.classrooms.map((classroom, index) => {
+                        {student?.classrooms.map((classroom, index) => {
                             const classroomDetail = classroom.classroom_id as unknown as ClassroomSchema;
                             return (<tr
                                 className='hover:bg-neutral-700 hover:bg-opacity-50 cursor-pointer text-gray-200 font-light' >
@@ -148,7 +145,7 @@ const TeacherProfile = () => {
                                 <td>{classroom.classroom_name}</td>
                                 <td>{classroom.subject}</td>
                                 <td>{ReadableDate(classroom.joined_at)}</td>
-                                <td>{classroomDetail.students.length}</td>
+                                {/* <td>{classroomDetail.students.length}</td> */}
                             </tr>)
                         })}
                     </tbody>
@@ -158,4 +155,4 @@ const TeacherProfile = () => {
     )
 }
 
-export default TeacherProfile
+export default StudentProfile

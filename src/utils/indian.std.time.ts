@@ -5,7 +5,8 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export const convertToIST= ( date: string):string=>{
+export const convertToIST= ( date: string|Date):string=>{
+    console.log(date)
     const stdTime =  new Date(date).toLocaleString('en-IN',{
         timeZone:'Asia/kolkata',
         hour:'2-digit',
@@ -20,7 +21,7 @@ export const convertToIST= ( date: string):string=>{
     return stdTime
 }
 
-export const ReadableDate = (date:string):string=>{
+export const ReadableDate = (date:string|Date):string=>{
    
     const formattedDate = new Date(date).toLocaleDateString('en-IN',{
         timeZone:'Asia/kolkata',

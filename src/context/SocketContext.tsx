@@ -6,6 +6,8 @@ import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 
 import { setOnlineUsers } from "../store/slices/socket.slice";
+import { addAnnouncementStudent } from "../store/slices/student.classroom.slice";
+import { addAnnouncementTeacher } from "../store/slices/teacher.classroom.slice";
 
 interface SocketContextType {
     socket: Socket | null,
@@ -28,7 +30,7 @@ export const useSocket = () => {
 export const SocketContextProvider: React.FC<SocketContextProviderPropsType> = () => {
     const [socket, setSocket] = useState<Socket | null>(null);
     const dispatch = useAppDispatch()
-    // const [onlineUsers, setOnlineUsers] = useState([]);
+    
     const onlineUsers:[] = []
     const role = useRole();
 
@@ -58,7 +60,11 @@ export const SocketContextProvider: React.FC<SocketContextProviderPropsType> = (
                 dispatch(setOnlineUsers({onlineUsers:users}))
             })
 
-         
+            socket.on('announcement',data=>{
+                console.log(data)
+                dispatch(addAnnouncementStudent(data))
+                dispatch(addAnnouncementTeacher(data))
+            })
 
             return () => { socket.close() }
         } else {

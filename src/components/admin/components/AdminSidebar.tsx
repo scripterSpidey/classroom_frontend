@@ -14,7 +14,7 @@ const AdminSidebar = () => {
 
 
     return (
-        <div className='h-full rounded-lg bg-neutral-900 w-1/6  m-2 mt-0'>
+        <div className='h-full rounded-lg  bg-neutral-900 w-1/6  m-2 mt-0'>
             <div className='flex flex-col gap-2 h-full   rounded-md  p-3'>
                 <div className='space-y-6 mt-4 text-white font-semibold text-opacity-60 pl-3'>
                     <div

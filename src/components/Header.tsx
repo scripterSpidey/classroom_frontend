@@ -1,11 +1,12 @@
 
+import { Toaster } from 'react-hot-toast'
 import Logo from './Logo'
 import Button from './basic_elements/Button'
 import { Outlet } from 'react-router-dom'
 
 const Header = () => {
   return <>
-    <div >
+    <div className='h-full'>
       <header className='bg-costume-secondary-color  top-0 right-0 z-50 left-0 p-7 shadow-md w-full flex justify-between sm:px-4 md:px-6 lg:px-20 px-4'>
         <Logo />
         <div className='hidden sm:flex items-center justify-center text-lg'>
@@ -19,11 +20,9 @@ const Header = () => {
           <Button buttonClass="primary-button" >Sign Up</Button>
           <Button buttonClass="secondary-button border" >Sign In</Button>
         </div>
+        <Toaster></Toaster>
       </header>
-    
         <Outlet></Outlet>
-     
-
     </div>
   </>
 }

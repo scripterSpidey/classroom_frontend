@@ -12,7 +12,7 @@ import Logo from './Logo'
 import { useAppSelector, useAppDispatch } from '../store/store';
 import { logoutStudent } from '../api/services/student.service';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { removeStudent } from '../store/slices/student.auth.slice';
 import { googleLogout } from '@react-oauth/google';
@@ -141,6 +141,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
             </Stack>
           </Box>
         </Modal>
+        <Toaster></Toaster>
       </header>
       <Outlet></Outlet>
     </>

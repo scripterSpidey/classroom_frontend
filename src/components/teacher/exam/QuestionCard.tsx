@@ -61,8 +61,8 @@ const QuestionCard: React.FC<QuestionCardPropsType> = ({ questionCount }) => {
                             label="Question type">
                             <MenuItem value={QuestionTypeEnum.MCQ}>MCQ</MenuItem>
                             <MenuItem value={QuestionTypeEnum.DESCRIPTIVE}>Descriptive</MenuItem>
-                            <MenuItem value={QuestionTypeEnum.TOF}>True or false</MenuItem>
-                            <MenuItem value={QuestionTypeEnum.FILL_BLANKS}>Fill in the blanks</MenuItem>
+                            {/* <MenuItem value={QuestionTypeEnum.TOF}>True or false</MenuItem>
+                            <MenuItem value={QuestionTypeEnum.FILL_BLANKS}>Fill in the blanks</MenuItem> */}
                         </Select>
                     </FormControl>
                 </div>

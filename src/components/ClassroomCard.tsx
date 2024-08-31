@@ -6,17 +6,21 @@ import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { useAppDispatch } from '../store/store'
 import { saveStudentEquipedClassroom, saveTeacherEquipedClassroom } from '../store/slices/persist.slice'
+import { fetchClassroomDetailsForStudent } from '../api/services/student.classroom.services'
+import handleError from '../utils/error.handler'
+import { fetchClassroomDetailsForTeacherThunk } from '../store/slices/teacher.classroom.slice'
+import { fetchClassroomDetailsForTeacher } from '../api/services/teacher.classroom.services'
 
 type ClassroomCardPropsType = {
     name: string,
     class_teacher_name: string,
     subject: string,
-    blocked:boolean,
+    blocked: boolean,
     _id?: string | undefined,
     role: string
 }
 
-const ClassroomCard: React.FC<ClassroomCardPropsType> = ({ name, subject, class_teacher_name, _id,blocked, role }) => {
+const ClassroomCard: React.FC<ClassroomCardPropsType> = ({ name, subject, class_teacher_name, _id, blocked, role }) => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -29,21 +33,30 @@ const ClassroomCard: React.FC<ClassroomCardPropsType> = ({ name, subject, class_
         return newString
     }
 
-    const enterClassroom = () => {
-        if(blocked){
-            return toast.error("You have been banned from this classroom")
+    const enterClassroom = async () => {
+        try {
+            const classroom = role =='student'?
+             await fetchClassroomDetailsForStudent(_id!):
+             await fetchClassroomDetailsForTeacher(_id!)
+            console.log(classroom)
+            if (blocked) {
+                return toast.error("You have been banned from this classroom")
+            }
+            role == 'student' ?
+                dispatch(saveStudentEquipedClassroom({ classroom_id: _id! })) :
+                dispatch(saveTeacherEquipedClassroom({ classroom_id: _id! }));
+
+            navigate(`/${role}/classroom/${_id}/summary`)
+        } catch (error) {
+            handleError(error)
         }
-        role == 'student'?
-            dispatch(saveStudentEquipedClassroom({classroom_id:_id!})):
-            dispatch(saveTeacherEquipedClassroom({classroom_id:_id!}));
-        
-        navigate(`/${role}/classroom/${_id}/summary`)
+
     }
     return (
 
         <motion.div
             variants={{
-                hidden: {opacity: 0},
+                hidden: { opacity: 0 },
                 show: { opacity: 1 }
             }}
             className={`relative inline-flex  w-72 flex-col  min-h-40  mx-2 mb-6 overflow-hidden ${bgColor} rounded-lg shadow-xl `}>

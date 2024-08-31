@@ -4,13 +4,15 @@ import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { WorksSchema } from "../../schema/works.schema";
 import { ExamsSchema } from "../../schema/exams.schema";
+import { AnnouncementsSchema } from "../../schema/announcements.schema";
 
 
 export interface TeacherClassroomStateInterface {
     classroom: null | ClassroomSchema,
     privateChats: PrivateChatSchema[],
     works:WorksSchema[],
-    exams:ExamsSchema[]
+    exams:ExamsSchema[],
+    announcements:AnnouncementsSchema[]
 }
 
 const initialState: TeacherClassroomStateInterface = {
@@ -31,7 +33,8 @@ const initialState: TeacherClassroomStateInterface = {
     },
     privateChats: [],
     works: [],
-    exams: []
+    exams: [],
+    announcements:[]
 }
 
 export interface ManageRequestPayload {
@@ -142,6 +145,16 @@ export const teacherClassroomSlice = createSlice({
         },
         saveAllExamsInStoreForTeacher:(state,action:PayloadAction<ExamsSchema[]>)=>{
             state.exams = action.payload;
+        },
+        saveAllAnnouncementsForTeacher:(state,action:PayloadAction<AnnouncementsSchema[]>)=>{
+            if(state.announcements){
+                state.announcements = action.payload
+            }
+        },
+        addAnnouncementTeacher:(state,action:PayloadAction<AnnouncementsSchema>)=>{
+            if(state.announcements){
+                state.announcements.unshift(action.payload)
+            }
         }
     },
     extraReducers: (builder) => {
@@ -177,7 +190,9 @@ export const {
     createWork,
     saveAllWorksForTeacher,
     updateWorkMarkRedux,
-    saveAllExamsInStoreForTeacher
+    saveAllExamsInStoreForTeacher,
+    saveAllAnnouncementsForTeacher,
+    addAnnouncementTeacher
 } = teacherClassroomSlice.actions;
 
 export default teacherClassroomSlice.reducer;

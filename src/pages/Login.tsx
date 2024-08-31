@@ -5,16 +5,16 @@ import Divider from '@mui/material/Divider';
 import Footer from '../components/Footer';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Toaster } from 'react-hot-toast';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { NavLink, useNavigate } from 'react-router-dom';
 import React from 'react';
 
-import { loginStudent } from '../api/services/student.service';
+import { forgotPasswordStudent, loginStudent } from '../api/services/student.service';
 import { useAppDispatch } from '../store/store';
 import { addStudent } from '../store/slices/student.auth.slice';
 import { addTeacher } from '../store/slices/teacher.auth.slice';
-import { loginTeacher, loginTeacherWithGoogle } from '../api/services/teacher.services';
+import { forgotPasswordTeacher, loginTeacher, loginTeacherWithGoogle } from '../api/services/teacher.services';
 import handleError from '../utils/error.handler';
 
 import { useGoogleLogin, TokenResponse } from '@react-oauth/google';
@@ -22,6 +22,7 @@ import { useGoogleLogin, TokenResponse } from '@react-oauth/google';
 
 import { loginStudentWithGoogle } from '../api/services/student.service';
 import useRole from '../hooks/useRole';
+import { validEmail } from '../utils/form.validations';
 
 interface LoginProps {
 
@@ -35,6 +36,9 @@ const Login: React.FC<LoginProps> = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [forgtoPassword, setForgotPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
+  const [forgotPasswordEmailError, setForgotPasswordEmailError] = useState(false)
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (response: TokenResponse) => {
@@ -81,6 +85,11 @@ const Login: React.FC<LoginProps> = () => {
     }
   }
 
+  const handleForgotPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setForgotPassword(true)
+  }
+
   const validateForm = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (emailError || passwordError) {
@@ -93,14 +102,14 @@ const Login: React.FC<LoginProps> = () => {
           email: emailRef.current?.value as string,
           password: passwordRef.current?.value as string
         });
-        console.log('response from student login: ',data)
+        console.log('response from student login: ', data)
         dispatch(addStudent(data))
       } else if (role == 'teacher') {
         const data = await loginTeacher({
           email: emailRef.current?.value as string,
           password: passwordRef.current?.value as string
         });
-        console.log('response from teacher login: ',data)
+        console.log('response from teacher login: ', data)
         dispatch(addTeacher(data));
       }
 
@@ -108,7 +117,24 @@ const Login: React.FC<LoginProps> = () => {
     } catch (error: any) {
       handleError(error);
     }
+  }
 
+  const handleResetLink = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!forgotPasswordEmail.trim() || validEmail(forgotPasswordEmail)) {
+      setForgotPasswordEmailError(true)
+      return
+    }
+    try {
+      role == 'teacher' ?
+        await forgotPasswordTeacher({ email: forgotPasswordEmail }) :
+        await forgotPasswordStudent({ email: forgotPasswordEmail });
+
+      setForgotPassword(false)
+      toast.success('A password reset link has been send to your mail address')
+    } catch (error) {
+      handleError(error)
+    }
   }
   return (
     <>
@@ -159,6 +185,9 @@ const Login: React.FC<LoginProps> = () => {
                 },
               }}
             />
+            <button
+              onClick={handleForgotPassword}
+              className='text-costume-primary-color text-sm cursor-pointer'>forgot password?</button>
             <Button
               variant="contained"
               color="primary"
@@ -189,7 +218,36 @@ const Login: React.FC<LoginProps> = () => {
           </Stack>
         </Paper>
       </Container>
-      <Toaster position='top-right'></Toaster>
+      {forgtoPassword &&
+        <div className='fixed inset-0 z-10 bg-black bg-opacity-30 flex items-center justify-center'>
+          <div className='w-full bg-white flex flex-col  items-center rounded-md md:w-2/4 p-5'>
+            <div className='flex w-full justify-end'>
+              <div
+                onClick={() => setForgotPassword(false)}
+                className='border hover:border-2 cursor-pointer hover:border-gray-400 p-1 rounded-md'>
+                <CloseIcon fontSize='medium' color='error' />
+              </div>
+            </div>
+            <div className='text-lg font-bold text-costume-primary-color'>FORGOT PASSWORD</div>
+            <hr className='border w-full mt-2' />
+            <p className='text-xl text-costume-primary-color font-semibold mt-5'>Enter your registered email address</p>
+            <div className='w-full mt-5'>
+              <TextField
+                label={forgotPasswordEmailError ? 'Not a valid email address' : "Enter email address"}
+                variant="outlined"
+                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                fullWidth
+
+                error={forgotPasswordEmailError}
+                required
+              />
+            </div>
+            <button
+              onClick={handleResetLink}
+              className='primary-btn mt-5'>Get reset link</button>
+          </div>
+        </div>}
+      {/* <Toaster position='top-right'></Toaster> */}
       <Footer></Footer>
     </>
   );

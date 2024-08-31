@@ -10,6 +10,7 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 
 const AllExams = () => {
     const role = useRole();
+   
     useGetExams();
 
     const allExams = role == 'teacher' ?
@@ -24,7 +25,6 @@ const AllExams = () => {
                             <button
                                 className='primary-btn py-2 font-semibold'> CREATE EXAM</button>
                         </NavLink>
-
                     </div>
                     <hr className='border mx-2' />
                 </div>}
@@ -48,6 +48,11 @@ const AllExams = () => {
                                 <h5 className='font-bold '>{`${exam.total_questions} questions`}</h5>
                             </div>
                         </div>
+                        {role=='student'&& 
+                        ( (new Date(exam.start_time).getTime() <= Date.now()) &&  Date.now()  <= new Date(exam.last_time_to_start).getTime()) &&
+                        <div>
+                            <button className='primary-btn'>Attend</button>
+                        </div>}
                     </div>
                 )
                 }

@@ -4,6 +4,7 @@ import { studentClassroonEndpoints } from "../endpoints";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { ClassroomMaterialType } from "../../schema/classroom.schema";
 import { WorksSchema, WorkSubmissionType } from "../../schema/works.schema";
+import { ExamsSchema } from "../../schema/exams.schema";
 
 
 export const getStudentClassrooms = async()=>{
@@ -118,6 +119,15 @@ export const getAllWorksForStudent = async():Promise<WorksSchema[]>=>{
 export const submitWork = async(workId:string,data:FormData):Promise<WorkSubmissionType[]>=>{
     try {
         const response = await axiosreq.post(studentClassroonEndpoints.work(workId),data);
+        return response.data;
+    } catch (error) {
+        throw error
+    }
+}
+
+export const getAllExamsForStudent = async ():Promise<ExamsSchema[]>=>{
+    try {
+        const response = await axiosreq.get(studentClassroonEndpoints.exams);
         return response.data;
     } catch (error) {
         throw error

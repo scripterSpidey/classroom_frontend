@@ -5,14 +5,19 @@ import handleError from "../../utils/error.handler";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { WorksSchema, WorkSubmissionType } from "../../schema/works.schema";
 import { ExamsSchema } from "../../schema/exams.schema";
+import { AnnouncementsSchema } from "../../schema/announcements.schema";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 export interface StudentClassroomStateInterface {
     classroom: ClassroomSchema | null;
     privateChats:PrivateChatSchema[],
     works:WorksSchema[],
-    exams:ExamsSchema[]
+    exams:ExamsSchema[],
+    announcements:AnnouncementsSchema[]
 }
+
 
 export const initialState: StudentClassroomStateInterface = {
     classroom: {
@@ -32,18 +37,19 @@ export const initialState: StudentClassroomStateInterface = {
     },
     privateChats: [],
     works: [],
-    exams: []
+    exams: [],
+    announcements: []
 }
 
 export const fetchClassroomDetailsForStudentThunk = createAsyncThunk<ClassroomSchema, () => Promise<ClassroomSchema>, { rejectValue: string }>(
     'student/fetchClassrooms', async (getClassrooms, thunkAPI) => {
         try {
-
             const response = await getClassrooms();
-         
             return response
         } catch (error) {
             handleError(error)
+            
+            window.location.href = '/student/dashboard'
             return thunkAPI.rejectWithValue('failed to fetch clasrooms')
         }
     })
@@ -97,7 +103,20 @@ export const studentClassroomSlice = createSlice({
                 if(!submittedWork) return
                 submittedWork.submissions = actions.payload.submissions
             }
-        }
+        },
+        saveAllAnnouncementsForStudent:(state,action:PayloadAction<AnnouncementsSchema[]>)=>{
+            if(state.announcements){
+                state.announcements = action.payload
+            }
+        },
+        addAnnouncementStudent:(state,action:PayloadAction<AnnouncementsSchema>)=>{
+            if(state.announcements){
+                state.announcements.unshift(action.payload)
+            }
+        },
+        saveAllExamsInStoreForStudent:(state,action:PayloadAction<ExamsSchema[]>)=>{
+            state.exams = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -125,7 +144,10 @@ export const {
     receivePrivateChatForStudent,
     saveAllMaterialsForStudent,
     saveAllWorksForStudent,
-    saveSubmittedWork
+    saveSubmittedWork,
+    saveAllAnnouncementsForStudent,
+    addAnnouncementStudent,
+    saveAllExamsInStoreForStudent
 } = studentClassroomSlice.actions;
 
 export default studentClassroomSlice.reducer;

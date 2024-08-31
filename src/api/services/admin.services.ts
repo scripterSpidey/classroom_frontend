@@ -3,75 +3,49 @@ import { adminEndpoints } from "../endpoints";
 
 const admin = {
 
-    login: async (body: { email: string, password: string }) => {
-        try {
-            const response = await axiosreq.post(adminEndpoints.login, body)
-        } catch (error) {
-            throw error
-        }
+    login: async (body: { email: string, password: string }):Promise<void> => {
+        await axiosreq.post(adminEndpoints.login, body)
     },
-
     logout: async () => {
-        try {
-            const response = await axiosreq.post(adminEndpoints.logout)
-        } catch (error) {
-            throw error
-        }
+        await axiosreq.post(adminEndpoints.logout)
+
     },
-
-    classrooms: async () => {
-        try {
-            const response = await axiosreq.get(adminEndpoints.classrooms);
-            return response.data;
-        } catch (error) {
-            throw error
-        }
+    classrooms: async (rows: number, page: number) => {
+        const response = await axiosreq.get(adminEndpoints.classrooms(rows, page));
+        return response.data;
     },
-
-    teachers: async () => {
-        try {
-            const response = await axiosreq.get(adminEndpoints.teachers);
-            return response.data;
-        } catch (error) {
-            throw error
-        }
+    teachers: async (rows: number, page: number) => {
+        const response = await axiosreq.get(adminEndpoints.teachers(rows, page));
+        return response.data;
     },
-
-    students: async () => {
-        try {
-            const response = await axiosreq.get(adminEndpoints.students);
-            return response.data;
-        } catch (error) {
-            throw error
-        }
+    students: async (rows: number, page: number) => {
+        const response = await axiosreq.get(adminEndpoints.students(rows, page));
+        return response.data;
     },
-
-    fetchTeacherInfo: async (teacherId:string)=>{
-        try {
-            const response = await axiosreq.get(adminEndpoints.teacher(teacherId));
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    } ,
-    fetchStudentInfo: async (studentId:string)=>{
-        try {
-            const response = await axiosreq.get(adminEndpoints.student(studentId));
-            return response.data;
-
-        } catch (error) {
-            throw error;
-        }
-    } ,
-    fetchClassroomInfo: async (classroomId:string)=>{
-        try {
-            const response = await axiosreq.get(adminEndpoints.classroom(classroomId));
-            return response.data;
-
-        } catch (error) {
-            throw error;
-        }
-    } 
+    fetchTeacherInfo: async (teacherId: string) => {
+        const response = await axiosreq.get(adminEndpoints.teacher(teacherId));
+        return response.data;
+    },
+    blockTeacher: async (teacherId: string) => {
+        const response = await axiosreq.patch(adminEndpoints.teacher(teacherId));
+        return response.data;
+    },
+    fetchStudentInfo: async (studentId: string) => {
+        const response = await axiosreq.get(adminEndpoints.student(studentId));
+        return response.data;
+    },
+    fetchClassroomInfo: async (classroomId: string) => {
+        const response = await axiosreq.get(adminEndpoints.classroom(classroomId));
+        return response.data;
+    },
+    banOrUnbanClassroom: async (classroomId: string) => {
+        const response = await axiosreq.patch(adminEndpoints.classroom(classroomId));
+        return response.data;
+    },
+    blockStudent: async (studentId: string) => {
+        const response = await axiosreq.patch(adminEndpoints.student(studentId));
+        return response.data;
+    }
 }
 
 export default admin;
