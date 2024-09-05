@@ -33,12 +33,12 @@ const Announcements = () => {
     }
 
     return (
-        <div className='h-full rounded-lg flex flex-col items-center border-2 shadow-md border-gray-200 w-full'>
+        <div className='h-screen rounded-lg flex flex-col items-center border-2 shadow-md border-gray-200 w-full'>
             <div className='w-full flex flex-col items-center justify-center p-3'>
                 <h1 className='font-bold text-lg '>ANNOUNCEMENTS</h1>
                 <hr className='border w-full mt-3' />
             </div>
-            <div className='w-full md:w-3/4 border-2 rounded-md  h-full p-5 flex flex-col gap-3 items-center'>
+            <div className='w-full md:w-3/4 border-2 rounded-md overflow-auto  h-full p-5 flex flex-col flex-grow-1 gap-3 items-center'>
                 {announcements.length > 0 && announcements.map(announcement =>
                     <div
                         key={announcement._id}

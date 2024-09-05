@@ -4,18 +4,29 @@ import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../
 import handleError from "../../utils/error.handler";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { WorksSchema, WorkSubmissionType } from "../../schema/works.schema";
-import { ExamsSchema } from "../../schema/exams.schema";
+import { ExamQuestionType, ExamsSchema } from "../../schema/exams.schema";
 import { AnnouncementsSchema } from "../../schema/announcements.schema";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+
 
 
 export interface StudentClassroomStateInterface {
     classroom: ClassroomSchema | null;
-    privateChats:PrivateChatSchema[],
-    works:WorksSchema[],
-    exams:ExamsSchema[],
-    announcements:AnnouncementsSchema[]
+    privateChats: PrivateChatSchema[],
+    works: WorksSchema[],
+    exams: ExamsSchema[],
+    announcements: AnnouncementsSchema[],
+    // onGOingExam: {
+    //     title: string,
+    //     duration: number,
+    //     questionPaper: ExamQuestionType[],
+    //     studentAnswers: {
+    //         questionIndex: number,
+    //         answer: string
+    //     },
+    //     timeSpent: number,
+    //     startedAt: string|null,
+    //     endedAt: string|null
+    // }
 }
 
 
@@ -38,7 +49,19 @@ export const initialState: StudentClassroomStateInterface = {
     privateChats: [],
     works: [],
     exams: [],
-    announcements: []
+    announcements: [],
+    // onGOingExam: {
+    //     questionPaper: [],
+    //     studentAnswers: {
+    //         questionIndex: 0,
+    //         answer: ""
+    //     },
+    //     timeSpent: 0,
+    //     startedAt:null,
+    //     endedAt: null,
+    //     title: "",
+    //     duration: 0
+    // }
 }
 
 export const fetchClassroomDetailsForStudentThunk = createAsyncThunk<ClassroomSchema, () => Promise<ClassroomSchema>, { rejectValue: string }>(
@@ -48,7 +71,7 @@ export const fetchClassroomDetailsForStudentThunk = createAsyncThunk<ClassroomSc
             return response
         } catch (error) {
             handleError(error)
-            
+
             window.location.href = '/student/dashboard'
             return thunkAPI.rejectWithValue('failed to fetch clasrooms')
         }
@@ -75,48 +98,56 @@ export const studentClassroomSlice = createSlice({
             }
         },
         receiveMessageTostudent: (state, action: PayloadAction<{ message: ClassroomMessage }>) => {
-            
+
             if (state.classroom) {
-                if(!state.classroom.classroom_messages){
+                if (!state.classroom.classroom_messages) {
                     state.classroom.classroom_messages = []
                 }
                 state.classroom.classroom_messages.push(action.payload.message)
             }
         },
-        saveAllPrivateChatsForStudent:(state,action:PayloadAction<{messages:PrivateChatSchema[]}>)=>{
+        saveAllPrivateChatsForStudent: (state, action: PayloadAction<{ messages: PrivateChatSchema[] }>) => {
             state.privateChats = action.payload.messages;
         },
-        receivePrivateChatForStudent:(state,action:PayloadAction<{message:PrivateChatSchema}>)=>{
+        receivePrivateChatForStudent: (state, action: PayloadAction<{ message: PrivateChatSchema }>) => {
             state.privateChats.push(action.payload.message)
         },
-        saveAllMaterialsForStudent:(state,action:PayloadAction<ClassroomMaterialType[]>)=>{
-            if(state.classroom){
-                state.classroom.materials= action.payload;
+        saveAllMaterialsForStudent: (state, action: PayloadAction<ClassroomMaterialType[]>) => {
+            if (state.classroom) {
+                state.classroom.materials = action.payload;
             }
         },
-        saveAllWorksForStudent:(state,action:PayloadAction<WorksSchema[]>)=>{
+        saveAllWorksForStudent: (state, action: PayloadAction<WorksSchema[]>) => {
             state.works = action.payload;
         },
-        saveSubmittedWork:(state,actions:PayloadAction<{workId:string,submissions:WorkSubmissionType[]}>)=>{
-            if(state.works){
-                const submittedWork = state.works.find(work=>work._id == actions.payload.workId);
-                if(!submittedWork) return
+        saveSubmittedWork: (state, actions: PayloadAction<{ workId: string, submissions: WorkSubmissionType[] }>) => {
+            if (state.works) {
+                const submittedWork = state.works.find(work => work._id == actions.payload.workId);
+                if (!submittedWork) return
                 submittedWork.submissions = actions.payload.submissions
             }
         },
-        saveAllAnnouncementsForStudent:(state,action:PayloadAction<AnnouncementsSchema[]>)=>{
-            if(state.announcements){
+        saveAllAnnouncementsForStudent: (state, action: PayloadAction<AnnouncementsSchema[]>) => {
+            if (state.announcements) {
                 state.announcements = action.payload
             }
         },
-        addAnnouncementStudent:(state,action:PayloadAction<AnnouncementsSchema>)=>{
-            if(state.announcements){
+        addAnnouncementStudent: (state, action: PayloadAction<AnnouncementsSchema>) => {
+            if (state.announcements) {
                 state.announcements.unshift(action.payload)
             }
         },
-        saveAllExamsInStoreForStudent:(state,action:PayloadAction<ExamsSchema[]>)=>{
+        saveAllExamsInStoreForStudent: (state, action: PayloadAction<ExamsSchema[]>) => {
             state.exams = action.payload;
         },
+        // saveOnGoingExamDetails: (state, action: PayloadAction<ExamsSchema>) => {
+        //     if (state.onGOingExam) {
+        //         state.onGOingExam.title = action.payload.title;
+        //         state.onGOingExam.duration = action.payload.duration;
+        //         state.onGOingExam.questionPaper = action.payload.questions;
+        //         state.onGOingExam.startedAt = String(new Date());
+        //     }
+        // }
     },
     extraReducers: (builder) => {
         builder
@@ -147,7 +178,8 @@ export const {
     saveSubmittedWork,
     saveAllAnnouncementsForStudent,
     addAnnouncementStudent,
-    saveAllExamsInStoreForStudent
+    saveAllExamsInStoreForStudent,
+    
 } = studentClassroomSlice.actions;
 
 export default studentClassroomSlice.reducer;

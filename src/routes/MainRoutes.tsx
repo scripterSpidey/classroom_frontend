@@ -45,6 +45,13 @@ import PreviewExam from "../components/teacher/exam/PreviewExam";
 import ResetPassword from "../pages/ResetPassword";
 import Announcements from "../pages/Announcements";
 import StudentProfile from "../components/admin/StudentProfile";
+import ViewExam from "../components/students/exam/ViewExam";
+import AttendExam from "../components/students/exam/AttendExam";
+import ReviewAnswers from "../components/students/exam/ReviewAnswers";
+import ViewSubmissions from "../components/teacher/ViewSubmissions";
+import ViewExamSubmission from "../components/teacher/exam/ViewExamSubmission";
+import AnswerPaper from "../components/teacher/exam/AnswerPaper";
+import ValuationSummary from "../components/teacher/exam/ValurationSummary";
 
 const RouteTree = createBrowserRouter(
     createRoutesFromElements(
@@ -73,6 +80,9 @@ const RouteTree = createBrowserRouter(
                                 <Route path="works" element={<Works />}></Route>
                                 <Route path="exams" element={<Exams />}>
                                     <Route index element={<AllExams />}></Route>
+                                    <Route path="view/:examId" element={<ViewExam />}></Route>
+                                    <Route path="attend/:examId" element={<AttendExam/>}></Route>
+                                    <Route path="review" element={<ReviewAnswers/>}/>
                                 </Route>
                                 <Route path="announcements" element={<Announcements />}></Route>
                             </Route>
@@ -107,6 +117,9 @@ const RouteTree = createBrowserRouter(
                                     <Route path="add_questions" element={<AddQuestions />} ></Route>
                                     <Route path="preview" element={<PreviewExam />} />
                                     <Route path="upload_questions"></Route>
+                                    <Route path="view/:examId" element={<ViewExamSubmission/>} ></Route>
+                                    <Route path="answer_paper" element={<AnswerPaper/>}/>
+                                    <Route path="valuation_summary" element={<ValuationSummary/>}/>
                                 </Route>
                                 <Route path="announcements" element={<Announcements />}></Route>
                             </Route>

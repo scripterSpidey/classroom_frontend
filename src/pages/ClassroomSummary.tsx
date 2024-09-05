@@ -5,23 +5,31 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { useNavigate } from 'react-router-dom';
 
 import useRole from '../hooks/useRole';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import JoiningRequestTable from '../components/teacher/JoiningRequest';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { removeClassroom, } from '../store/slices/teacher.classroom.slice';
-
-import { Toaster } from 'react-hot-toast';
+import { Skeleton } from '@mui/material';
 
 
 const ClassroomSummary = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const role = useRole();
+  const [loading, setLoading] = useState(true);
   const [openReqeusts, setOpenRequests] = useState<boolean>(false);
   const classroomInfo = role == 'student' ?
     useAppSelector(state => state.studentClassroom.classroom) :
     useAppSelector(state => state.teacherClassroom.classroom);
+
+  useEffect(() => {
+    const time = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(time)
+  }, [])
 
   const onlineUsers = useAppSelector(state => state.socket.onlineUsers)
 
@@ -29,6 +37,8 @@ const ClassroomSummary = () => {
     dispatch(removeClassroom())
     navigate(`/${role}/dashboard`)
   }
+
+
 
   return (
     <div className={`w-full   h-full p-5 rounded-lg`}>
@@ -43,11 +53,8 @@ const ClassroomSummary = () => {
         <div className=' relative  p-8 border-2 z-10  flex shadow-xl justify-between rounded-md'>
           <div className='flex flex-col gap-4'>
             <h1 className='text-5xl  text-white font-bold'>{classroomInfo?.subject}</h1>
-
             <span className='text-3xl text-white'>{classroomInfo?.name}</span>
-
           </div>
-
           <button
             onClick={handleExit}
             className="inline-flex self-center bg-costume-primary-color items-center gap-2 
@@ -83,7 +90,7 @@ const ClassroomSummary = () => {
               <div className="overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead>
-                    <tr>
+                    <tr >
                       <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">S.NO</th>
                       <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Name</th>
                       <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Email</th>
@@ -91,7 +98,7 @@ const ClassroomSummary = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {classroomInfo && classroomInfo.students.map((student: any, index) =>
+                    {!loading ? (classroomInfo && classroomInfo.students.map((student: any, index) =>
                       <tr onClick={role == 'teacher' ? () => navigate(`/teacher/student/profile/${student.student_id}`) : undefined}
                         key={student.student_id} className="hover:bg-gray-100 cursor-pointer">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{index + 1}</td>
@@ -103,11 +110,16 @@ const ClassroomSummary = () => {
                             <p className={`bg-green-400 inline-block p-1 px-2 rounded-lg text-xs`}>Active</p>
                           }
                         </td>
-                        { onlineUsers.includes(student.student_id) ?
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-500">online</td>:
+                        {onlineUsers.includes(student.student_id) ?
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-500">online</td> :
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-500">offline</td>
                         }
-                      </tr>)}
+                      </tr>)) :
+                      Array.from({ length: 5 }).map((_, index) =>
+                        <tr className='mb-2' key={index} >
+                          <td colSpan={5}>
+                            <Skeleton variant="rectangular" animation="wave" width={"100%"} height={40} /></td>
+                        </tr>)}
                   </tbody>
                 </table>
               </div>

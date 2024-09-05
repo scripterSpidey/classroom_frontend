@@ -33,7 +33,7 @@ const ClassroomNavBar = () => {
   useEffect(() => {
     if (announcements.length > prevAnnouncementLenref.current) {
       setNewAnnouncement(true)
-      toast.success(`${announcements[announcements.length - 1].content}`,{
+      toast.success(`${announcements[0].content}`,{
         style: {
           border: '1px solid #007bff',
           padding: '16px',

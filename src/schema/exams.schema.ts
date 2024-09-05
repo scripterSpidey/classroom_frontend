@@ -17,9 +17,11 @@ export interface ExamsSchema {
         student_id: string,
         student_name: string,
         obtained_mark: number,
+        answers:string[],
         correct_answers: number,
         wrong_answers: number,
         result: string,
+        valuated:boolean
     }>,
     questions: Array<{
         question: string,
@@ -29,3 +31,6 @@ export interface ExamsSchema {
         answer?: string
     }>
 }
+
+export type ExamQuestionType = ExamsSchema['questions'][number];
+export type ExamAttendedType = ExamsSchema['attended'][number]

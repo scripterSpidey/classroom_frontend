@@ -44,7 +44,6 @@ export const SocketContextProvider: React.FC<SocketContextProviderPropsType> = (
 
     useEffect(() => {
         if (activeUser) {
-            console.log('establishing connections..... ')
             const socket = io(BASE_URL, {
                 query: {
                     classroomId,
@@ -55,13 +54,10 @@ export const SocketContextProvider: React.FC<SocketContextProviderPropsType> = (
             setSocket(socket);
 
             socket.on('onlineUsers', (users) => {
-                
-                console.log("online: ", users);
                 dispatch(setOnlineUsers({onlineUsers:users}))
             })
 
             socket.on('announcement',data=>{
-                console.log(data)
                 dispatch(addAnnouncementStudent(data))
                 dispatch(addAnnouncementTeacher(data))
             })

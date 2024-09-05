@@ -39,8 +39,7 @@ const NewExam = () => {
             setDuration('');
         }
     }
-    console.log(dayjs(startMoment).format('YYYY-MM-DDTHH:mm:ss'))
-    console.log(startError)
+
     const onProceed = () => {
         
         let errorOccured = false;

@@ -125,3 +125,13 @@ export const fetchAnnouncementsForStudent = async()=>{
         throw error;
     }
 }
+
+export const startExam = async(examId:string)=>{
+    const response = await axiosreq.patch(studentClassroonEndpoints.exam(examId));
+    return response.data;
+}
+
+export const submitExam = async(examId:string,data:any)=>{
+    const response = await axiosreq.post(studentClassroonEndpoints.exam(examId),data);
+    return response.data;
+}

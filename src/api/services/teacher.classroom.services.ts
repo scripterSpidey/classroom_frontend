@@ -208,3 +208,9 @@ export const getAllExamsForTeacher = async ():Promise<ExamsSchema[]>=>{
     }
 }
 
+export const publishExamResult = async (examId:string,body:any):Promise<any>=>{
+    const response = await axiosreq.patch(teacherClassroomEndpoints.exam(examId),body);
+    return response.data;
+}
+
+

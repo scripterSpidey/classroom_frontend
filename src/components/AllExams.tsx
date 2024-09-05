@@ -1,21 +1,55 @@
 import React from 'react'
 import useRole from '../hooks/useRole'
-import { NavLink } from 'react-router-dom';
-import useGetExams from '../hooks/useGetExams';
+import { NavLink, useNavigate } from 'react-router-dom';
+
 import { useAppSelector } from '../store/store';
 import { convertToIST } from '../utils/indian.std.time';
 import TimerIcon from '@mui/icons-material/Timer';
 import Filter1Icon from '@mui/icons-material/Filter1';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { ExamAttendedType, ExamsSchema } from '../schema/exams.schema';
 
 const AllExams = () => {
     const role = useRole();
-   
-    useGetExams();
-
+    const navigate = useNavigate();
+    const student = useAppSelector(state => state.studentAuth.user)
     const allExams = role == 'teacher' ?
         useAppSelector(state => state.teacherClassroom.exams) :
-        useAppSelector(state => state.studentClassroom.exams)
+        useAppSelector(state => state.studentClassroom.exams);
+
+    const isPassed = (submissions: ExamAttendedType[]): JSX.Element => {
+        const submission = submissions.find(submission => submission.student_id == student?._id);
+        if (submission?.valuated == false) return <button className='warning-btn'>Valuation pending</button>
+        if (submission?.result == 'pass') {
+            return <div className=' flex items-center gap-2'>
+                <button className='success-btn'>Passed</button>
+                <h1 className='font-bold'>Score: <span>{submission.obtained_mark}</span></h1>
+            </div>
+        }
+        if (submission?.result == 'fail'){
+            return <div className=' flex items-center gap-2'>
+                <button className='danger-btn'>Fail</button>
+                <h1 className='font-bold'>Score: <span>{submission.obtained_mark}</span></h1>
+            </div>
+        }
+        return <button></button>
+    }
+
+    const statusButtons = (startDate: string, lastDate: string, exam: ExamsSchema) => {
+        if (exam.attended.some(submission => submission.student_id == student?._id)) {
+            return <button className='success-btn w-full'>Submitted</button>
+        }
+        if (Date.now() > new Date(lastDate).getTime() && !exam.attended.some(submission => submission.student_id == student?._id)) {
+            return <button className='danger-btn w-full'>Not submitted</button>
+        }
+        if (Date.now() >= new Date(startDate).getTime() && Date.now() <= new Date(lastDate).getTime() && !exam.attended.some(submission => submission.student_id == student?._id)) {
+            return <button className='success-btn w-full'>On Going</button>
+        }
+        if (Date.now() >= new Date(startDate).getTime() && Date.now() <= new Date(lastDate).getTime() && exam.attended.some(submission => submission.student_id == student?._id)) {
+            return <button className='success-btn w-full'>Submitted</button>
+        }
+
+    }
     return (
         <div className='w-full'>
             {role == 'teacher' &&
@@ -48,11 +82,21 @@ const AllExams = () => {
                                 <h5 className='font-bold '>{`${exam.total_questions} questions`}</h5>
                             </div>
                         </div>
-                        {role=='student'&& 
-                        ( (new Date(exam.start_time).getTime() <= Date.now()) &&  Date.now()  <= new Date(exam.last_time_to_start).getTime()) &&
-                        <div>
-                            <button className='primary-btn'>Attend</button>
-                        </div>}
+                        {role == 'student' &&
+                            <div>
+                                {isPassed(exam.attended)}
+                            </div>}
+                        {role == 'student' &&
+                            <div className='bg-green-300 w-full sm:w-auto'>
+                                {statusButtons(exam.start_time, exam.last_time_to_start, exam)}
+                            </div>}
+                        {/* {role=='student'&& ( (new Date(exam.start_time).getTime() <= Date.now()) &&  Date.now()  <= new Date(exam.last_time_to_start).getTime()) && */}
+                        <div className=' w-full mt-3 sm:mt-0 sm:w-auto'>
+                            <button
+                                onClick={() => navigate(`view/${exam._id}`)}
+                                className='primary-btn w-full'>View</button>
+                        </div>
+                        {/* // } */}
                     </div>
                 )
                 }

@@ -1,45 +1,41 @@
-import React, { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { useNavigate } from 'react-router-dom';
 
+import { useNavigate, useParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import AlarmOffIcon from '@mui/icons-material/AlarmOff';
-import { convertToIST, ReadableDate } from '../../../utils/indian.std.time';
+import { convertToIST } from '../../../utils/indian.std.time';
+import { startExam } from '../../../api/services/student.service';
+import { saveOnGoingExamDetails } from '../../../store/slices/persist.slice';
 import handleError from '../../../utils/error.handler';
-import { createExam } from '../../../api/services/teacher.classroom.services';
-import toast from 'react-hot-toast';
-import { clearExamDetails } from '../../../store/slices/persist.slice';
+import { useState } from 'react';
+import { Backdrop, CircularProgress } from '@mui/material';
+import { APP_URL, BASE_URL } from '../../../constants/env';
 
-const PreviewExam = () => {
-    const navigate = useNavigate();
+const ViewExam = () => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const examDetails = useAppSelector(state => state.persistedData.createExam);
-   
-    useEffect(()=>{
-      if(!examDetails){
-        navigate('/teacher/classroom/exams')
-      }
-    },[examDetails])
-
-    if (!examDetails) {
-        return
-    }
-    const handlePublish = async () => {
+    const { examId } = useParams();
+    const [loading, setLoading] = useState(false)
+    const examDetails = useAppSelector(state => state.studentClassroom.exams.find(exam => exam._id === examId));
+    console.log(examDetails?.instructions)
+    if (!examDetails) return;
+    const handleStartExam = async () => {
         try {
-            await createExam(examDetails);
-            toast.success('New exam published successfully');
-           
-            dispatch(clearExamDetails())
-           
-            navigate('/teacher/classroom/exams')
+            setLoading(true)
+            const exam = await startExam(examId!);
+            setLoading(false)
+            dispatch(saveOnGoingExamDetails(exam));
+            window.open(`${APP_URL}student/classroom/exams/attend/${examId}`)
         } catch (error) {
             handleError(error)
+        } finally {
+            setLoading(false)
         }
     }
+
     return (
         <div className=' w-full flex flex-col h-full items-center p-5 '>
-
             <div className='text-lg font-bold text-costume-primary-color uppercase'>{examDetails.title}</div>
             <hr className='border w-full mx-2 mt-3' />
             <div className='flex w-full md:w-3/4  h-full flex-col'>
@@ -55,11 +51,11 @@ const PreviewExam = () => {
                                 </div>
                                 <div className='flex md:w-1/4 gap-1 flex-col justify-center items-center '>
                                     <AccessTimeIcon />
-                                    <h6>{`${convertToIST(examDetails.startTime as string)} `}</h6>
+                                    <h6>{`${convertToIST(examDetails.start_time as string)} `}</h6>
                                 </div>
                                 <div className='flex md:w-1/4 gap-1 flex-col justify-center items-center '>
                                     <AlarmOffIcon />
-                                    <h6>{`${convertToIST(examDetails.lastTimeToStart as string)}`}</h6>
+                                    <h6>{`${convertToIST(examDetails.last_time_to_start as string)}`}</h6>
                                 </div>
                             </div>
                         </div>
@@ -77,18 +73,32 @@ const PreviewExam = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <div></div>
-                        <div></div>
+                        <div className=' w-full  p-3 rounded-lg flex flex-col items-center shadow-lg border-2'>
+                            <h1 className='text-lg font-bold text-costume-primary-color'>Instructions</h1>
+                            <hr className='mt-2 w-full border' />
+                            <div className='w-full p-4'>
+                                <li>Once you start the exam, then there is no going back until it is submitted.</li>
+                                <li>Refreshing the page or switching between tabs during exam will result in failure of exam.</li>
+                                <li>Exam has to be submitted within the proivided time.</li>
+                                <li>{examDetails.instructions}</li>
+                            </div>
+                        </div>
+                        {(Date.now() >= new Date(examDetails.start_time).getTime() && Date.now() <= new Date(examDetails.last_time_to_start).getTime()) &&
+                            <div className='w-full flex justify-center'>
+                                <button
+                                    onClick={handleStartExam}
+                                    className='primary-btn'>Start Exam</button>
+                            </div>}
                     </div>
                 </div>
+                <Backdrop
+                    sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+                    open={loading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </div>
-            <button
-                onClick={handlePublish}
-                className='primary-btn'>Publish</button>
         </div>
     )
 }
 
-export default PreviewExam
+export default ViewExam
