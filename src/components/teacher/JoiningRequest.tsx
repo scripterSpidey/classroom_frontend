@@ -4,7 +4,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { motion } from 'framer-motion';
 import { acceptJoiningRequest, rejectJoiningRequest } from '../../api/services/teacher.classroom.services';
 import handleError from '../../utils/error.handler';
-// import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useAppDispatch } from '../../store/store';
 import { acceptRequests,  rejectRequests } from '../../store/slices/teacher.classroom.slice';
 
@@ -18,10 +17,7 @@ type JoiningRequestTableProps = {
 
 const JoiningRequestTable: React.FC<JoiningRequestTableProps> = ({ closeRequests,classroom_id,requests }) => {
     const dispatch = useAppDispatch();
-    console.log('joining request rendered')
-   
-   
-    console.log(requests)
+    console.log(classroom_id)
     const acceptRequestHandler = async (student_id:string,index:number)=>{
         try {
             const body = {student_id}

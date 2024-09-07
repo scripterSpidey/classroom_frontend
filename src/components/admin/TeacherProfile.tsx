@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TeacherSchema } from '../../schema/teacher.schema';
 import handleError from '../../utils/error.handler';
 import admin from '../../api/services/admin.services';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ReadableDate } from '../../utils/indian.std.time';
 import { ClassroomSchema } from '../../schema/classroom.schema';
 
 
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, TextField, Tooltip } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import toast from 'react-hot-toast';
@@ -17,7 +17,7 @@ import PersonIcon from '@mui/icons-material/Person';
 
 const TeacherProfile = () => {
     const { teacherId } = useParams();
-    const navigate = useNavigate();
+    const [reason,setReason] = useState<string>('')
     const [teacher, setTeacher] = useState<TeacherSchema | null>(null);
     const [openBlockTeacher, setOpenBlockTeacher] = useState(false)
 
@@ -37,7 +37,8 @@ const TeacherProfile = () => {
 
     const handleBlockTeacher = async () => {
         try {
-            await admin.blockTeacher(teacherId!);
+            if(!reason) return toast.error('Please specify the reason for blocking this user.')
+            await admin.blockTeacher(teacherId!,{reason});
             setOpenBlockTeacher(false)
             toast.success(`User has been ${teacher?.blocked ? 'Unblocked' : 'Blocked'} successfully`);
             setTeacher(prevTeacher => {
@@ -98,8 +99,21 @@ const TeacherProfile = () => {
                 </div>}
             {openBlockTeacher &&
                 <div className='fixed inset-0 flex z-20 items-center justify-center bg-black bg-opacity-30'>
-                    <div className=' flex flex-col gap-10 items-center p-10 rounded-md bg-neutral-800 '>
+                    <div className=' flex flex-col gap-10 items-center p-5 rounded-md bg-neutral-800 '>
                         <h3 className='text-white text-xl text-opacity-70'>{`Are you sure to ${teacher?.blocked ? 'unblock' : 'block'} this user?`}</h3>
+                        <div className='bg-neutral-700 rounded-md w-full'>
+                            <TextField
+                                onChange={(e)=>setReason(e.target.value)}
+                                id="outlined-multiline-flexible"
+                                label={ teacher?.blocked?"Send message via mail":'Send reason via mail'}
+                                multiline
+                                color='warning'
+                                inputProps={{
+                                    style:{color:'white'}
+                                }}
+                                fullWidth
+                                maxRows={4}/>
+                        </div>
                         <div className='flex w-full justify-center gap-8'>
                             <Tooltip title="Yes">
                                 <IconButton className='text-white'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StudentSchema } from '../../schema/student.schema'
 import { ReadableDate } from '../../utils/indian.std.time'
 import handleError from '../../utils/error.handler'

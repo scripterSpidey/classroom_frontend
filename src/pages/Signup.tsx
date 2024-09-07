@@ -2,7 +2,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import { Container, Paper, Typography, Box, TextField, Button, Stack } from '@mui/material';
+import { Container, Paper, Typography, Box, TextField, Button, Stack, IconButton, InputAdornment } from '@mui/material';
 import { FaGoogle } from 'react-icons/fa';
 import Divider from '@mui/material/Divider';
 import Footer from '../components/Footer';
@@ -24,6 +24,8 @@ import { registerUser } from '../store/slices/register.slice';
 import { addStudent } from '../store/slices/student.auth.slice';
 import { addTeacher } from '../store/slices/teacher.auth.slice';
 import useRole from '../hooks/useRole';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
 
@@ -46,7 +48,9 @@ const Signup: React.FC<SignUpProps> = () => {
   const [nameError, setNameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const googleLogin = useGoogleLogin({
 
@@ -59,17 +63,24 @@ const Signup: React.FC<SignUpProps> = () => {
       role == 'student' ?
         dispatch(addStudent({
           email: loginUser.email,
-          id: loginUser.id,
+          _id: loginUser.id,
           name: loginUser.name,
           profile_image: loginUser.profile_image,
-          classrooms:[]
+          classrooms:[],
+          createdAt:'',
+          updateAt:'',
+          blocked:false,
+          verified:true
         })) :
         dispatch(addTeacher({
           email: loginUser.email,
-          id: loginUser.id,
+          _id: loginUser.id,
           name: loginUser.name,
           profile_image: loginUser.profile_image,
-          classrooms:[]
+          classrooms:[],
+          createdAt:'',
+          blocked:false,
+          verified:true
         }));
 
       navigate(`/${role}/dashboard`);
@@ -152,7 +163,7 @@ const Signup: React.FC<SignUpProps> = () => {
               variant="outlined"
               fullWidth
               error={emailError}
-              // helperText= {emailError? "Enter a valid email" : ""}
+             
               required
               inputRef={emailRef}
               onBlur={validateEmail}
@@ -165,14 +176,14 @@ const Signup: React.FC<SignUpProps> = () => {
                 },
               }}
             />
-            {/* <p className="text-sm text-gray-600">Enter your name</p> */}
+            
             <TextField
               label={nameError ? "Is this even a name? Give us real stuff" : "Full name"}
               variant="outlined"
               fullWidth
               required
               error={nameError}
-              // helperText= {nameError? "Name should contain more than 3 letters" : ""}
+             
               inputRef={nameRef}
               onBlur={validateName}
               sx={{
@@ -184,10 +195,10 @@ const Signup: React.FC<SignUpProps> = () => {
                 },
               }}
             />
-            {/* <p className="text-sm text-gray-600">Enter password</p> */}
+           
             <TextField
               label={passwordError ? "This ain't a proper password" : "Password"}
-              type="password"
+              type={showPassword? "text":"password"}
               variant="outlined"
               fullWidth
               inputRef={passwordRef}
@@ -201,12 +212,25 @@ const Signup: React.FC<SignUpProps> = () => {
                 },
                 '& .MuiInputLabel-root': {
                   fontSize: '0.8rem',
-                },
-              }}/>
+                },}}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={()=>setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}/>
             <TextField
               label={confirmPasswordError ? "You mispelled your password! Check it again" : "Retype password"}
-              type="password"
+             
               variant="outlined"
+              type={showConfirmPassword? "text":"password"}
               fullWidth
               required
               error={confirmPasswordError}
@@ -219,6 +243,19 @@ const Signup: React.FC<SignUpProps> = () => {
                 '& .MuiInputLabel-root': {
                   fontSize: '0.8rem',
                 },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={()=>setShowConfirmPassword(!showConfirmPassword)}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}/>
             <Button
               variant="contained"

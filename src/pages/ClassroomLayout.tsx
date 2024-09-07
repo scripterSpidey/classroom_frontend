@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import ClassroomNavBar from '../components/ClassroomNavBar';
 import { Outlet } from 'react-router-dom';
 import { fetchClassroomDetailsForStudent } from '../api/services/student.classroom.services';

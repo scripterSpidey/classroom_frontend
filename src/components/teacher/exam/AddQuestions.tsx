@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react'
+import  { useEffect, useRef } from 'react'
 import QuestionCard from './QuestionCard';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { saveQuestionPaperType } from '../../../store/slices/persist.slice';

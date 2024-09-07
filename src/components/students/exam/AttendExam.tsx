@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { useEffect, useState } from 'react'
+import { useAppSelector } from '../../../store/store'
 import { ExamQuestionType } from '../../../schema/exams.schema';
 import AnswerDesctiptive from './AnswerDesctiptive';
 import AnswerMCQ from './AnswerMCQ';
@@ -28,7 +28,7 @@ const formatTime = (time: number): string => {
 }
 
 const AttendExam = () => {
-  const dispatch = useAppDispatch();
+ 
   const navigate = useNavigate()
   const [questionIndex, setQuestionIndex] = useState(0);
   const exam = useAppSelector(state => state.persistedData.onGOingExam);

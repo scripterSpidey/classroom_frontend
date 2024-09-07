@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import NewMaterial from '../components/teacher/NewMaterial';
 import { useAppSelector } from '../store/store';
 import useRole from '../hooks/useRole';
 import { convertToIST } from '../utils/indian.std.time';
 import useGetMaterials from '../hooks/useGetMaterials';
-import { deleteMaterial } from '../api/services/teacher.classroom.services';
+
 
 const Materials = () => {
 
@@ -18,9 +18,7 @@ const Materials = () => {
 
     
 
-    const handleDeletion = async (materialId:string) => {
-        const data = await deleteMaterial(materialId);
-    }
+   
 
     return (
         <div className=' h-full flex  flex-col   rounded-lg border-2 shadow-md border-gray-200 w-full'>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Person3Icon from '@mui/icons-material/Person3';
 import Face3Icon from '@mui/icons-material/Face3';
@@ -17,12 +17,12 @@ const AdminSidebar = () => {
         <div className='h-full rounded-lg  bg-neutral-900 w-1/6  m-2 mt-0'>
             <div className='flex flex-col gap-2 h-full   rounded-md  p-3'>
                 <div className='space-y-6 mt-4 text-white font-semibold text-opacity-60 pl-3'>
-                    <div
+                    {/* <div
                         onClick={() => navigate('/admin/dashboard')}
                         className={` ${isActive('/admin/dashboard') && 'text-white'} text-lg cursor-pointer items-center flex space-x-3 hover:text-white transition-colors duration-300`}>
                         <DashboardIcon fontSize='large' />
                         <p>Dashboard</p>
-                    </div>
+                    </div> */}
                     <div
                         onClick={() => navigate('/admin/teachers')}
                         className={` ${isActive('/admin/teachers') && 'text-white'} text-lg cursor-pointer items-center flex space-x-3 hover:text-white transition-colors duration-300`}>

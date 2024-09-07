@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ClassroomSchema } from "../../schema/classroom.schema";
 import { TeacherClassroomDocType, TeacherSchema } from "../../schema/teacher.schema";
 
 export interface AuthState {
@@ -17,7 +16,8 @@ const initialState: AuthState = {
         blocked: false,
         verified: true,
         classrooms: [],
-        profile_image: ''
+        profile_image: '',
+        createdAt:''
     }
 }
 

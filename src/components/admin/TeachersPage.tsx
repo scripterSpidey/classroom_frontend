@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import handleError from '../../utils/error.handler'
 import admin from '../../api/services/admin.services'
 import { TeacherSchema } from '../../schema/teacher.schema'

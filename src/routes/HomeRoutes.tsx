@@ -1,8 +1,7 @@
-import { Outlet, Navigate, useNavigate } from 'react-router-dom'
+import { Outlet, Navigate } from 'react-router-dom'
 
 import useRole from '../hooks/useRole';
 import { useAuth } from '../hooks/useAuth';
-import { useAppSelector } from '../store/store';
 
 interface HomeRoutesProps {
 

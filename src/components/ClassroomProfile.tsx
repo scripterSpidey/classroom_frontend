@@ -1,4 +1,4 @@
-import React from 'react'
+
 import PersonalDetails from './PersonalDetails'
 import { useParams } from 'react-router-dom'
 

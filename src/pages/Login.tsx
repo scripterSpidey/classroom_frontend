@@ -1,5 +1,5 @@
 
-import { Container, Paper, Typography, Box, TextField, Button, Stack } from '@mui/material';
+import { Container, Paper, Typography, Box, TextField, Button, Stack, IconButton, InputAdornment } from '@mui/material';
 import { FaGoogle } from 'react-icons/fa';
 import Divider from '@mui/material/Divider';
 import Footer from '../components/Footer';
@@ -23,6 +23,8 @@ import { useGoogleLogin, TokenResponse } from '@react-oauth/google';
 import { loginStudentWithGoogle } from '../api/services/student.service';
 import useRole from '../hooks/useRole';
 import { validEmail } from '../utils/form.validations';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface LoginProps {
 
@@ -38,7 +40,8 @@ const Login: React.FC<LoginProps> = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [forgtoPassword, setForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
-  const [forgotPasswordEmailError, setForgotPasswordEmailError] = useState(false)
+  const [forgotPasswordEmailError, setForgotPasswordEmailError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (response: TokenResponse) => {
@@ -168,7 +171,7 @@ const Login: React.FC<LoginProps> = () => {
             <p className="text-sm text-gray-600">Enter your password</p>
             <TextField
               label="Password"
-              type="password"
+              type={showPassword? "text":"password"}
               error={passwordError}
               helperText={passwordError ? "Enter a password" : ""}
               variant="outlined"
@@ -183,6 +186,19 @@ const Login: React.FC<LoginProps> = () => {
                 '& .MuiInputLabel-root': {
                   fontSize: '0.8rem',
                 },
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={()=>setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
             <button
@@ -247,7 +263,7 @@ const Login: React.FC<LoginProps> = () => {
               className='primary-btn mt-5'>Get reset link</button>
           </div>
         </div>}
-      {/* <Toaster position='top-right'></Toaster> */}
+     
       <Footer></Footer>
     </>
   );

@@ -16,6 +16,7 @@ const useGetMaterials = ()=>{
         const fetchDatas = async ()=>{
             try {
                 if(role=='teacher'){
+                    setLoading(true)
                     const materials = await getMaterialsForTeacher();
                     dispatch(saveAllMaterialsForTeacher(materials))
                 }else if(role == 'student'){
@@ -24,6 +25,8 @@ const useGetMaterials = ()=>{
                 }
             } catch (error) {
                 handleError(error)
+            }finally{
+                setLoading(false)
             }
         }
 

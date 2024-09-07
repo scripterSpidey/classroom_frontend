@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ClassroomSchema } from '../../schema/classroom.schema'
 import handleError from '../../utils/error.handler';
 import admin from '../../api/services/admin.services';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, TextField, Tooltip } from '@mui/material';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import PersonIcon from '@mui/icons-material/Person';
-import { ReadableDate } from '../../utils/indian.std.time';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import toast from 'react-hot-toast';
 
 
 const ClassroomInfo = () => {
   const navigate = useNavigate()
   const [classroom, setClassroom] = useState<ClassroomSchema | null>(null);
   const { classroomId } = useParams();
+  const [reason, setReason] = useState<string>('')
   const [openBanClassroom, setOpenBanClassroom] = useState(false)
 
   if (!classroomId) {
@@ -37,7 +38,8 @@ const ClassroomInfo = () => {
 
   const handleBanClassroom = async () => {
     try {
-      await admin.banOrUnbanClassroom(classroomId)
+      if(!reason) return toast.error('Please specify the reason for blocking this user.')
+      await admin.banOrUnbanClassroom(classroomId,{reason})
       setOpenBanClassroom(false)
       setClassroom(prevClassroom => {
         if (prevClassroom) {
@@ -97,6 +99,19 @@ const ClassroomInfo = () => {
         <div className='fixed inset-0 flex z-20 items-center justify-center bg-black bg-opacity-30'>
           <div className=' flex flex-col gap-10 items-center p-10 rounded-md bg-neutral-800 '>
             <h3 className='text-white text-xl text-opacity-70'>{`Are you sure to ${classroom?.banned ? 'remove ban of this' : 'ban'} this classroom?`}</h3>
+            <div className='bg-neutral-700 rounded-md w-full'>
+              <TextField
+                onChange={(e) => setReason(e.target.value)}
+                id="outlined-multiline-flexible"
+                label={classroom?.banned ? "Send message via mail" : 'Send reason via mail'}
+                multiline
+                color='warning'
+                inputProps={{
+                  style: { color: 'white' }
+                }}
+                fullWidth
+                maxRows={4} />
+            </div>
             <div className='flex w-full justify-center gap-8'>
               <Tooltip title="Yes">
                 <IconButton className='text-white'>

@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { setOnlineUsers } from "../store/slices/socket.slice";
 import { addAnnouncementStudent } from "../store/slices/student.classroom.slice";
 import { addAnnouncementTeacher } from "../store/slices/teacher.classroom.slice";
+import { setLiveClassStatus } from "../store/slices/persist.slice";
 
 interface SocketContextType {
     socket: Socket | null,
@@ -60,6 +61,21 @@ export const SocketContextProvider: React.FC<SocketContextProviderPropsType> = (
             socket.on('announcement',data=>{
                 dispatch(addAnnouncementStudent(data))
                 dispatch(addAnnouncementTeacher(data))
+            })
+
+            socket.on('classroomState',(state:{live:boolean})=>{
+                console.log(state)
+                dispatch(setLiveClassStatus(state?.live))
+            })
+
+            socket.on('liveClassStarted',(liveClass)=>{
+                console.log(liveClass)
+                dispatch(setLiveClassStatus(true))
+            })
+
+            socket.on('liveClassEnded',(liveClass)=>{
+                console.log(liveClass)
+                dispatch(setLiveClassStatus(false))
             })
 
             return () => { socket.close() }

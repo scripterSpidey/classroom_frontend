@@ -4,14 +4,14 @@ import { useAppSelector } from '../store/store';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import UploadImage from '../components/UploadImage';
 import { Toaster } from 'react-hot-toast';
-import EditCareers from '../components/EditCareers';
+// import EditCareers from '../components/EditCareers';
 import defaultProfile from '../assets/images/defaultProfile.jpg'
 
 const Profile: React.FC = () => {
 
     const role = useRole();
     const [openUploadImage, setOpenUploadImage] = useState<boolean>(false);
-    const [openCareers, setOpenCareers] = useState<boolean>(false)
+    // const [openCareers, setOpenCareers] = useState<boolean>(false)
 
     useEffect(() => {
         console.log('profile image updated...')
@@ -91,7 +91,7 @@ const Profile: React.FC = () => {
                 {/* </div> */}
             </div>
             {openUploadImage && <UploadImage closeForm={() => setOpenUploadImage(false)} />}
-            {openCareers && <EditCareers/>}
+            {/* {openCareers && <EditCareers/>} */}
             <Toaster></Toaster>
         </div>
     )

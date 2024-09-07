@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ExamQuestionType, ExamsSchema } from "../../schema/exams.schema"
-import { act } from "react"
-import { FaMarkdown } from "react-icons/fa"
+
 
 type StudentPersistDatasType = {
     classroom_id: string | null
@@ -66,6 +65,10 @@ export interface PersistedDatasInterface {
         marks?: number[],
         response?: boolean[],
         status?: string
+    },
+    liveClass:{
+        title:string,
+        live:boolean
     }
 }
 
@@ -97,6 +100,10 @@ const initialState: PersistedDatasInterface = {
         marks: [],
         response: [],
         status: 'fail'
+    },
+    liveClass: {
+        title: "",
+        live: false
     }
 }
 
@@ -193,6 +200,12 @@ export const PersistedDatasSlice = createSlice({
         },
         setPassStatus: (state, action: PayloadAction<{ status: string }>) => {
             state.valuatingExam.status = action.payload.status
+        },
+        setLiveClassTitle:(state,action:PayloadAction<string>)=>{
+            state.liveClass.title = action.payload
+        },
+        setLiveClassStatus:(state,action:PayloadAction<boolean>)=>{
+            state.liveClass.live = action.payload;
         }
     }
 })
@@ -215,5 +228,7 @@ export const {
     saveValuatingExam,
     updateMark,
     updateResponse,
-    setPassStatus
+    setPassStatus,
+    setLiveClassTitle,
+    setLiveClassStatus
 } = PersistedDatasSlice.actions

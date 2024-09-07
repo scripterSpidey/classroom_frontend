@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+
 import { useAppSelector } from '../../../store/store'
 
 import StudentAnswers from './StudentAnswers';
@@ -9,8 +9,7 @@ const AnswerPaper = () => {
     const navigate = useNavigate()
     const examId = useAppSelector(state => state.persistedData.valuatingExam.examId);
     const studentId = useAppSelector(state => state.persistedData.valuatingExam.studentId);
-    const [marks, setMarks] = useState<number[]>([]);
-
+    
     const examDetails = useAppSelector(state => state.teacherClassroom.exams.find(exam => exam._id == examId));
     const submission = examDetails?.attended.find(submission => submission.student_id === studentId);
     const totalMark = useAppSelector(state => state.persistedData.valuatingExam.totalMark)

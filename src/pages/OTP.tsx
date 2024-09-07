@@ -81,7 +81,13 @@ const OTP:React.FC<OTPProps> = () => {
       dispatch(addStudent({
         email:response.email,
         name:response.name,
-        id:userId,
+        _id:userId,
+        blocked:false,
+        verified:true,
+        classrooms:[],
+        createdAt:'',
+        updateAt:'',
+        profile_image:''
       }))
 
       navigate(`/${role}/dashboard`)

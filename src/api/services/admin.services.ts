@@ -26,8 +26,8 @@ const admin = {
         const response = await axiosreq.get(adminEndpoints.teacher(teacherId));
         return response.data;
     },
-    blockTeacher: async (teacherId: string) => {
-        const response = await axiosreq.patch(adminEndpoints.teacher(teacherId));
+    blockTeacher: async (teacherId: string,body:{reason:string}) => {
+        const response = await axiosreq.patch(adminEndpoints.teacher(teacherId),body);
         return response.data;
     },
     fetchStudentInfo: async (studentId: string) => {
@@ -38,12 +38,12 @@ const admin = {
         const response = await axiosreq.get(adminEndpoints.classroom(classroomId));
         return response.data;
     },
-    banOrUnbanClassroom: async (classroomId: string) => {
-        const response = await axiosreq.patch(adminEndpoints.classroom(classroomId));
+    banOrUnbanClassroom: async (classroomId: string,body:{reason:string}) => {
+        const response = await axiosreq.patch(adminEndpoints.classroom(classroomId),body);
         return response.data;
     },
-    blockStudent: async (studentId: string) => {
-        const response = await axiosreq.patch(adminEndpoints.student(studentId));
+    blockStudent: async (studentId: string,body:{reason:string}) => {
+        const response = await axiosreq.patch(adminEndpoints.student(studentId),body);
         return response.data;
     }
 }

@@ -1,7 +1,4 @@
 
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import { NavLink } from 'react-router-dom';
 

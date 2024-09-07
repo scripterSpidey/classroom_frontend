@@ -12,7 +12,10 @@ export interface TeacherClassroomStateInterface {
     privateChats: PrivateChatSchema[],
     works:WorksSchema[],
     exams:ExamsSchema[],
-    announcements:AnnouncementsSchema[]
+    announcements:AnnouncementsSchema[],
+    liveClass:{
+        title:string
+    }
 }
 
 const initialState: TeacherClassroomStateInterface = {
@@ -34,7 +37,10 @@ const initialState: TeacherClassroomStateInterface = {
     privateChats: [],
     works: [],
     exams: [],
-    announcements:[]
+    announcements: [],
+    liveClass: {
+        title: ""
+    }
 }
 
 export interface ManageRequestPayload {
@@ -155,17 +161,18 @@ export const teacherClassroomSlice = createSlice({
             if(state.announcements){
                 state.announcements.unshift(action.payload)
             }
-        }
+        },
+        
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchClassroomDetailsForTeacherThunk.pending, (state, action) => {
+            .addCase(fetchClassroomDetailsForTeacherThunk.pending, () => {
 
             })
             .addCase(fetchClassroomDetailsForTeacherThunk.fulfilled, (state, action) => {
                 state.classroom = action.payload
             })
-            .addCase(fetchClassroomDetailsForTeacherThunk.rejected, (state, action) => {
+            .addCase(fetchClassroomDetailsForTeacherThunk.rejected, () => {
                 console.error('thunk fetching of teacherClassroom failed')
             })
 
@@ -192,7 +199,8 @@ export const {
     updateWorkMarkRedux,
     saveAllExamsInStoreForTeacher,
     saveAllAnnouncementsForTeacher,
-    addAnnouncementTeacher
+    addAnnouncementTeacher,
+    
 } = teacherClassroomSlice.actions;
 
 export default teacherClassroomSlice.reducer;

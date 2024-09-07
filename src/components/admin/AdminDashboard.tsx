@@ -1,4 +1,4 @@
-import React from 'react'
+
 import AdminDashboardCard from './components/AdminDashboardCard'
 
 const AdminDashboard = () => {

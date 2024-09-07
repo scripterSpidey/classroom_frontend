@@ -133,3 +133,9 @@ export const getAllExamsForStudent = async ():Promise<ExamsSchema[]>=>{
         throw error
     }
 }
+
+
+export const getJoinLiveClassToken = async ():Promise<any>=>{
+    const response = await axiosreq.get(studentClassroonEndpoints.liveClass);
+    return response.data;
+}

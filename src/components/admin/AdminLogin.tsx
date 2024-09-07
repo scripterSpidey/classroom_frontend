@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import admin from '../../api/services/admin.services'
 import handleError from '../../utils/error.handler'
 import { useNavigate } from 'react-router-dom'
@@ -20,7 +20,7 @@ const AdminLogin = () => {
 
         try {
             await admin.login(body)
-            navigate('/admin/dashboard')
+            navigate('/admin/teachers')
         } catch (error) {
             handleError(error)
         }

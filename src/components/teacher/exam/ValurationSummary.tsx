@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import  {useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import CloseIcon from '@mui/icons-material/Close';
-import TimerIcon from '@mui/icons-material/Timer';
 import PinIcon from '@mui/icons-material/Pin';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import { setPassStatus } from '../../../store/slices/persist.slice';
 import { publishExamResult } from '../../../api/services/teacher.classroom.services';
 import handleError from '../../../utils/error.handler';
-import { registerUser } from '../../../store/slices/register.slice';
 import { useNavigate } from 'react-router-dom';
 
 const ValuationSummary = () => {

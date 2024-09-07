@@ -1,4 +1,4 @@
-import { ClassroomSchema } from "./classroom.schema";
+
 
 
 export interface TeacherSchema{
@@ -13,7 +13,7 @@ export interface TeacherSchema{
         class_teacher_name: string,
         subject: string,
         classroom_name: string,
-        joined_at: Date,
+        joined_at: string,
         blocked: boolean
     }>,
     profile_image:string | null,

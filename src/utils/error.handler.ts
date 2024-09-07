@@ -1,14 +1,14 @@
 
-import { AxiosError } from 'axios';
+
 import { toast } from 'react-hot-toast';
 
 
 const handleError = (error: any) => {
 
   console.log('axios error: ', error.response)
-  if (error.response.status == 401) {
-    window.location.href = '/'
-  }
+  // if (error.response.status == 401) {
+  //   window.location.href = '/'
+  // }
   if (error.response) {
     toast.error(error.response.data)
   } else {

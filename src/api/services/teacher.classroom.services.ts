@@ -1,5 +1,5 @@
 
-import { asyncThunkCreator } from "@reduxjs/toolkit";
+
 import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { StudentSchema } from "../../schema/student.schema";
@@ -214,3 +214,13 @@ export const publishExamResult = async (examId:string,body:any):Promise<any>=>{
 }
 
 
+export const getLiveClassToken = async ():Promise<any>=>{
+    const response = await axiosreq.get(teacherClassroomEndpoints.liveClass);
+    return response.data;
+}
+
+
+export const startLiveClass = async (body:{title:string}):Promise<any>=>{
+    const response = await axiosreq.post(teacherClassroomEndpoints.liveClass,body);
+    return response.data;
+}

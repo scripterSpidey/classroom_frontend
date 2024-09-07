@@ -1,5 +1,5 @@
 import { Box, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { passwordMatch, validPassword } from '../utils/form.validations'
 import { useNavigate, useParams } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'

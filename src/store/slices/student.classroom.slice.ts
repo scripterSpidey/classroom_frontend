@@ -4,7 +4,7 @@ import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../
 import handleError from "../../utils/error.handler";
 import { PrivateChatSchema } from "../../schema/private.chats.schema";
 import { WorksSchema, WorkSubmissionType } from "../../schema/works.schema";
-import { ExamQuestionType, ExamsSchema } from "../../schema/exams.schema";
+import { ExamsSchema } from "../../schema/exams.schema";
 import { AnnouncementsSchema } from "../../schema/announcements.schema";
 
 
@@ -15,18 +15,6 @@ export interface StudentClassroomStateInterface {
     works: WorksSchema[],
     exams: ExamsSchema[],
     announcements: AnnouncementsSchema[],
-    // onGOingExam: {
-    //     title: string,
-    //     duration: number,
-    //     questionPaper: ExamQuestionType[],
-    //     studentAnswers: {
-    //         questionIndex: number,
-    //         answer: string
-    //     },
-    //     timeSpent: number,
-    //     startedAt: string|null,
-    //     endedAt: string|null
-    // }
 }
 
 
@@ -140,24 +128,16 @@ export const studentClassroomSlice = createSlice({
         saveAllExamsInStoreForStudent: (state, action: PayloadAction<ExamsSchema[]>) => {
             state.exams = action.payload;
         },
-        // saveOnGoingExamDetails: (state, action: PayloadAction<ExamsSchema>) => {
-        //     if (state.onGOingExam) {
-        //         state.onGOingExam.title = action.payload.title;
-        //         state.onGOingExam.duration = action.payload.duration;
-        //         state.onGOingExam.questionPaper = action.payload.questions;
-        //         state.onGOingExam.startedAt = String(new Date());
-        //     }
-        // }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchClassroomDetailsForStudentThunk.pending, (state, action) => {
+            .addCase(fetchClassroomDetailsForStudentThunk.pending, () => {
 
             })
             .addCase(fetchClassroomDetailsForStudentThunk.fulfilled, (state, action) => {
                 state.classroom = action.payload
             })
-            .addCase(fetchClassroomDetailsForStudentThunk.rejected, (state, action) => {
+            .addCase(fetchClassroomDetailsForStudentThunk.rejected, () => {
 
             })
 

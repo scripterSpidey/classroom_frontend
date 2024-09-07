@@ -1,5 +1,5 @@
 
-import { useNavigate, useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
@@ -10,10 +10,10 @@ import { saveOnGoingExamDetails } from '../../../store/slices/persist.slice';
 import handleError from '../../../utils/error.handler';
 import { useState } from 'react';
 import { Backdrop, CircularProgress } from '@mui/material';
-import { APP_URL, BASE_URL } from '../../../constants/env';
+import { APP_URL } from '../../../constants/env';
 
 const ViewExam = () => {
-    const navigate = useNavigate()
+    
     const dispatch = useAppDispatch()
     const { examId } = useParams();
     const [loading, setLoading] = useState(false)

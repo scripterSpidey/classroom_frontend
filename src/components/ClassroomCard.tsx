@@ -8,7 +8,7 @@ import { useAppDispatch } from '../store/store'
 import { saveStudentEquipedClassroom, saveTeacherEquipedClassroom } from '../store/slices/persist.slice'
 import { fetchClassroomDetailsForStudent } from '../api/services/student.classroom.services'
 import handleError from '../utils/error.handler'
-import { fetchClassroomDetailsForTeacherThunk } from '../store/slices/teacher.classroom.slice'
+
 import { fetchClassroomDetailsForTeacher } from '../api/services/teacher.classroom.services'
 
 type ClassroomCardPropsType = {

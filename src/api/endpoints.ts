@@ -54,7 +54,8 @@ export const teacherClassroomEndpoints={
     work:(workId:string)=>`teacher/classroom/work/${workId}`,
     exams:`teacher/classroom/exams`,
     announcements:'teacher/classroom/announcements',
-    exam:(examId:string)=>`teacher/classroom/exam/${examId}`
+    exam:(examId:string)=>`teacher/classroom/exam/${examId}`,
+    liveClass:`teacher/classroom/liveClass`
 }
 
 export const studentClassroonEndpoints = {
@@ -69,7 +70,8 @@ export const studentClassroonEndpoints = {
     work:(workId:string)=>`student/classroom/work?workId=${workId}`,
     announcements:'student/classroom/announcements',
     exams:`student/classroom/exams`,
-    exam:(examId:string)=>`student/classroom/exam/${examId}`
+    exam:(examId:string)=>`student/classroom/exam/${examId}`,
+    liveClass:`student/classroom/liveClass`
 }
 
 

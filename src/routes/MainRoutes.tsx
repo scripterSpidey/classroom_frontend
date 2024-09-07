@@ -48,10 +48,11 @@ import StudentProfile from "../components/admin/StudentProfile";
 import ViewExam from "../components/students/exam/ViewExam";
 import AttendExam from "../components/students/exam/AttendExam";
 import ReviewAnswers from "../components/students/exam/ReviewAnswers";
-import ViewSubmissions from "../components/teacher/ViewSubmissions";
 import ViewExamSubmission from "../components/teacher/exam/ViewExamSubmission";
 import AnswerPaper from "../components/teacher/exam/AnswerPaper";
 import ValuationSummary from "../components/teacher/exam/ValurationSummary";
+import ZegoLiveClass from "../pages/LiveClass";
+import AllLiveClasses from "../pages/AllLiveClasses";
 
 const RouteTree = createBrowserRouter(
     createRoutesFromElements(
@@ -81,8 +82,11 @@ const RouteTree = createBrowserRouter(
                                 <Route path="exams" element={<Exams />}>
                                     <Route index element={<AllExams />}></Route>
                                     <Route path="view/:examId" element={<ViewExam />}></Route>
-                                    <Route path="attend/:examId" element={<AttendExam/>}></Route>
-                                    <Route path="review" element={<ReviewAnswers/>}/>
+                                    <Route path="attend/:examId" element={<AttendExam />}></Route>
+                                    <Route path="review" element={<ReviewAnswers />} />
+                                </Route>
+                                <Route path="live_class" element={<AllLiveClasses />}>
+                                    <Route path="join" element={<ZegoLiveClass/>}></Route>
                                 </Route>
                                 <Route path="announcements" element={<Announcements />}></Route>
                             </Route>
@@ -117,12 +121,18 @@ const RouteTree = createBrowserRouter(
                                     <Route path="add_questions" element={<AddQuestions />} ></Route>
                                     <Route path="preview" element={<PreviewExam />} />
                                     <Route path="upload_questions"></Route>
-                                    <Route path="view/:examId" element={<ViewExamSubmission/>} ></Route>
-                                    <Route path="answer_paper" element={<AnswerPaper/>}/>
-                                    <Route path="valuation_summary" element={<ValuationSummary/>}/>
+                                    <Route path="view/:examId" element={<ViewExamSubmission />} ></Route>
+                                    <Route path="answer_paper" element={<AnswerPaper />} />
+                                    <Route path="valuation_summary" element={<ValuationSummary />} />
+                                </Route>
+                                <Route path="live_class" element={<AllLiveClasses />}>
+                                    <Route path="join" element={<ZegoLiveClass/>}></Route>
                                 </Route>
                                 <Route path="announcements" element={<Announcements />}></Route>
                             </Route>
+                            {/* <Route path="classroom/live_class/join">
+                                <Route index element={<ZegoLiveClass />}></Route>
+                            </Route> */}
                             <Route path="profile" element={<Profile />}></Route>
                             <Route path="student" >
                                 <Route path="profile/:student_id" element={<ClassroomProfile />}></Route>

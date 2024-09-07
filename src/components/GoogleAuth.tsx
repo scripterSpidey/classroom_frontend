@@ -1,10 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useState, useEffect } from 'react';
+import { googleLogout, TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 
+interface GoogleUserInfo {
+    id: string;
+    email: string;
+    verified_email: boolean;
+    name: string;
+    given_name: string;
+    family_name: string;
+    picture: string;
+    locale: string;
+  }
+
 function GoogleAuth() {
-    const [ user, setUser ] = useState([]);
-    const [ profile, setProfile ] = useState([]);
+    const [ user, setUser ] =  useState<TokenResponse | null>(null);
+    const [ profile, setProfile ] = useState<null|GoogleUserInfo>(null);
 
     const login = useGoogleLogin({
         onSuccess: (codeResponse) =>{
