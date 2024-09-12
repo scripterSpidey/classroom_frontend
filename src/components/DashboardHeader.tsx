@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {  Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import Box from '@mui/material/Box';
@@ -23,7 +23,7 @@ import { removeClassroom } from '../store/slices/teacher.classroom.slice';
 import defaultProfile from '../assets/images/defaultProfile.jpg'
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -49,9 +49,11 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const user = role == 'student' ?
-    useAppSelector(state => state.studentAuth.user) :
-    useAppSelector(state => state.teacherAuth.user) ;
+  const user =
+    useAppSelector(state => role == 'student' ?
+      state.studentAuth.user :
+      state.teacherAuth.user);
+
 
   if (!user) navigate('/');
 
@@ -64,7 +66,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
       role == 'student' ?
         dispatch(removeStudent()) :
         dispatch(removeTeacher());
-      
+
       dispatch(removeClassroom())
 
       googleLogout();
@@ -89,7 +91,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
           <div className="flex items-center space-x-2 bg-costume-primary-color p-2 rounded-lg hover:bg-gray-600 focus:outline-none">
             <img src={`${user?.profile_image}?${Date.now()}` as string || defaultProfile} alt="Profile Icon" className="h-8 w-8 rounded-full" />
             <div className=" flex  flex-col text-sm">
-              <span onClick={()=>navigate(`/${role}/profile`)} className="font-semibold">{user?.name}</span>
+              <span onClick={() => navigate(`/${role}/profile`)} className="font-semibold">{user?.name}</span>
               <span>{user?.email}</span>
               <span>{user?._id}</span>
             </div>

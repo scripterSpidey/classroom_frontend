@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import{ useEffect, useState } from 'react'
 import useRole from './useRole';
 import { getMessagesForTeacher } from '../api/services/teacher.classroom.services';

@@ -19,10 +19,9 @@ const Profile: React.FC = () => {
     });
 
 
-    const user = role == 'teacher' ?
-        useAppSelector(state => state.teacherAuth.user) :
-        useAppSelector(state => state.studentAuth.user); 
-
+    const user = useAppSelector(state => role == 'teacher' ?
+        state.teacherAuth.user :
+        state.studentAuth.user);
     return (
         <div className=' md:flex flex-row  justify-center  my-16 m-0 rounded-2xl sm:mx-5 md:mx-16 border-solid border-2   '>
             <div className=' flex md:w-1/3 p-10    justify-center image items-start'>
@@ -42,7 +41,7 @@ const Profile: React.FC = () => {
             <div className='w-2/3 mx-auto  py-10 '>
                 <div className="flow-root  px-5">
                     <div className='text-lg text-costume-primary-color font-semibold mb-3'>Personal Details</div>
-                    <hr className='border-2'/>
+                    <hr className='border-2' />
                     <dl className=" divide-y divide-gray-200 text-sm">
                         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 ">
                             <dt className="font-medium text-gray-900">Name</dt>
@@ -68,8 +67,8 @@ const Profile: React.FC = () => {
                         <p className='text-lg font-semibold'>Career Details</p>
                         <p className='font-normal text-sm cursor-pointer mr-3'>Add+</p>
                     </div> */}
-                    {/* <hr className='border-2'/> */}
-                    {/* <dl className=" divide-y divide-gray-200 text-sm">
+                {/* <hr className='border-2'/> */}
+                {/* <dl className=" divide-y divide-gray-200 text-sm">
                         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 ">
                             <dt className="font-medium text-gray-900">Name</dt>
                             <dd className="text-gray-700 sm:col-span-2">{user?.name}</dd>

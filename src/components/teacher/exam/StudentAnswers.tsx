@@ -16,25 +16,26 @@ const StudentAnswers: React.FC<StudentAnswersPropsType> = ({ question, submissio
     const dispatch = useAppDispatch()
     const handleTrue = () => {
         setResponse('true')
-        dispatch(updateResponse({value:true,index}))
+        dispatch(updateResponse({ value: true, index }))
     }
 
     const handleFalse = () => {
-        dispatch(updateResponse({value:false,index}))
+        dispatch(updateResponse({ value: false, index }))
         setResponse('false')
     }
-    
+
     const handleMark = (mark: string) => {
-        if ((/^\d+(\.\d+)?$/.test(mark.trim()) && parseFloat(mark.trim()) >= 0 && parseFloat(mark.trim()) <=question.mark) || mark.trim() == '' ) {
+        if ((/^\d+(\.\d+)?$/.test(mark.trim()) && parseFloat(mark.trim()) >= 0 && parseFloat(mark.trim()) <= question.mark) || mark.trim() == '') {
             setMark(mark);
-            dispatch(updateMark({mark:Number(mark),index}))
+            dispatch(updateMark({ mark: Number(mark), index }))
         }
     }
     return (
         <div className='w-full p-5 border bg-white rounded-md'>
             <div>
                 {question.type == 'mcq' ?
-                    <MCQAnswerCard question={question} index={index} answer={submission?.answers[index]!} /> : <DescriptiveAnswerCard question={question} index={index} answer={submission?.answers[index]!} />}
+                    <MCQAnswerCard question={question} index={index} answer={submission?.answers[index]} /> :
+                    <DescriptiveAnswerCard question={question} index={index} answer={submission?.answers[index]} />}
             </div>
             <div className='w-full mt-4 flex gap-3 items-center md:justify-end px-5'>
                 <div>

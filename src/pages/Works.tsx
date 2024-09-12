@@ -18,12 +18,11 @@ const Works = () => {
     const [openSbumissions, setOpenSubmissions] = useState(false);
     const [selectedWork, setSelectedWork] = useState('')
 
-    const works = role == 'teacher' ?
-        useAppSelector(state => state.teacherClassroom.works) :
-        useAppSelector(state => state.studentClassroom.works);
-
-    const studentId = role == 'student' && useAppSelector(state => state.studentAuth.user?._id)
-    console.log(studentId)
+    const works = useAppSelector(state => role == 'teacher' ?
+        state.teacherClassroom.works :
+        state.studentClassroom.works)
+    const studentId = useAppSelector(state => role == 'student' && state.studentAuth.user?._id)
+    
     return (
         <div className='h-full rounded-lg border-2 shadow-md border-gray-200 w-full'>
             {role == 'teacher' &&

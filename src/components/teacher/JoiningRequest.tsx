@@ -8,8 +8,8 @@ import { useAppDispatch } from '../../store/store';
 import { acceptRequests,  rejectRequests } from '../../store/slices/teacher.classroom.slice';
 
 type JoiningRequestTableProps = {
-    requests:any
-    closeRequests:any,
+    requests:StudentSchema[]
+    closeRequests:React.Dispatch<React.SetStateAction<boolean>>,
     classroom_id:string
 }
 

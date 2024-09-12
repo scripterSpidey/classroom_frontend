@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useEffect } from 'react'
 import ClassroomNavBar from '../components/ClassroomNavBar';
 import { Outlet } from 'react-router-dom';
@@ -8,29 +10,34 @@ import { fetchClassroomDetailsForTeacherThunk } from '../store/slices/teacher.cl
 
 import useRole from '../hooks/useRole';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { ClassroomSchema } from '../schema/classroom.schema';
-import { StudentSchema } from '../schema/student.schema';
-import { TeacherSchema } from '../schema/teacher.schema';
 import { Toaster } from 'react-hot-toast';
 
 const ClassroomLayout = () => {
 
   const role = useRole();
   const dispatch = useAppDispatch();
-  let user: TeacherSchema | StudentSchema | null = null;
+  // let user: TeacherSchema | StudentSchema | null = null;
 
-  let classroomInfo: ClassroomSchema | null = null;
-  let classroom_id: string | null = null;
-  if (role == 'teacher') {
-    classroom_id = useAppSelector(state => state.persistedData.teacherDatas?.classroom_id!);
-    user = useAppSelector(state => state.teacherAuth.user);
-    classroomInfo = useAppSelector(state => state.teacherClassroom.classroom);
+  // let classroomInfo: ClassroomSchema | null = null;
+  // let classroom_id: string | null = null; 
+  // if (role == 'teacher') {
+  //   classroom_id = useAppSelector(state => state.persistedData.teacherDatas?.classroom_id);
+  //   user = useAppSelector(state => state.teacherAuth.user);
+  //   classroomInfo = useAppSelector(state => state.teacherClassroom.classroom);
 
-  } else if (role == 'student') {
-    classroom_id = useAppSelector(state => state.persistedData.studentDatas?.classroom_id!)
-    user = useAppSelector(state => state.studentAuth.user);
-    classroomInfo = useAppSelector(state => state.studentClassroom.classroom);
-  }
+  // } else if (role == 'student') {
+  //   classroom_id = useAppSelector(state => state.persistedData.studentDatas?.classroom_id!)
+  //   user = useAppSelector(state => state.studentAuth.user);
+  //   classroomInfo = useAppSelector(state => state.studentClassroom.classroom);
+  // }
+  const user = useAppSelector(state => role === 'student' ?
+    state.studentAuth.user :
+    state.teacherAuth.user);
+
+  const classroom_id = useAppSelector(state => role === 'teacher' ?
+    state.persistedData.teacherDatas?.classroom_id :
+    state.persistedData.studentDatas?.classroom_id
+  )
   useEffect(() => {
     const fetchClassrooms = () => {
       if (user?._id) {

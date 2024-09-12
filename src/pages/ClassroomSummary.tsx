@@ -19,9 +19,9 @@ const ClassroomSummary = () => {
   const role = useRole();
   const [loading, setLoading] = useState(true);
   const [openReqeusts, setOpenRequests] = useState<boolean>(false);
-  const classroomInfo = role == 'student' ?
-    useAppSelector(state => state.studentClassroom.classroom) :
-    useAppSelector(state => state.teacherClassroom.classroom);
+  const classroomInfo = useAppSelector(state => role == 'student' ?
+    state.studentClassroom.classroom :
+    state.teacherClassroom.classroom);
 
   useEffect(() => {
     const time = setTimeout(() => {
@@ -98,7 +98,12 @@ const ClassroomSummary = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {!loading ? (classroomInfo && classroomInfo.students.map((student: any, index) =>
+                    {!loading ? (classroomInfo && classroomInfo.students.map((student: {
+                      student_id: string,
+                      blocked: boolean,
+                      email: string,
+                      name: string,
+                    }, index) =>
                       <tr onClick={role == 'teacher' ? () => navigate(`/teacher/student/profile/${student.student_id}`) : undefined}
                         key={student.student_id} className="hover:bg-gray-100 cursor-pointer">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{index + 1}</td>

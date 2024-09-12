@@ -6,7 +6,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export const convertToIST= ( date: string|Date):string=>{
-    console.log(date)
+   
     const stdTime =  new Date(date).toLocaleString('en-IN',{
         timeZone:'Asia/kolkata',
         hour:'2-digit',

@@ -25,7 +25,7 @@ const useListenToMessages = () => {
         
 
         return () => { socket?.off('message') }
-    }, [socket])
+    }, [dispatch, socket])
 
 }
 

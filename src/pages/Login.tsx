@@ -117,7 +117,7 @@ const Login: React.FC<LoginProps> = () => {
       }
 
       navigate(`/${role}/dashboard`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       handleError(error);
     }
   }

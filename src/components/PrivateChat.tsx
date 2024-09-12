@@ -19,35 +19,35 @@ type PrivateChatsPropsType = {
 }
 
 const PrivateChat: React.FC<PrivateChatsPropsType> = ({ user }) => {
-    const {socket} = useSocket();
+    const { socket } = useSocket();
     const role = useRole();
-   
+
     const { loading } = useGetPrivateChats(user.userId);
     const [message, setMessage] = useState('');
 
-    const latestMessage = useRef<HTMLDivElement|null>(null)
+    const latestMessage = useRef<HTMLDivElement | null>(null)
 
-    const userId = role == 'teacher'?
-        useAppSelector(state=>state.teacherAuth.user?._id):
-        useAppSelector(state=>state.studentAuth.user?._id); 
+    const userId = useAppSelector(state => role == 'teacher' ?
+        state.teacherAuth.user?._id :
+        state.studentAuth.user?._id)
 
-    const classroomId = role =='teacher'?
-        useAppSelector(state=>state.teacherClassroom.classroom?._id):
-        useAppSelector(state=>state.studentClassroom.classroom?._id)
+    const classroomId = useAppSelector(state => role == 'teacher' ?
+        state.teacherClassroom.classroom?._id :
+        state.studentClassroom.classroom?._id)
 
-    const messages = role == 'teacher' ?
-        useAppSelector(state => state.teacherClassroom.privateChats) :
-        useAppSelector(state => state.studentClassroom.privateChats);
+    const messages = useAppSelector(state => role == 'teacher' ?
+        state.teacherClassroom.privateChats :
+        state.studentClassroom.privateChats);
 
-    useEffect(()=>{
-        if(latestMessage.current){
+    useEffect(() => {
+        if (latestMessage.current) {
             latestMessage.current.scrollIntoView()
         }
     });
 
 
-    if(socket){
-        socket.emit('joinChatroom',[user.userId,userId,classroomId])
+    if (socket) {
+        socket.emit('joinChatroom', [user.userId, userId, classroomId])
     }
 
     if (loading) return;

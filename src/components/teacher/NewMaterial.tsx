@@ -52,12 +52,12 @@ const NewMaterial: React.FC<NewMaterialPropsType> = ({ closeModal }) => {
         if (!title) {
             setTitleError(true);
             return;
-        } else { setTitleError(false) };
+        } else { setTitleError(false) }
 
         if (!description) {
             setDescriptionError(true)
             return
-        } else { setDescriptionError(false) };
+        } else { setDescriptionError(false) }
 
         const formData = new FormData();
         formData.append('material', file);

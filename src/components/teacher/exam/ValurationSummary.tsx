@@ -35,7 +35,7 @@ const ValuationSummary = () => {
     const handlePublish = async () => {
         if (!status) {
             return setStatusError(true)
-        } else { setStatusError(false) };
+        } else { setStatusError(false) }
         try {
             await publishExamResult(result.examId,result);
             navigate('../')

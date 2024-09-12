@@ -15,9 +15,9 @@ const Announcements = () => {
     const role = useRole()
     useGetAnnouncements();
 
-    const announcements = role == 'teacher' ?
-        useAppSelector(state => state.teacherClassroom.announcements) :
-        useAppSelector(state => state.studentClassroom.announcements);
+    const announcements = useAppSelector(state => role == 'teacher' ?
+        state.teacherClassroom.announcements :
+        state.studentClassroom.announcements);
 
     const getIcon = (type: string) => {
         switch (type) {

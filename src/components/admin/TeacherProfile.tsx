@@ -33,7 +33,7 @@ const TeacherProfile = () => {
         }
 
         fetchTeacher();
-    }, []);
+    }, [teacherId]);
 
     const handleBlockTeacher = async () => {
         try {

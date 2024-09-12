@@ -29,7 +29,7 @@ const ClassroomCard: React.FC<ClassroomCardPropsType> = ({ name, subject, class_
     const svgColor = cardColors[index].svg
 
     const capitalizeFirstLetter = (string: string) => {
-        let newString = string?.charAt(0).toUpperCase() + string?.slice(1)
+        const newString = string?.charAt(0).toUpperCase() + string?.slice(1)
         return newString
     }
 

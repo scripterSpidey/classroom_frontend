@@ -21,19 +21,20 @@ const ClassroomNavBar = () => {
   const [activeLink, setActiveLink] = useState('null');
   const [newAnnouncement, setNewAnnouncement] = useState(false)
 
-  const classrood_id = role == 'student' ?
-    useAppSelector(state => state.persistedData.studentDatas?.classroom_id) :
-    useAppSelector(state => state.persistedData.teacherDatas?.classroom_id);
-  const announcements = role == 'student' ?
-    useAppSelector(state => state.studentClassroom.announcements) :
-    useAppSelector(state => state.teacherClassroom.announcements); 
+  const classrood_id = useAppSelector(state => role == 'student' ?
+    state.persistedData.studentDatas?.classroom_id :
+    state.persistedData.teacherDatas?.classroom_id);
+
+  const announcements = useAppSelector(state => role == 'student' ?
+    state.studentClassroom.announcements :
+    state.teacherClassroom.announcements);
 
   const prevAnnouncementLenref = useRef(announcements.length)
 
   useEffect(() => {
     if (announcements.length > prevAnnouncementLenref.current) {
       setNewAnnouncement(true)
-      toast.success(`${announcements[0].content}`,{
+      toast.success(`${announcements[0].content}`, {
         style: {
           border: '1px solid #007bff',
           padding: '16px',
@@ -41,8 +42,8 @@ const ClassroomNavBar = () => {
           backgroundColor: '#E0F7FF',
         },
         iconTheme: {
-          primary: '#007bff', 
-          secondary: '#E0F7FF', 
+          primary: '#007bff',
+          secondary: '#E0F7FF',
         },
         duration: 5000
       })

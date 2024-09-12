@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 
 import axiosreq from "../axios.config";
 import { studentClassroonEndpoints, studentEndpoints } from "../endpoints";
@@ -131,7 +132,7 @@ export const startExam = async(examId:string)=>{
     return response.data;
 }
 
-export const submitExam = async(examId:string,data:any)=>{
+export const submitExam = async(examId:string,data:unknown)=>{
     const response = await axiosreq.post(studentClassroonEndpoints.exam(examId),data);
     return response.data;
 }

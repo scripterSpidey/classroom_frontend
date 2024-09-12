@@ -9,16 +9,15 @@ type MessageBoxPropsType = {
 }
 
 const MessageBox: React.FC<MessageBoxPropsType> = ({ message }) => {
-  
+
     const role = useRole();
 
-    const userId = role == 'teacher' ?
-        useAppSelector(state => state.teacherAuth.user?._id) :
-        useAppSelector(state => state.studentAuth.user?._id) ; 
+    const userId =
+        useAppSelector(state => role == 'teacher' ?
+            state.teacherAuth.user?._id :
+            state.studentAuth.user?._id);
 
     if (!userId) return;
-
-
     return (
         <div key={message._id}>
             {userId == message.sender_id ?

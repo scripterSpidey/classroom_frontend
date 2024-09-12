@@ -104,7 +104,7 @@ const NewWork: React.FC<NewWorkPropsType> = ({ closeModal }) => {
         if (!workType) {
             setWorkTypeError(true);
             return;
-        } else { setWorkTypeError(false) };
+        } else { setWorkTypeError(false) }
 
         if (!maxMarks) {
             setMarkError(true)

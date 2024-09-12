@@ -12,22 +12,18 @@ const Materials = () => {
     const [openUploadMaterial, setOpenUploadMaterial] = useState(false);
     const role = useRole();
 
-    const materials = role == 'teacher' ?
-        useAppSelector(state => state.teacherClassroom.classroom?.materials) :
-        useAppSelector(state => state.studentClassroom.classroom?.materials);
-
-    
-
-   
+    const materials = useAppSelector(state => role == 'teacher' ?
+        state.teacherClassroom.classroom?.materials :
+        state.studentClassroom.classroom?.materials);
 
     return (
         <div className=' h-full flex  flex-col   rounded-lg border-2 shadow-md border-gray-200 w-full'>
-            {role == 'teacher' && 
-            <div className='w-full  flex py-5 justify-center'>
-                <button
-                    onClick={() => setOpenUploadMaterial(true)}
-                    className='primary-btn py-2'> New material</button>
-            </div>}
+            {role == 'teacher' &&
+                <div className='w-full  flex py-5 justify-center'>
+                    <button
+                        onClick={() => setOpenUploadMaterial(true)}
+                        className='primary-btn py-2'> New material</button>
+                </div>}
             <hr className='border mx-2' />
             <div className='w-full flex-grow flex-1  p-4  '>
                 {materials && materials.map(material =>

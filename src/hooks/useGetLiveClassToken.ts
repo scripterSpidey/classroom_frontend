@@ -18,7 +18,7 @@ const useGetLiveClassToken = () => {
                 const data = role == 'teacher' ?
                     await getLiveClassToken() :
                     await getJoinLiveClassToken();
-                setToken(data);
+                setToken(data as string);
             } catch (error) {
                 handleError(error);
                 setError(true)
@@ -27,6 +27,7 @@ const useGetLiveClassToken = () => {
             }
         }
         getToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return { zegoToken, loading, error }

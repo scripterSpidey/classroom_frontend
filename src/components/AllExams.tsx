@@ -13,9 +13,9 @@ const AllExams = () => {
     const role = useRole();
     const navigate = useNavigate();
     const student = useAppSelector(state => state.studentAuth.user)
-    const allExams = role == 'teacher' ?
-        useAppSelector(state => state.teacherClassroom.exams) :
-        useAppSelector(state => state.studentClassroom.exams);
+    const allExams = useAppSelector(state => role === 'teacher' ?
+        state.teacherClassroom.exams :
+        state.studentClassroom.exams);
 
     const isPassed = (submissions: ExamAttendedType[]): JSX.Element => {
         const submission = submissions.find(submission => submission.student_id == student?._id);
@@ -26,7 +26,7 @@ const AllExams = () => {
                 <h1 className='font-bold'>Score: <span>{submission.obtained_mark}</span></h1>
             </div>
         }
-        if (submission?.result == 'fail'){
+        if (submission?.result == 'fail') {
             return <div className=' flex items-center gap-2'>
                 <button className='danger-btn'>Fail</button>
                 <h1 className='font-bold'>Score: <span>{submission.obtained_mark}</span></h1>

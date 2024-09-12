@@ -127,4 +127,5 @@ const MCQ: React.FC<MCQPropsType> = ({ mark, setMarkError, questionType,clearFor
     )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default MCQ

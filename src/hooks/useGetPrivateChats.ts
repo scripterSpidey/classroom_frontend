@@ -34,7 +34,7 @@ const useGetPrivateChats = (receiverId: string) => {
         }
 
         fetchChats();
-    }, [receiverId]);
+    }, [receiverId,dispatch,role]);
 
     return { loading }
 }

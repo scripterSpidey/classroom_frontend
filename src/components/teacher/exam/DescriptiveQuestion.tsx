@@ -16,7 +16,7 @@ const DescriptiveQuestion:React.FC<DescriptiveQuestionPropsType> = ({mark,setMar
     const validateQuestion = () => {
         if (!question.trim() || question.length <= 3) {
             return setQuestionError(true)
-        } else { setQuestionError(false) };
+        } else { setQuestionError(false) }
         console.log(mark)
         if(!mark){
             return setMarkError(true)

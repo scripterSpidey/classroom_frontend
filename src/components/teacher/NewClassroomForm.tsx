@@ -7,7 +7,7 @@ import { createClassroom } from '../../api/services/teacher.classroom.services';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import handleError from '../../utils/error.handler';
 import toast from 'react-hot-toast';
-import { motion} from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { useNavigate } from 'react-router-dom';
 import { newClassroom } from '../../store/slices/teacher.auth.slice';
@@ -16,14 +16,11 @@ import useRole from '../../hooks/useRole';
 
 type NewClassroomFormProps = {
     visible: boolean,
-    onClose: any
+    onClose: ()=>void
 }
-
-
-
 const NewClassroomForm: React.FC<NewClassroomFormProps> = ({ visible, onClose }) => {
 
-    if (!visible) return null;
+
     const role = useRole()
     const dispatch = useAppDispatch()
     const user = useAppSelector(state => state.teacherAuth.user);
@@ -35,6 +32,8 @@ const NewClassroomForm: React.FC<NewClassroomFormProps> = ({ visible, onClose })
     const classRef = useRef<HTMLInputElement>(null);
     const subjectRef = useRef<HTMLInputElement>(null)
     const [purpose, setPurpose] = useState('');
+
+    if (!visible) return null;
 
     const handleChange = (event: SelectChangeEvent) => {
         setPurpose(event.target.value as string);
@@ -64,19 +63,19 @@ const NewClassroomForm: React.FC<NewClassroomFormProps> = ({ visible, onClose })
             name: className,
             subject,
             purpose,
-            class_teacher_id: user?._id, 
+            class_teacher_id: user?._id,
             class_teacher_name: user?.name
         }
         try {
             const response = await createClassroom(classroomData);
-  
+
             const teacherClassroom = {
-                classroom_id:response._id,
-                class_teacher_name:response.class_teacher_name,
-                subject:response.subject,
-                classroom_name:response.name,
-                joined_at:response.createdAt,
-                blocked:response.banned
+                classroom_id: response._id,
+                class_teacher_name: response.class_teacher_name,
+                subject: response.subject,
+                classroom_name: response.name,
+                joined_at: response.createdAt,
+                blocked: response.banned
             }
             dispatch(newClassroom(teacherClassroom))
             onClose();
@@ -90,7 +89,7 @@ const NewClassroomForm: React.FC<NewClassroomFormProps> = ({ visible, onClose })
     }
 
     return (
-        
+
         <div
             className={`fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm
             flex justify-center items-center  `}>

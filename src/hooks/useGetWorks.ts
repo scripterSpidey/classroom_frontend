@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../store/store";
 import useRole from "./useRole";

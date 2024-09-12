@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 import { toast } from 'react-hot-toast';
 
 
-const handleError = (error: any) => {
+const handleError = (error:any) => {
 
   console.log('axios error: ', error.response)
   // if (error.response.status == 401) {

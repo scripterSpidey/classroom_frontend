@@ -16,17 +16,16 @@ type ClassroomType ={
 
 type JoinClassroomFormProps = {
     visible: boolean,
-    onClose: any
-
+    onClose: ()=>void
 }
 
 const JoinClassroomForm: React.FC<JoinClassroomFormProps> = ({ visible, onClose }) => {
-    if (!visible) return null;
-    console.log('joinclassroomform rendered');
+  
     const classroomIdRef = useRef<HTMLInputElement>(null);
     const [idError, setIdError] = useState<boolean>(false)
     const [classroom, setClassroom] = useState<null |ClassroomType>(null);
-    console.log(classroom);
+
+    if (!visible) return null;
 
     const searchClassroom = async () => {
 
@@ -39,10 +38,7 @@ const JoinClassroomForm: React.FC<JoinClassroomFormProps> = ({ visible, onClose 
         setIdError(false)
         try {
             const classroom = await findClassroomForStudent(classroom_id);
-            console.log('class: ', classroom)
-            setClassroom(classroom)
-
-
+            setClassroom(classroom as ClassroomType)
         } catch (error) {
             handleError(error)
         }

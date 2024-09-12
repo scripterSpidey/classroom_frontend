@@ -19,9 +19,10 @@ const SidebarContext = createContext<SidebarContextType>({
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     const [expanded, setExpanded] = useState(true);
     const role = useRole();
-    const classroom = role == 'student' ?
-        useAppSelector(state => state.studentClassroom.classroom) :
-        useAppSelector(state => state.teacherClassroom.classroom);
+    const classroom =
+        useAppSelector(state => role == 'student' ?
+            state.studentClassroom.classroom :
+            state.teacherClassroom.classroom)
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 768) {
@@ -35,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         return () => {
             window.addEventListener('resize', handleResize)
         }
-    },[])
+    }, [])
 
     return (
         <>

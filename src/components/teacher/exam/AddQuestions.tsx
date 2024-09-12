@@ -19,7 +19,7 @@ const AddQuestions = () => {
     if (questionCardRef.current) {
       questionCardRef.current.scrollIntoView()
     }
-  }, [savedQuestions]);
+  }, [savedQuestions,dispatch]);
 
   const handlePreview = () => {
     if (!savedQuestions || savedQuestions?.length < 1) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import axiosreq from "../axios.config";
 import { teacherClassroomEndpoints, teacherEndpoints } from "../endpoints";
 import { TokenResponse } from "@react-oauth/google";
@@ -13,9 +14,7 @@ import {
 export const registerTeacher = async (user:RegisterUserInput)=>{
     try {
         const response = await axiosreq.post(teacherEndpoints.register,user);
-        console.log('from service',response)
         return response.data
-        
     } catch (error) {
         throw error
     }

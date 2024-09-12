@@ -30,9 +30,9 @@ const ChatSpace = () => {
     const { loading } = useGetMessages();
     const recentMessageRef = useRef<HTMLDivElement | null>(null);
 
-    const messages = role == 'student' ?
-        useAppSelector(state => state.studentClassroom.classroom?.classroom_messages || []) :
-        useAppSelector(state => state.teacherClassroom.classroom?.classroom_messages || []);
+    const messages = useAppSelector(state => role == 'student' ?
+        state.studentClassroom.classroom?.classroom_messages :
+        state.teacherClassroom.classroom?.classroom_messages)
 
     const onlineUsers = useAppSelector(state => state.socket.onlineUsers)
 
@@ -44,17 +44,17 @@ const ChatSpace = () => {
 
 
 
-    const currUser = role == 'teacher' ?
-        useAppSelector(state => state.teacherAuth.user) :
-        useAppSelector(state => state.studentAuth.user)
+    const currUser = useAppSelector(state => role == 'teacher' ?
+        state.teacherAuth.user :
+        state.studentAuth.user)
 
     if (!currUser) console.error('User data not available in redux');
 
     const userId = currUser!._id
 
-    const classroom = role == 'teacher' ?
-        useAppSelector(state => state.teacherClassroom.classroom) :
-        useAppSelector(state => state.studentClassroom.classroom);
+    const classroom = useAppSelector(state => role == 'teacher' ?
+        state.teacherClassroom.classroom :
+        state.studentClassroom.classroom)
 
 
     if (!classroom) return
@@ -66,7 +66,7 @@ const ChatSpace = () => {
                 sendMessagesForTeacher({ message });
             } else if (role == 'student') {
                 sendMessagesForStudent({ message });
-            };
+            }
             setMessage('')
 
         } catch (error) {
@@ -74,9 +74,7 @@ const ChatSpace = () => {
         }
     }
 
-
-    const chats = messages.map((chat) => {
-
+const chats = messages && messages.map((chat) => {
         return (
             <div key={chat._id}>
                 {userId == chat.sender_id ?

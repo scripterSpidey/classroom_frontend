@@ -20,7 +20,7 @@ const PreviewExam = () => {
       if(!examDetails){
         navigate('/teacher/classroom/exams')
       }
-    },[examDetails])
+    },[examDetails,navigate])
 
     if (!examDetails) {
         return
@@ -39,7 +39,6 @@ const PreviewExam = () => {
     }
     return (
         <div className=' w-full flex flex-col h-full items-center p-5 '>
-
             <div className='text-lg font-bold text-costume-primary-color uppercase'>{examDetails.title}</div>
             <hr className='border w-full mx-2 mt-3' />
             <div className='flex w-full md:w-3/4  h-full flex-col'>

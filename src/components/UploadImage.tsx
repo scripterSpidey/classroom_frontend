@@ -27,7 +27,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 interface UploadImageProps {
-    closeForm: any,
+    closeForm: ()=>void,
 }
 
 const UploadImage: React.FC<UploadImageProps> = ({ closeForm }) => {

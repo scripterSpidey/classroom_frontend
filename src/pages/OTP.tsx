@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from 'react';
 
 import Footer from '../components/Footer';
@@ -29,7 +31,7 @@ const OTP:React.FC<OTPProps> = () => {
     const updateTime = ()=>{
       setTime(prevTime=>prevTime-1);
     }
-    let timerId:any;
+    let timerId:number|undefined;
 
     if(time>0){
        timerId = setInterval(updateTime,1000);
@@ -95,8 +97,6 @@ const OTP:React.FC<OTPProps> = () => {
     } catch (error:any) {
       toast.error(error.response.data)
     }
-    
-
   }
   
   return (

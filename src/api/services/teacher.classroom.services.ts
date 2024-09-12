@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 
 
 import { ClassroomMaterialType, ClassroomMessage, ClassroomSchema } from "../../schema/classroom.schema";
@@ -181,7 +182,7 @@ export const getAllWorksForTeacher = async ():Promise<WorksSchema[]>=>{
 }
 
 
-export const updateWorkMark = async (workId:string,body:{mark:number,studentId:string}):Promise<any>=>{
+export const updateWorkMark = async (workId:string,body:{mark:number,studentId:string}):Promise<unknown>=>{
     try {
         const response = await axiosreq.patch(teacherClassroomEndpoints.work(workId),body);
         return response.data;
@@ -190,7 +191,7 @@ export const updateWorkMark = async (workId:string,body:{mark:number,studentId:s
     }
 }
 
-export const createExam = async (body:any):Promise<any>=>{
+export const createExam = async (body:unknown):Promise<unknown>=>{
     try {
         const response = await axiosreq.post(teacherClassroomEndpoints.exams,body);
         return response.data;
@@ -208,19 +209,19 @@ export const getAllExamsForTeacher = async ():Promise<ExamsSchema[]>=>{
     }
 }
 
-export const publishExamResult = async (examId:string,body:any):Promise<any>=>{
+export const publishExamResult = async (examId:string,body:unknown):Promise<unknown>=>{
     const response = await axiosreq.patch(teacherClassroomEndpoints.exam(examId),body);
     return response.data;
 }
 
 
-export const getLiveClassToken = async ():Promise<any>=>{
+export const getLiveClassToken = async ():Promise<unknown>=>{
     const response = await axiosreq.get(teacherClassroomEndpoints.liveClass);
     return response.data;
 }
 
 
-export const startLiveClass = async (body:{title:string}):Promise<any>=>{
+export const startLiveClass = async (body:{title:string}):Promise<unknown>=>{
     const response = await axiosreq.post(teacherClassroomEndpoints.liveClass,body);
     return response.data;
 }

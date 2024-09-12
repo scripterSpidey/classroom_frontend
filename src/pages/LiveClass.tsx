@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import useRole from '../hooks/useRole';
 import { useAppSelector } from '../store/store';
@@ -8,7 +9,7 @@ import { startLiveClass } from '../api/services/teacher.classroom.services';
 
 
 export function getUrlParams(url = window.location.href) {
-    let urlStr = url.split('?')[1];
+    const urlStr = url.split('?')[1];
     return new URLSearchParams(urlStr);
 }
 
@@ -36,7 +37,7 @@ export default function ZegoLiveClass() {
 
     if (!zegoToken || !classroomId || !userId || !userName) return;
 
-    let myMeeting = async (element: any) => {
+    const myMeeting = async (element:  HTMLElement | null | undefined) => {
 
         const appID = Number(ZEGO_APP_ID);
         const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(appID, zegoToken, classroomId, userId, userName);

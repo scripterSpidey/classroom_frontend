@@ -138,7 +138,7 @@ const Signup: React.FC<SignUpProps> = () => {
 
       navigate(`/${role}/verify`);
 
-    } catch (error: any) {
+    } catch (error) {
       console.log(error)
       handleError(error)
     } finally {

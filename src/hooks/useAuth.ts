@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { authenticateUser } from "../api/services/general.services";
 import { useAppDispatch, useAppSelector } from "../store/store";
@@ -9,9 +10,10 @@ import { addTeacher } from "../store/slices/teacher.auth.slice";
 export const useAuth = (role: string) => {
 
     const dispatch = useAppDispatch();
-    const user = role == 'student' ?
-        useAppSelector(state => state.studentAuth.user?._id) :
-        useAppSelector(state => state.teacherAuth.user?._id)
+    const user =
+        useAppSelector(state => role == 'student' ?
+            state.studentAuth.user?._id :
+            state.teacherAuth.user?._id);
 
     const [loading, setLoading] = useState(true);
     const [activeUser, setActiveUser] = useState<string | null>(null)

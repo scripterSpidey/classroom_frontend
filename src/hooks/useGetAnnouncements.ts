@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { saveAllAnnouncementsForStudent } from "../store/slices/student.classroom.slice";
 import { saveAllAnnouncementsForTeacher } from "../store/slices/teacher.classroom.slice";

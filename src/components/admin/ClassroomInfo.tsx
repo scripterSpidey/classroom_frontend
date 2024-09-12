@@ -20,26 +20,28 @@ const ClassroomInfo = () => {
   const [reason, setReason] = useState<string>('')
   const [openBanClassroom, setOpenBanClassroom] = useState(false)
 
-  if (!classroomId) {
-    navigate('/admin/teachers');
-    return
-  }
+
   useEffect(() => {
     const fetchClassroomInfo = async () => {
       try {
-        const data = await admin.fetchClassroomInfo(classroomId);
+        const data = await admin.fetchClassroomInfo(classroomId!);
         setClassroom(data)
       } catch (error) {
         handleError(error)
       }
     }
     fetchClassroomInfo();
-  }, []);
+  }, [classroomId]);
+
+  if (!classroomId) {
+    navigate('/admin/teachers');
+    return
+  }
 
   const handleBanClassroom = async () => {
     try {
-      if(!reason) return toast.error('Please specify the reason for blocking this user.')
-      await admin.banOrUnbanClassroom(classroomId,{reason})
+      if (!reason) return toast.error('Please specify the reason for blocking this user.')
+      await admin.banOrUnbanClassroom(classroomId, { reason })
       setOpenBanClassroom(false)
       setClassroom(prevClassroom => {
         if (prevClassroom) {
@@ -55,7 +57,6 @@ const ClassroomInfo = () => {
     }
 
   }
-  console.log(classroom)
   return (
     <div className='  bg-gradient-to-b  from-blue-900 to-neutral-900 flex flex-col h-full  rounded-lg'>
       {classroom &&

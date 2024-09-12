@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import io, { Socket } from 'socket.io-client'
 import { BASE_URL } from "../constants/env";
 import useRole from "../hooks/useRole";
@@ -15,7 +15,7 @@ interface SocketContextType {
     onlineUsers: string[]
 }
 
-type SocketContextProviderPropsType = {}
+
 
 const defaultContextValue: SocketContextType = {
     socket: null,
@@ -24,66 +24,86 @@ const defaultContextValue: SocketContextType = {
 
 export const SocketContext = createContext<SocketContextType>(defaultContextValue);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSocket = () => {
     return useContext(SocketContext)
 }
 
-export const SocketContextProvider: React.FC<SocketContextProviderPropsType> = () => {
+export const SocketContextProvider = () => {
     const [socket, setSocket] = useState<Socket | null>(null);
     const dispatch = useAppDispatch()
-    
-    const onlineUsers:[] = []
+
+    const onlineUsers: [] = []
     const role = useRole();
 
-    const classroomId = role == 'student'?
-        useAppSelector(state=>state.persistedData.studentDatas?.classroom_id):
-        useAppSelector(state=>state.persistedData.teacherDatas?.classroom_id);
+    const classroomId = useAppSelector(state => role == 'student' ?
+        state.persistedData.studentDatas?.classroom_id :
+        state.persistedData.teacherDatas?.classroom_id);
 
-    const activeUser = role == 'student' ?
-        useAppSelector(state => state.studentAuth.user?._id) :
-        useAppSelector(state => state.teacherAuth.user?._id);
+    const activeUser = useAppSelector(state => role == 'student' ?
+        state.studentAuth.user?._id :
+        state.teacherAuth.user?._id)
 
     useEffect(() => {
+        console.log(activeUser)
         if (activeUser) {
             const socket = io(BASE_URL, {
+                // path: "/classconnect",
                 query: {
                     classroomId,
                     userId: activeUser
-                }
+                },
+                withCredentials: true, 
+                timeout: 10000
             });
 
             setSocket(socket);
 
+            socket.on('connect', () => {
+                console.log('Connected to server');
+            });
+            
+            socket.on('connect_error', (error) => {
+                console.error('Connection error:', error);
+            });
+
             socket.on('onlineUsers', (users) => {
-                dispatch(setOnlineUsers({onlineUsers:users}))
+                console.log('online',users)
+                dispatch(setOnlineUsers({ onlineUsers: users }))
             })
 
-            socket.on('announcement',data=>{
+            socket.on('announcement', data => {
                 dispatch(addAnnouncementStudent(data))
                 dispatch(addAnnouncementTeacher(data))
             })
 
-            socket.on('classroomState',(state:{live:boolean})=>{
+            socket.on('classroomState', (state: { live: boolean }) => {
                 console.log(state)
                 dispatch(setLiveClassStatus(state?.live))
             })
 
-            socket.on('liveClassStarted',(liveClass)=>{
+            socket.on('liveClassStarted', (liveClass) => {
                 console.log(liveClass)
                 dispatch(setLiveClassStatus(true))
             })
 
-            socket.on('liveClassEnded',(liveClass)=>{
+            socket.on('liveClassEnded', (liveClass) => {
                 console.log(liveClass)
                 dispatch(setLiveClassStatus(false))
             })
 
-            return () => { socket.close() }
+            return () => { 
+                console.log('closing connection')
+                socket.close() 
+            }
         } else {
+            console.log('clossing connection')
             socket?.close();
             setSocket(null)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
 
     return (
         <SocketContext.Provider value={{ socket, onlineUsers }}>

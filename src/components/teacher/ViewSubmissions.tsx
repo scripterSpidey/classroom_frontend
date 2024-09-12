@@ -49,7 +49,7 @@ const ViewSubmissions: React.FC<ViewSubmissionsPropsType> = ({ work, closeSubmis
     try {
       const updateMark = await updateWorkMark(work._id, data);
       toast.success('Mark updated successfully!')
-      dispatch(updateWorkMarkRedux(updateMark))
+      dispatch(updateWorkMarkRedux(updateMark as WorksSchema))
     } catch (error) {
       handleError(error)
     }

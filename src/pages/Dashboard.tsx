@@ -4,7 +4,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useAppSelector } from '../store/store';
 
 import NewClassroomForm from '../components/teacher/NewClassroomForm';
-import { useState } from 'react'; 
+import { useState } from 'react';
 
 import ClassroomCard from '../components/ClassroomCard';
 import useRole from '../hooks/useRole';
@@ -19,13 +19,9 @@ const Dashboard: React.FC = () => {
 
     const role = useRole()
 
-    const classrooms = role == 'teacher' ?
-        (useAppSelector(state => state.teacherAuth.user?.classrooms) || []) :
-        (useAppSelector(state => state.studentAuth.user?.classrooms) || []);
-
-
+    const classrooms = (useAppSelector(state =>
+        role === 'teacher' ? state.teacherAuth.user?.classrooms : state.studentAuth.user?.classrooms) || [])
     const [showForm, setShowForm] = useState(false);
- 
     const handleClose = () => setShowForm(false);
 
     return (
@@ -53,24 +49,30 @@ const Dashboard: React.FC = () => {
                         initial="hidden"
                         animate="show"
                         className='grid md:grid-cols-1  lg:grid-cols-4 gap-10 p-10'>
-                        {classrooms.length != 0 && classrooms.map((classroom: any) => <ClassroomCard
-                            key={classroom._id ?? ''}
-                            name={classroom.classroom_name}
-                            class_teacher_name={classroom.class_teacher_name}
-                            subject={classroom.subject}
-                            _id={classroom.classroom_id}
-                            blocked={classroom.blocked}
-                            role={role}
-                        />)}
+                        {classrooms.length != 0 && classrooms.map((classroom: {
+                            _id?: string,
+                            classroom_id: string,
+                            class_teacher_name: string,
+                            subject: string,
+                            classroom_name: string,
+                            blocked: boolean
+                        }) => <ClassroomCard
+                                key={classroom._id ?? ''}
+                                name={classroom.classroom_name}
+                                class_teacher_name={classroom.class_teacher_name}
+                                subject={classroom.subject}
+                                _id={classroom.classroom_id}
+                                blocked={classroom.blocked}
+                                role={role}
+                            />)}
 
                     </motion.div>
                 </div>
                 {role == 'teacher' ?
                     <NewClassroomForm onClose={handleClose} visible={showForm} /> :
                     <JoinClassroomForm visible={showForm} onClose={handleClose} />}
-
             </div>
-           
+
         </>
     )
 }

@@ -18,16 +18,11 @@ const PersonalDetails = () => {
     const navigate = useNavigate()
     const { student_id } = useParams();
 
-    if (!student_id) {
-        console.error('no student id')
-        return
-    };
     const studentClassroomState = useAppSelector(state => state.teacherClassroom.classroom?.students.find(student => student.student_id == student_id));
 
     const classroomId = useAppSelector(state=>state.teacherClassroom.classroom?._id)
     
     const [student, setStudent] = useState<StudentSchema | null>(null);
-
 
     useEffect(() => {
 
@@ -38,6 +33,10 @@ const PersonalDetails = () => {
 
         fetchStudentProfile();
     }, [student_id]);
+
+    if (!student_id) {
+        return
+    }
 
     const showSwal = async () => {
         withReactContent(Swal).fire({
