@@ -152,6 +152,7 @@ export const PersistedDatasSlice = createSlice({
                 state.createExam.instructions = action.payload.instructions;
                 state.createExam.startTime =  action.payload.startTime;
                 state.createExam.lastTimeToStart = action.payload.lastTimeToStart;
+                state.createExam.duration = action.payload.duration
             }
         },
         saveQuestionPaperType: (state, action: PayloadAction<QuestionPaperEnum>) => {

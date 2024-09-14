@@ -40,6 +40,7 @@ const NewExam = () => {
         }
     }
 
+
     const onProceed = () => {
         
         let errorOccured = false;
