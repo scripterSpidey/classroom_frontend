@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import useRole from '../hooks/useRole'
 import { useAppSelector } from '../store/store';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -8,16 +8,10 @@ import { Toaster } from 'react-hot-toast';
 import defaultProfile from '../assets/images/defaultProfile.jpg'
 
 const Profile: React.FC = () => {
-
+    const [imageError, setImageError] = useState(false)
     const role = useRole();
     const [openUploadImage, setOpenUploadImage] = useState<boolean>(false);
     // const [openCareers, setOpenCareers] = useState<boolean>(false)
-
-    useEffect(() => {
-        console.log('profile image updated...')
-
-    });
-
 
     const user = useAppSelector(state => role == 'teacher' ?
         state.teacherAuth.user :
@@ -27,7 +21,8 @@ const Profile: React.FC = () => {
             <div className=' flex md:w-1/3 p-10    justify-center image items-start'>
                 <div className='relative'>
                     <img
-                        src={`${user?.profile_image}?${new Date().getTime()}` as string || defaultProfile}
+                        onError={() => setImageError(true)}
+                        src={imageError ? defaultProfile : `${user?.profile_image}?${new Date().getTime()}` as string}
                         alt=""
                         className=" rounded-3xl w-60 h-60   object-cover "
                     />

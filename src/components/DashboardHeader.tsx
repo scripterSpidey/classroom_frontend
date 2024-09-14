@@ -46,6 +46,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
   const role = useRole();
   const [open, setOpen] = useState(false);
   const [logout, setLogout] = useState(false);
+  const [imageError,setImageError] = useState(false)
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -77,6 +78,8 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
     }
   }
 
+
+
   return (
     <>
       <header className="bg-costume-secondary-color shadow-md text-white p-4 flex items-center  justify-between sm:px-10">
@@ -89,7 +92,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
         </div>
         <div className="relative cursor-pointer " >
           <div className="flex items-center space-x-2 bg-costume-primary-color p-2 rounded-lg hover:bg-gray-600 focus:outline-none">
-            <img src={`${user?.profile_image}?${Date.now()}` as string || defaultProfile} alt="Profile Icon" className="h-8 w-8 rounded-full" />
+            <img
+              onError={()=>setImageError(true)}
+              src={imageError ? defaultProfile : `${user?.profile_image}?${Date.now()}` as string}
+              alt="Profile Icon" className="h-8 w-8 rounded-full" />
             <div className=" flex  flex-col text-sm">
               <span onClick={() => navigate(`/${role}/profile`)} className="font-semibold hidden md:block">{user?.name}</span>
               <span className='hidden md:block'>{user?.email}</span>
