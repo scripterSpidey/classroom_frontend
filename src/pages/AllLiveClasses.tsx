@@ -69,6 +69,9 @@ const AllLiveClasses = () => {
                             <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
                         </span>
                     </button>
+                    <button 
+                    onClick={() => navigate(`join?classroomId=${classroomId}`)}
+                    className='primary-btn '>Attend</button>
                 </div>}
             <Outlet />
         </div>

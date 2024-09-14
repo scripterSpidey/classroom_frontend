@@ -29,7 +29,7 @@ const Materials = () => {
                 {materials && materials.map(material =>
                     <div
                         key={material._id}
-                        className='w-full border-2 mb-4 flex justify-between items-center shadow-sm p-3 px-6 rounded-lg'>
+                        className='w-full border-2 mb-4 md:flex justify-between items-center shadow-sm p-3 px-6 rounded-lg'>
                         <div className='space-y-1 flex-grow flex-1 mr-2'>
                             <h2 className='text-xl font-semibold text-costume-primary-color'>{material.title}</h2>
                             <h4 className='text-lg'>{material.description}</h4>

@@ -18,7 +18,7 @@ const ViewExam = () => {
     const { examId } = useParams();
     const [loading, setLoading] = useState(false)
     const examDetails = useAppSelector(state => state.studentClassroom.exams.find(exam => exam._id === examId));
-    console.log(examDetails?.instructions)
+    
     if (!examDetails) return;
     const handleStartExam = async () => {
         try {

@@ -19,10 +19,6 @@ const MCQ: React.FC<MCQPropsType> = ({ mark, setMarkError, questionType,clearFor
     const [optionsError, setOptionsError] = useState('');
     const [optionError, setOptionError] = useState(-1);
 
-    console.log(questionType)
-    console.log(options)
-    console.log(correctOption)
-    console.log(optionError)
 
     const handleOptionInput = (index: number, value: string) => {
         const newOptions = [...options];

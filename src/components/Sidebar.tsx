@@ -40,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
     return (
         <>
-            <aside className={`h-auto left-0 inline-block overflow-hidden transition-all   ${expanded ? "p-2" : "w-16"}`}>
+            <aside className={`h-auto left-0 inline-block  transition-all   ${expanded ? "p-2" : "w-16"}`}>
                 <nav className="h-full flex flex-col  rounded-md  border-2 border-gray-200 shadow-lg ">
                     <div className="p-4 pb-2 flex justify-between items-center">
                         <h1 className={`overflow-hidden transition-all uppercase text-costume-primary-color text-xl font-extrabold 

@@ -16,20 +16,6 @@ const ClassroomLayout = () => {
 
   const role = useRole();
   const dispatch = useAppDispatch();
-  // let user: TeacherSchema | StudentSchema | null = null;
-
-  // let classroomInfo: ClassroomSchema | null = null;
-  // let classroom_id: string | null = null; 
-  // if (role == 'teacher') {
-  //   classroom_id = useAppSelector(state => state.persistedData.teacherDatas?.classroom_id);
-  //   user = useAppSelector(state => state.teacherAuth.user);
-  //   classroomInfo = useAppSelector(state => state.teacherClassroom.classroom);
-
-  // } else if (role == 'student') {
-  //   classroom_id = useAppSelector(state => state.persistedData.studentDatas?.classroom_id!)
-  //   user = useAppSelector(state => state.studentAuth.user);
-  //   classroomInfo = useAppSelector(state => state.studentClassroom.classroom);
-  // }
   const user = useAppSelector(state => role === 'student' ?
     state.studentAuth.user :
     state.teacherAuth.user);

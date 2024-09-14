@@ -87,13 +87,12 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
         <div>
           <h1 className="text-xl hidden lg:flex sm:text-2xl  font-extrabold text-costume-primary-color ">{`${role == 'student' ? "STUDENT" : "TEACHER"} DASHBOARD`}</h1>
         </div>
-        <div className="relative cursor-pointer" >
+        <div className="relative cursor-pointer " >
           <div className="flex items-center space-x-2 bg-costume-primary-color p-2 rounded-lg hover:bg-gray-600 focus:outline-none">
             <img src={`${user?.profile_image}?${Date.now()}` as string || defaultProfile} alt="Profile Icon" className="h-8 w-8 rounded-full" />
             <div className=" flex  flex-col text-sm">
-              <span onClick={() => navigate(`/${role}/profile`)} className="font-semibold">{user?.name}</span>
-              <span>{user?.email}</span>
-              <span>{user?._id}</span>
+              <span onClick={() => navigate(`/${role}/profile`)} className="font-semibold hidden md:block">{user?.name}</span>
+              <span className='hidden md:block'>{user?.email}</span>
             </div>
             <Button
               onClick={() => setOpen(prevOpen => !prevOpen)}
@@ -103,9 +102,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
           </div>
           {open &&
             <div
-              className={`absolute transition-all right-0 mt-2 w-48 bg-white z-20 text-gray-800 border border-gray-200 rounded-md shadow-lg hidden lg:block `}>
-              <a href="/student/profile" className="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
-              <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-100">Settings</a>
+              className={`absolute transition-all top-10  right-0 mt-2 w-48 bg-white z-20 text-gray-800 border border-gray-200 rounded-md shadow-lg  `}>
+              <a
+                onClick={() => navigate(`/${role}/profile`)}
+                className="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
               <a onClick={() => setLogout(true)} className="block px-4 py-2 cursor-pointer text-sm hover:bg-gray-100">Logout</a>
             </div>}
         </div>

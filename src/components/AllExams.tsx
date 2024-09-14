@@ -1,15 +1,17 @@
 
 import useRole from '../hooks/useRole'
-import { NavLink, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
-import { useAppSelector } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../store/store';
 import { convertToIST } from '../utils/indian.std.time';
 import TimerIcon from '@mui/icons-material/Timer';
 import Filter1Icon from '@mui/icons-material/Filter1';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { ExamAttendedType, ExamsSchema } from '../schema/exams.schema';
+import { createExamState } from '../store/slices/persist.slice';
 
 const AllExams = () => {
+    const dispatch = useAppDispatch()
     const role = useRole();
     const navigate = useNavigate();
     const student = useAppSelector(state => state.studentAuth.user)
@@ -50,15 +52,19 @@ const AllExams = () => {
         }
 
     }
+
+    const handleCreateNewExam = () => {
+        dispatch(createExamState())
+        navigate('/teacher/classroom/exams/method')
+    }
     return (
         <div className='w-full'>
             {role == 'teacher' &&
                 <div>
                     <div className='w-full  flex py-5 justify-center'>
-                        <NavLink to='new'>
-                            <button
-                                className='primary-btn py-2 font-semibold'> CREATE EXAM</button>
-                        </NavLink>
+                        <button
+                            onClick={handleCreateNewExam}
+                            className='primary-btn py-2 font-semibold'> CREATE EXAM</button>
                     </div>
                     <hr className='border mx-2' />
                 </div>}
@@ -90,13 +96,11 @@ const AllExams = () => {
                             <div className='bg-green-300 w-full sm:w-auto'>
                                 {statusButtons(exam.start_time, exam.last_time_to_start, exam)}
                             </div>}
-                        {/* {role=='student'&& ( (new Date(exam.start_time).getTime() <= Date.now()) &&  Date.now()  <= new Date(exam.last_time_to_start).getTime()) && */}
                         <div className=' w-full mt-3 sm:mt-0 sm:w-auto'>
                             <button
                                 onClick={() => navigate(`view/${exam._id}`)}
                                 className='primary-btn w-full'>View</button>
                         </div>
-                        {/* // } */}
                     </div>
                 )
                 }

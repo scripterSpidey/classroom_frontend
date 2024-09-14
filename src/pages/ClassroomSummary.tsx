@@ -42,29 +42,30 @@ const ClassroomSummary = () => {
 
   return (
     <div className={`w-full   h-full p-5 rounded-lg`}>
-      {classroomInfo && <div
-        style={{
-          backgroundImage: `url(${classroomImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-        className={`rounded-md shadow-lg relative`}>
-        <div className="absolute inset-0 bg-black z-0 opacity-30 rounded-md"></div> {/* Overlay */}
-        <div className=' relative  p-8 border-2 z-10  flex shadow-xl justify-between rounded-md'>
-          <div className='flex flex-col gap-4'>
-            <h1 className='text-5xl  text-white font-bold'>{classroomInfo?.subject}</h1>
-            <span className='text-3xl text-white'>{classroomInfo?.name}</span>
-          </div>
-          <button
-            onClick={handleExit}
-            className="inline-flex self-center bg-costume-primary-color items-center gap-2 
+      {classroomInfo &&
+        <div
+          style={{
+            backgroundImage: `url(${classroomImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+          className={`rounded-md shadow-lg overflow-hidden relative`}>
+          <div className="absolute inset-0 bg-black z-0 opacity-30 rounded-md"></div> 
+          <div className=' relative  p-8 border-2 z-10  md:flex shadow-xl justify-between rounded-md'>
+            <div className='flex flex-col gap-4'>
+              <h1 className='text-3xl md:text-5xl  text-white font-bold'>{classroomInfo?.subject}</h1>
+              <span className='text-3xl text-white'>{classroomInfo?.name}</span>
+            </div>
+            <button
+              onClick={handleExit}
+              className="inline-flex self-center bg-costume-primary-color items-center gap-2 
             rounded-md px-4 py-2 text-sm text-white hover:bg-red-400  focus:relative
             transition duration-300 ease-in-out">
-            <ExitToAppIcon />Exit</button>
-        </div>
-      </div>}
+              <ExitToAppIcon />Exit</button>
+          </div>
+        </div>}
 
-      <div className='flex justify-between py-3 px-8'>
+      <div className='md:flex justify-between py-3 px-8'>
         <div className='flex flex-col '>
           <span className='text-2xl font-semibold '>{classroomInfo?.class_teacher_name}</span>
           <span className='text-lg ' >{classroomInfo?.classroom_id}</span>

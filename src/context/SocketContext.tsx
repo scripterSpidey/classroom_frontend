@@ -45,7 +45,6 @@ export const SocketContextProvider = () => {
         state.teacherAuth.user?._id)
 
     useEffect(() => {
-        console.log(activeUser)
         if (activeUser) {
             const socket = io(BASE_URL, {
                 // path: "/classconnect",

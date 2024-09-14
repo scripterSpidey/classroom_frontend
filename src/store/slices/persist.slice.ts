@@ -136,8 +136,23 @@ export const PersistedDatasSlice = createSlice({
         deleteAllPersistedDatasOfTeacher: (state) => {
             state.teacherDatas = null
         },
+        createExamState:(state)=>{
+            state.createExam = {
+                title: '',
+                instructions: '',
+                duration: 0,
+                startTime: '',
+                lastTimeToStart: '',
+                questions: []
+            }
+        },
         saveCreateExamBasicDetails: (state, action: PayloadAction<CreateExamBasicDetailsType>) => {
-            state.createExam = action.payload;
+            if(state.createExam){
+                state.createExam.title = action.payload.title;
+                state.createExam.instructions = action.payload.instructions;
+                state.createExam.startTime =  action.payload.startTime;
+                state.createExam.lastTimeToStart = action.payload.lastTimeToStart;
+            }
         },
         saveQuestionPaperType: (state, action: PayloadAction<QuestionPaperEnum>) => {
             if (state.createExam) {
@@ -145,6 +160,7 @@ export const PersistedDatasSlice = createSlice({
             }
         },
         saveQuestion: (state, action: PayloadAction<Question>) => {
+            
             if (state.createExam) {
                 state.createExam.questions.push(action.payload)
             }
@@ -230,5 +246,6 @@ export const {
     updateResponse,
     setPassStatus,
     setLiveClassTitle,
-    setLiveClassStatus
+    setLiveClassStatus,
+    createExamState
 } = PersistedDatasSlice.actions

@@ -96,7 +96,7 @@ const NewExam = () => {
 
         dispatch(saveCreateExamBasicDetails(basicDetails))
 
-        navigate('/teacher/classroom/exams/method')
+        navigate('/teacher/classroom/exams/preview')
     }
     return (
         <div className=' w-full flex flex-col items-center p-5 '>
@@ -180,7 +180,7 @@ const NewExam = () => {
                     <div className='w-full flex justify-center mt-10'>
                         <button 
                         onClick={onProceed}
-                        className='primary-btn py-2'>PROCEED TO QUESTIONS</button>
+                        className='primary-btn py-2'>Preview</button>
                     </div>
                 </div>
 

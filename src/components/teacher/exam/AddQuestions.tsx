@@ -11,7 +11,6 @@ import toast from 'react-hot-toast';
 const AddQuestions = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
-  const examDetails = useAppSelector(state => state.persistedData.createExam)
   const savedQuestions = useAppSelector(state => state.persistedData.createExam?.questions);
   const questionCardRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
@@ -25,14 +24,14 @@ const AddQuestions = () => {
     if (!savedQuestions || savedQuestions?.length < 1) {
       return toast.error('There should be atleast one question for the exam')
     }
-    navigate('/teacher/classroom/exams/preview')
+    navigate('/teacher/classroom/exams/new')
   }
 
   return (
 
     <div className='w-full h-screen overflow-auto flex flex-col justify-between bg-white'>
       <div className='w-full flex py-5 px-10 rounded-md bg-gray-50 justify-between items-center shadow-md'>
-        <h1 className='text-xl font-bold uppercase text-costume-primary-color'>{examDetails?.title}</h1>
+        <h1 className='text-xl font-bold uppercase text-costume-primary-color'>{'ADD QUESTIONS'}</h1>
         <div className='font-semibold'>
           <h5 >{`Total questions: ${savedQuestions?.length}`}</h5>
           <h5>{`Total Marks: ${savedQuestions?.reduce((acc, curr) => { return acc += Number(curr.mark) }, 0)}`}</h5>
