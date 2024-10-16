@@ -16,7 +16,7 @@ const Header = () => {
         <div></div>
         <Toaster></Toaster>
       </header>
-        <Outlet></Outlet>
+      <Outlet></Outlet>
     </div>
   </>
 }

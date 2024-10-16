@@ -84,8 +84,7 @@ const UploadImage: React.FC<UploadImageProps> = ({ closeForm }) => {
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
-                        startIcon={<DriveFolderUploadIcon />}
-                    >
+                        startIcon={<DriveFolderUploadIcon />}>
                         Upload file
                         <VisuallyHiddenInput
                             onChange={handleFileSelect}

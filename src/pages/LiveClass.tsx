@@ -3,6 +3,7 @@ import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import useRole from '../hooks/useRole';
 import { useAppSelector } from '../store/store';
 import { ZEGO_APP_ID } from '../constants/env';
+import { ZEGO_SERVER_SECRET } from '../constants/env';
 import useGetLiveClassToken from '../hooks/useGetLiveClassToken';
 import { useSocket } from '../context/SocketContext';
 import { startLiveClass } from '../api/services/teacher.classroom.services';
@@ -40,7 +41,7 @@ export default function ZegoLiveClass() {
     const myMeeting = async (element:  HTMLElement | null | undefined) => {
 
         const appID = Number(ZEGO_APP_ID);
-        const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(appID, zegoToken, classroomId, userId, userName);
+        const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, ZEGO_SERVER_SECRET, classroomId, userId, userName);
         const roomId = getUrlParams().get('classroomId');
 
         const zp = ZegoUIKitPrebuilt.create(kitToken);
